@@ -29,7 +29,7 @@ generate_shapefile_data <- function() {
   sf_northern <-
     fill_region(northern_name, fortify(readOGR(shapefile_dir, "northern_steppe")))
   sf_northern <-
-    sf_northern[sf_northern$hole == FALSE, ] # Allows Black Hills to be included
+    sf_northern[sf_northern$hole == FALSE,] # Allows Black Hills to be included
   
   sf_desert <-
     fill_region(desert_name, fortify(readOGR(shapefile_dir, "chihuahuan_desert")))
@@ -52,7 +52,7 @@ plot_site_map_with_ecoregions <- function(sf_data) {
       data = sf_data$usa_map,
       map = sf_data$usa_map,
       aes(x = long, y = lat, map_id = region),
-      fill = 'black',
+      fill = "black",
       alpha = 0.05
     ) + #add size command to make country lines visible
     
@@ -65,7 +65,7 @@ plot_site_map_with_ecoregions <- function(sf_data) {
     ) +
     
     theme_map() + # Remove axes
-    coord_map(xlim = c(-110,-95), ylim = c(27, 45)) + # Crop map
+    coord_map(xlim = c(-110, -95), ylim = c(27, 45)) + # Crop map
     
     # Add shapefile polygons for different ecoregions, using different data
     geom_polygon(

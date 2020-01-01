@@ -1,7 +1,6 @@
 ## Utility functions for EDGE project
 
 theme_sigmaplot <- function(xticks = TRUE) {
-  
   # This function adds Sigma-plot like theme elements to a ggplot object.
   # Use as an additional arg, eg:
   # ggplot() + theme_sigmaplot()

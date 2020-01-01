@@ -22,21 +22,21 @@ collect_c3_c4_data <-
     raw_dat <- read.csv("SGS-CHY_TRT-ANPP_long.csv")
     
     # Filter out old years
-    dat <- raw_dat[(raw_dat$Year %in% c3_c4_years),]
+    dat <- raw_dat[(raw_dat$Year %in% c3_c4_years), ]
     
     # Keep only CHY, SGS
-    dat <- dat[(dat$Site %in% c4_c3_sites),]
+    dat <- dat[(dat$Site %in% c4_c3_sites), ]
     
     # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
-    dat <- dat[(dat$Trt %in% c(include_in_drt_trt,"con")),]
+    dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")), ]
     dat <- dat %>%
       mutate(Trt = as.character(Trt)) %>% mutate(Trt = replace(Trt, Trt == "chr" |
                                                                  Trt == "int", "drt"))
     
     # Collect only C4 grasses
-    c4_dat <- as_tibble(dat[(dat$category %in% c4_grasses),])
+    c4_dat <- as_tibble(dat[(dat$category %in% c4_grasses), ])
     # Collect only C3 grasses
-    c3_dat <- as_tibble(dat[(dat$category %in% c3_grasses),])
+    c3_dat <- as_tibble(dat[(dat$category %in% c3_grasses), ])
     
     # Group to plot level by year, site, treatment
     by_plot_c4 <-
@@ -99,7 +99,8 @@ collect_c3_c4_data <-
       # Take the mean of drt treatments (including chr and int)
       full_dat_drt <- full_dat %>% group_by(Site, Block, Trt) %>%
         summarise(c3_biomass = mean(c3_biomass),
-                  c4_biomass = mean(c4_biomass),) %>% filter(Trt == "drt")
+                  c4_biomass = mean(c4_biomass),
+        ) %>% filter(Trt == "drt")
       # Join tables
       compare_dat <-
         full_join(full_dat_amb, full_dat_drt, by = c("Site", "Block"))
@@ -178,8 +179,10 @@ plot_c3_v_c4 <- function(summary_dat, filename) {
       legend.direction = "horizontal",
       legend.title = element_blank()
     ) +
-    scale_fill_manual(values = c("white", shortgrass_color_pale),
-                      labels = c("C3 Grasses", "C4 Grasses"))
+    scale_fill_manual(
+      values = c("white", shortgrass_color_pale),
+      labels = c("C3 Grasses", "C4 Grasses")
+    )
   
   
   gg
@@ -232,8 +235,10 @@ plot_c3_v_c4_diff <- function(summary_dat, filename) {
       legend.direction = "horizontal",
       legend.title = element_blank()
     ) +
-    scale_fill_manual(values = c("white", shortgrass_color_pale),
-                      labels = c("C3 Grasses", "C4 Grasses"))
+    scale_fill_manual(
+      values = c("white", shortgrass_color_pale),
+      labels = c("C3 Grasses", "C4 Grasses")
+    )
   
   
   
@@ -246,7 +251,7 @@ plot_c3_v_c4_diff <- function(summary_dat, filename) {
 
 plot_c3_v_c4(collect_c3_c4_data(ambient_composition = TRUE,
                                 sum_across_years = TRUE),
-             filename="figures/c3_v_c4.pdf")
+             filename = "figures/c3_v_c4.pdf")
 plot_c3_v_c4_diff(collect_c3_c4_data(ambient_composition = FALSE,
-                                sum_across_years = TRUE),
-                  filename="figures/c3_v_c4_diff_chr.pdf")
+                                     sum_across_years = TRUE),
+                  filename = "figures/c3_v_c4_diff_chr.pdf")
