@@ -10,6 +10,10 @@ data_dir <- paste(toString(wd), "data/", sep = "")
 shortgrass_color <- "#CC0000"
 northern_color <- "#0000CC"
 desert_color <- "#CC9900"
+# When you don't want to use alpha (no transparency)
+shortgrass_color_pale <- "#F5D6D6"
+northern_color_pale <- "#D4E0F7"
+desert_color_pale <- "#FFE6CC"
 
 # Colors for points representing these sites
 CHY_color <- "#CC0000"

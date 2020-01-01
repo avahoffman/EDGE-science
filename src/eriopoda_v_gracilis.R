@@ -176,7 +176,7 @@ plot_spp_sev <- function(summary_dat, filename) {
       legend.direction = "horizontal",
       legend.title = element_blank(),
     ) +
-    scale_fill_manual(values = alpha(c(shortgrass_color, northern_color, "white"), 0.3),
+    scale_fill_manual(values = c(shortgrass_color_pale, northern_color_pale, "white"),
                       labels = c("B. gracilis", "B. dactyloides", "Other C4"))
   
   gg
@@ -207,16 +207,7 @@ plot_sev_diff <- function(summary_dat, filename) {
       width = 0
     ) +
     
-    # Then draw points (first with white fill to cover error bars)
-    geom_point(
-      aes(group = type, y = mean, x = Site),
-      color = "black",
-      fill = "white",
-      shape = 21,
-      size = 4,
-      position = position_dodge(0.3)
-    ) +
-    # Add proper color
+    # Draw points
     geom_point(
       aes(fill = type, y = mean, x = Site),
       color = "black",
@@ -238,7 +229,7 @@ plot_sev_diff <- function(summary_dat, filename) {
       legend.direction = "horizontal",
       legend.title = element_blank()
     ) +
-    scale_fill_manual(values = alpha(c(shortgrass_color, northern_color), 0.3),
+    scale_fill_manual(values = c(shortgrass_color_pale, northern_color_pale),
                       labels = c("B. gracilis", "B. dactyloides"))
   
   

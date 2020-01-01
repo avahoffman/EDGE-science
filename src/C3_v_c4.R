@@ -178,7 +178,7 @@ plot_c3_v_c4 <- function(summary_dat, filename) {
       legend.direction = "horizontal",
       legend.title = element_blank()
     ) +
-    scale_fill_manual(values = alpha(c("white", shortgrass_color), 0.3),
+    scale_fill_manual(values = c("white", shortgrass_color_pale),
                       labels = c("C3 Grasses", "C4 Grasses"))
   
   
@@ -210,16 +210,7 @@ plot_c3_v_c4_diff <- function(summary_dat, filename) {
       width = 0
     ) +
     
-    # Then draw points (first with white fill to cover error bars)
-    geom_point(
-      aes(group = type, y = mean, x = Site),
-      color = "black",
-      fill = "white",
-      shape = 21,
-      size = 4,
-      position = position_dodge(0.3)
-    ) +
-    # Add proper color
+    # Draw points
     geom_point(
       aes(fill = type, y = mean, x = Site),
       color = "black",
@@ -241,7 +232,7 @@ plot_c3_v_c4_diff <- function(summary_dat, filename) {
       legend.direction = "horizontal",
       legend.title = element_blank()
     ) +
-    scale_fill_manual(values = alpha(c("white", shortgrass_color), 0.3),
+    scale_fill_manual(values = c("white", shortgrass_color_pale),
                       labels = c("C3 Grasses", "C4 Grasses"))
   
   
