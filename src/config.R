@@ -5,6 +5,8 @@
 wd <-
   "/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/"
 data_dir <- paste(toString(wd), "data/", sep = "")
+figure_dir <- paste(toString(wd), "figures/", sep = "")
+write_dir <- paste(toString(wd), "output/", sep = "")
 
 # Ecoregion colors (will be reused to stay theme-consistent)
 shortgrass_color <- "#CC0000"
@@ -39,3 +41,18 @@ include_in_drt_trt <- c("chr")
 eri_grac_sites <- c("CHY", "SGS")
 eri_grac_years <- c(2017, 2016, 2015, 2014)
 eri_grac_grasses <- c("BOGR", "BUDA", "C4")
+
+# Genetic comparison
+# Very important not to mess around with these unless cross validation has been performed!!
+genetic_data <-
+  paste(toString(wd), "data/genetic/genind_all.R", sep = "")
+genetic_pops_to_use <- c("SGS", "Sevilleta", "Konza", "Cedar Point")
+DAPC_colors_bold <-
+  c(shortgrass_color, northern_color, "black", "darkgrey") # order of pops and colors will be matched
+DAPC_colors_pale <-
+  c(shortgrass_color_pale,
+    northern_color_pale,
+    "grey",
+    "lightgrey")
+XV_skip <- TRUE
+n_prin_comp <- 15
