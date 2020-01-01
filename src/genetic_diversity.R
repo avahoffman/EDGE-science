@@ -119,7 +119,8 @@ plot_dapc <- function(genind_final, filename) {
     ) +
     scale_fill_manual(
       name = "",
-      values = custom_colors_bold
+      values = custom_colors_bold,
+      labels = sorted_pops,
     ) +
     theme(legend.position = "top")
   
