@@ -18,17 +18,15 @@ load_and_clean_trait_data <- function() {
   biomass_dat <- read.csv("data/genetic/gracilis_traits.csv")
   # Calculate total biomass
   biomass_dat$total <-
-    biomass_dat$biomass_aboveground + 
-    biomass_dat$biomass_belowground + 
-    biomass_dat$biomass_rhizome + 
+    biomass_dat$biomass_aboveground +
+    biomass_dat$biomass_belowground +
+    biomass_dat$biomass_rhizome +
     biomass_dat$flwr_mass_lifetime
   # Summarize
-  summary_dat <- biomass_dat %>% group_by(pop,trt) %>%
-    summarise(
-      mean = mean(total),
-      se = sd(total) / sqrt(n())
-    )
-
+  summary_dat <- biomass_dat %>% group_by(pop, trt) %>%
+    summarise(mean = mean(total),
+              se = sd(total) / sqrt(n()))
+  
   return(summary_dat)
 }
 
@@ -51,7 +49,16 @@ plot_traits <- function(summary_dat, filename) {
     ) +
     
     # Connect points
-    stat_summary(aes(y = mean, x = trt, group = pop, color=pop), geom = "line", position = position_dodge(0.1)) +
+    stat_summary(
+      aes(
+        y = mean,
+        x = trt,
+        group = pop,
+        color = pop
+      ),
+      geom = "line",
+      position = position_dodge(0.1)
+    ) +
     
     # Draw points
     geom_point(
@@ -67,7 +74,7 @@ plot_traits <- function(summary_dat, filename) {
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
     ylab("B. gracilis Biomass (g)") +
-    xlab(NULL) + 
+    xlab(NULL) +
     
     # Adjust legend and colors
     theme(
@@ -76,15 +83,11 @@ plot_traits <- function(summary_dat, filename) {
       legend.title = element_blank()
     ) +
     scale_fill_manual(
-      values = c(northern_color_pale,shortgrass_color_pale),
+      values = c(northern_color_pale, shortgrass_color_pale),
       labels = c("SEV", "SGS")
     ) +
-    scale_color_manual(
-      values = c(northern_color_pale,shortgrass_color_pale)
-    ) +
-    scale_x_discrete(labels=c("Dry", "Wet"))
-  
-  
+    scale_color_manual(values = c(northern_color_pale, shortgrass_color_pale)) +
+    scale_x_discrete(labels = c("Dry", "Wet"))
   
   gg
   ggsave(file = filename,
@@ -94,5 +97,5 @@ plot_traits <- function(summary_dat, filename) {
 }
 
 
-plot_traits(load_and_clean_trait_data(), 
+plot_traits(load_and_clean_trait_data(),
             filename = "figures/gracilis_biomass.pdf")

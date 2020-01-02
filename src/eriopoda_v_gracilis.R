@@ -24,16 +24,16 @@ collect_sev_data <-
     raw_dat <- read.csv("SGS-CHY_TRT-ANPP_long.csv")
     
     # Filter out old years
-    dat <- raw_dat[(raw_dat$Year %in% eri_grac_years), ]
+    dat <- raw_dat[(raw_dat$Year %in% eri_grac_years),]
     
     # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
-    dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")), ]
+    dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")),]
     dat <- dat %>%
       mutate(Trt = as.character(Trt)) %>% mutate(Trt = replace(Trt, Trt == "chr" |
                                                                  Trt == "int", "drt"))
     
     # Collect only C4 grasses
-    c4_dat <- as_tibble(dat[(dat$category %in% eri_grac_grasses), ])
+    c4_dat <- as_tibble(dat[(dat$category %in% eri_grac_grasses),])
     
     # IF cumulative, sum across all years to get a more stable number
     if (sum_across_years) {
@@ -85,9 +85,9 @@ collect_sev_data <-
       
       # Subset based on species
       BUDA <-
-        compare_dat %>% filter(Site == "SGS") %>% filter(BUDA.x > 0) %>% select(-BOGR.x,-BOGR.y)
+        compare_dat %>% filter(Site == "SGS") %>% filter(BUDA.x > 0) %>% select(-BOGR.x, -BOGR.y)
       BOGR <-
-        compare_dat %>% filter(Site == "CHY") %>% filter(BOGR.x > 0) %>% select(-BUDA.x,-BUDA.y)
+        compare_dat %>% filter(Site == "CHY") %>% filter(BOGR.x > 0) %>% select(-BUDA.x, -BUDA.y)
       
       # Calculate the difference
       BOGR$diff <-

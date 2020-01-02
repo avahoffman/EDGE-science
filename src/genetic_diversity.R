@@ -36,7 +36,7 @@ load_and_clean_genind_data <- function() {
     tab(genind_1clone_only, NA.method = "mean")
   # Filter out only desired populations
   genind_final <-
-    genind_1clone_only[(pop(genind_1clone_only) %in% genetic_pops_to_use), ]
+    genind_1clone_only[(pop(genind_1clone_only) %in% genetic_pops_to_use),]
   return(genind_final)
 }
 
@@ -117,9 +117,11 @@ plot_dapc <- function(genind_final, filename) {
       alpha = 0.3,
       color = "black"
     ) +
-    scale_fill_manual(name = "",
-                      values = custom_colors_bold,
-                      labels = c("NB","KNZ","SEV", "SGS")) +
+    scale_fill_manual(
+      name = "",
+      values = custom_colors_bold,
+      labels = c("NB", "KNZ", "SEV", "SGS")
+    ) +
     theme(legend.position = "top")
   
   gg
@@ -192,7 +194,7 @@ plot_prob_assign <- function(genind_final, filename) {
     # Adjust legend and colors
     theme(legend.position = "none") +
     scale_fill_manual(values = custom_colors_pale) +
-    scale_x_discrete(labels=c("SGS", "SEV"))
+    scale_x_discrete(labels = c("SGS", "SEV"))
   
   gg
   ggsave(file = filename,
@@ -218,7 +220,7 @@ plot_genetic_structure <- function(genind_final, filename) {
   posts$id <- row.names(posts)
   # Make long format
   long_dat <- posts %>% gather(id_pop, prob, SGS:Sevilleta)
-  long_dat <- long_dat[order(tolower(long_dat$true_pop)), ]
+  long_dat <- long_dat[order(tolower(long_dat$true_pop)),]
   
   # write.csv(long.dat, "genomics_output/Structure_plot_data_total.csv")
   # write.csv(posts, "genomics_output/Structure_plot_data_total_wide.csv")
