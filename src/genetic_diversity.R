@@ -119,7 +119,7 @@ plot_dapc <- function(genind_final, filename) {
     ) +
     scale_fill_manual(name = "",
                       values = custom_colors_bold,
-                      labels = sorted_pops,) +
+                      labels = c("NB","KNZ","SEV", "SGS")) +
     theme(legend.position = "top")
   
   gg
@@ -191,7 +191,8 @@ plot_prob_assign <- function(genind_final, filename) {
     
     # Adjust legend and colors
     theme(legend.position = "none") +
-    scale_fill_manual(values = custom_colors_pale)
+    scale_fill_manual(values = custom_colors_pale) +
+    scale_x_discrete(labels=c("SGS", "SEV"))
   
   gg
   ggsave(file = filename,
@@ -269,9 +270,9 @@ combine_dapc_and_assign <-
       ggdraw(plot_dapc) +
       draw_plot(
         plot_prob + ylab("Probability of\nAssignment"),
-        x = 0.5,
-        y = 0.15,
-        height = 0.25,
+        x = 0.55,
+        y = 0.115,
+        height = 0.29,
         width = 0.4
       )
     
