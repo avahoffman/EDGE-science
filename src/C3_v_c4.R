@@ -14,7 +14,7 @@ library(ggplot2)
 
 
 collect_c3_c4_data <-
-  function(ambient_composition, sum_across_years = TRUE) {
+  function(sum_across_years = TRUE) {
     # Sum across years option decides whether each year is a data point for site (FALSE), plot
     # OR whether to add up all the years cumulatively first (TRUE)
     
@@ -67,7 +67,11 @@ collect_c3_c4_data <-
     full_dat$c4_pct <-
       100 * full_dat$c4_biomass / (full_dat$c3_biomass + full_dat$c4_biomass)
     
-    if (ambient_composition) {
+    return(full_dat)
+}
+ 
+
+summarize_ambient_data <- function(full_dat){   
       # Keep only control plots
       full_dat <- full_dat %>% filter(Trt == "con")
       
@@ -92,9 +96,11 @@ collect_c3_c4_data <-
       
       setwd(wd)
       return(summary_dat)
-    }
-    else{
-      # Ambient
+}
+
+      
+summarize_difference_data <- function(full_dat){
+      # Ambient first
       full_dat_amb <- full_dat %>% filter(Trt == "con")
       # Take the mean of drt treatments (including chr and int)
       full_dat_drt <- full_dat %>% group_by(Site, Block, Trt) %>%
@@ -132,8 +138,7 @@ collect_c3_c4_data <-
       
       setwd(wd)
       return(summary_dat)
-    }
-  }
+}
 
 
 plot_c3_v_c4 <- function(summary_dat, filename) {
@@ -183,8 +188,7 @@ plot_c3_v_c4 <- function(summary_dat, filename) {
       values = c("white", shortgrass_color_pale),
       labels = c("C3 Grasses", "C4 Grasses")
     )
-  
-  
+
   gg
   ggsave(file = filename,
          height = 5,
@@ -239,9 +243,7 @@ plot_c3_v_c4_diff <- function(summary_dat, filename) {
       values = c("white", shortgrass_color_pale),
       labels = c("C3 Grasses", "C4 Grasses")
     )
-  
-  
-  
+
   gg
   ggsave(file = filename,
          height = 5,
@@ -249,9 +251,7 @@ plot_c3_v_c4_diff <- function(summary_dat, filename) {
   return(gg)
 }
 
-plot_c3_v_c4(collect_c3_c4_data(ambient_composition = TRUE,
-                                sum_across_years = TRUE),
+plot_c3_v_c4(summarize_ambient_data(collect_c3_c4_data(sum_across_years = TRUE)),
              filename = "figures/c3_v_c4.pdf")
-plot_c3_v_c4_diff(collect_c3_c4_data(ambient_composition = FALSE,
-                                     sum_across_years = TRUE),
+plot_c3_v_c4_diff(summarize_difference_data(collect_c3_c4_data(sum_across_years = TRUE)),
                   filename = "figures/c3_v_c4_diff_chr.pdf")
