@@ -75,6 +75,13 @@ summarize_ambient_data <- function(full_dat){
       # Keep only control plots
       full_dat <- full_dat %>% filter(Trt == "con")
       
+      # Perform T.test
+      chy <- full_dat %>% filter(Site == "CHY") %>% pull(c3_pct)
+      sgs <- full_dat %>% filter(Site == "SGS") %>% pull(c3_pct)
+      var.test(chy, sgs) # Variance is similar 
+      print("T test of true difference in c3 percent (CHY vs SGS) is not equal to 0")
+      print(t.test(chy, sgs, var.equal = TRUE, alternative = "two.sided"))
+      
       # Summarize by site
       summary_dat <- full_dat %>% group_by(Site) %>%
         summarise(

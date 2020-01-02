@@ -23,7 +23,7 @@ fill_region <- function(name, dataframe) {
 
 generate_shapefile_data <- function() {
   sf_shortgrass <-
-    fill_region(shortgrass_name, fortify(readOGR(shapefile_dir, "shortgrass_mtn")))
+    fill_region(shortgrass_name, fortify(readOGR(shapefile_dir, "shortgrass_prairie")))
   # sf_shortgrass <- sf_shortgrass[sf_shortgrass$long > -107,] # Don't take too much of the Rockies
   
   sf_northern <-
@@ -133,7 +133,7 @@ plot_site_map_with_ecoregions <- function(sf_data) {
   ggsave(file = "figures/site_map_with_ecoregions.pdf",
          height = 6,
          width = 4)
-  
+  return(gg)
 }
 
 plot_site_map_with_ecoregions(generate_shapefile_data())
