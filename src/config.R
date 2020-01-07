@@ -8,11 +8,11 @@ data_dir <- paste(toString(wd), "data/", sep = "")
 figure_dir <- paste(toString(wd), "figures/", sep = "")
 write_dir <- paste(toString(wd), "output/", sep = "")
 
-# Ecoregion colors (will be reused to stay theme-consistent)
+# Ecoregion colors bold (will be reused to stay theme-consistent)
 shortgrass_color <- "#CC0000"
 northern_color <- "#0000CC"
 desert_color <- "#CC9900"
-# When you don't want to use alpha (no transparency)
+# Ecoregion colors pale
 shortgrass_color_pale <- "#F5D6D6"
 northern_color_pale <- "#D4E0F7"
 desert_color_pale <- "#FFE6CC"
@@ -28,7 +28,7 @@ shapefile_dir <- paste(toString(wd), "data/shapefiles/", sep = "")
 shortgrass_name <- "Shortgrass Steppe"
 northern_name <- "Northern Mixed Grass"
 desert_name <- "Desert Grassland"
-climate_colors <- c(desert_color, northern_color, shortgrass_color)
+climate_colors <- c(desert_color_pale, northern_color_pale, shortgrass_color_pale)
 
 # C4 vs C3 grass coverage
 c4_c3_sites <- c("CHY", "SGS")
