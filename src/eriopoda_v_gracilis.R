@@ -161,11 +161,14 @@ plot_spp_sev <- function(summary_dat, filename) {
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(
       limits = c(0, 105),
-      breaks = c(0.25, 20, 40, 60, 80, 100),
+      breaks = c(0, 20, 40, 60, 80, 100),
       expand = c(0, 0),
       labels = c(0, 20, 40, 60, 80, 100),
       sec.axis = dup_axis(labels = NULL, name = "")
     ) +
+    theme(axis.ticks.y = element_line(
+      color = c("transparent", "black", "black", "black", "black", "black")
+    )) +
     
     ylab("Percent of Grass ANPP") +
     xlab(NULL) +

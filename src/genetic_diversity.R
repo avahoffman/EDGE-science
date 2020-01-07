@@ -181,11 +181,14 @@ plot_prob_assign <- function(genind_final, filename) {
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(
       limits = c(0, 1.05),
-      breaks = c(0.0025, .20, .40, .60, .80, 1.00),
+      breaks = c(0.0, 0.5, 1.00),
       expand = c(0, 0),
-      labels = c(0, .20, .40, .60, .80, "1.0"),
+      labels = c(0, 0.5, "1.0"),
       sec.axis = dup_axis(labels = NULL, name = "")
     ) +
+    theme(axis.ticks.y = element_line(
+      color = c("transparent", "black", "black")
+    )) +
     
     ylab("Probability of Assignment") +
     xlab(NULL) +
@@ -241,12 +244,15 @@ plot_genetic_structure <- function(genind_final, filename) {
     labs(fill = "Population") + xlab("Individual") + ylab("Probability of Assignment") +
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(
-      limits = c(0, 1.00001),
-      breaks = c(0, .20, .40, .60, .80, 1.00),
+      limits = c(0, 1.0000),
+      breaks = c(0, .5, 1.00),
       expand = c(0, 0),
-      labels = c(0, .20, .40, .60, .80, "1.0"),
+      labels = c(0, 0.5, "1.0"),
       sec.axis = dup_axis(labels = NULL, name = "")
     ) +
+    theme(axis.ticks.y = element_line(
+      color = c("transparent", "black", "transparent")
+    )) +
     scale_x_discrete(expand = c(-1.05, 0)) +
     theme(
       legend.position = "top",
