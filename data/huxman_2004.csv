@@ -1,0 +1,15 @@
+﻿site,name,location,n,map,map_sddev,anpp,anpp_sddev,intercept,intercept_sddev,slope,slope_sddev,r_square,sig
+RCR,Rock Valley (RCR),"Nevada, USA",17,105.5,57.7,28.1,34.3,-26.1,9.19,0.513,0.077,0.75,**
+PSA,Patagonia Steppe (PSA),Argentina,8,162.4,56.7,59.5,9.3,53.4,11.1,0.038,0.065,0.05,ns
+SEV,Sevilleta LTER (SEV),"New Mexico, USA",10,269.1,69.9,184.5,46.4,60.9,46.9,0.459,0.169,0.48,**
+BNZ,Bonanza Creek LTER (BNZ),"Alaska, USA",8,342.9,54.1,299.9,44.4,174.9,104.1,0.365,0.3,0.2,ns
+SGS,Shortgrass Steppe LTER (SGS),"Colorado, USA",16,358.5,71.5,116.5,39.7,32.5,49.1,0.234,0.134,0.18,ns
+JRN,Jornada LTER (JRN),"New Mexico, USA",9,263,97.8,229.1,64,141.9,59.4,0.332,0.213,0.26,ns
+CDR,Cedar Creek LTER (CDR),"Minnesota, USA",17,826.2,195.1,277.3,91.9,274.1,103.1,0.004,0.122,0,ns
+KNZ,Konza Prairie LTER (KNZ),"Kansas, USA",23,833.6,202.2,442.6,107.4,181,80.2,0.313,0.093,0.35,**
+KBS,Kellogg LTER (KBS),"Michigan, USA",10,865.6,119.5,431,106.1,268.9,267.7,0.187,0.307,0.04,ns
+JSP,Jasper Ridge (JSP),"California, USA",NA,922.3,267.7,487.6,78.3,465.5,124.1,0.034,0.13,0.01,ns
+HFR,Harvard Forest (HFR),"Massachusetts, USA",8,1195.9,125.2,744.5,47.8,727.9,187.3,0.014,0.156,0,ns
+HBR,Hubbard Brook LTER (HBR),"New Hampshire, USA",10,1412.7,227.8,704.5,24.5,640.4,49.2,0.045,0.034,0.18,ns
+AND,Andrews Forest LTER (AND),"Oregon, USA",17,2130.6,375.6,612.8,72.9,426.6,96.8,0.087,0.045,0.2,ns
+BCI,Barro Colorado Island (BCI),Republic of Panama,8,2542.8,280.8,1008.1,106.8,1398.1,363,-0.153,0.142,0.16,ns
