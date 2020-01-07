@@ -12,6 +12,7 @@ library(cowplot)
 library(ggthemes) # theme_map and tableau colors
 library(maps)
 library(rgdal)
+library(dplyr)
 
 ###########################################################################################
 
@@ -23,21 +24,33 @@ fill_region <- function(name, dataframe) {
 
 generate_shapefile_data <- function() {
   sf_shortgrass <-
-    fill_region(shortgrass_name, fortify(readOGR(shapefile_dir, "shortgrass_prairie")))
-  # sf_shortgrass <- sf_shortgrass[sf_shortgrass$long > -107,] # Don't take too much of the Rockies
+    fill_region(shortgrass_name, fortify(readOGR(shapefile_dir, "shortgrass_prairie"))) %>% 
+    filter(lat <= 41 | long >= -102)
   
+  sf_shortgrass_chunk <-
+    fill_region(shortgrass_name, fortify(readOGR(shapefile_dir, "shortgrass_prairie"))) %>% 
+    filter(lat >= 41 & long <= -102) %>%  mutate(region =replace(region, 
+                                                                 region == "Shortgrass Steppe", 
+                                                                 "Northern Mixed Grass"))
   sf_northern <-
     fill_region(northern_name, fortify(readOGR(shapefile_dir, "northern_steppe")))
   sf_northern <-
     sf_northern[sf_northern$hole == FALSE,] # Allows Black Hills to be included
+
+  sf_desert_chunk <-
+    fill_region(shortgrass_name, fortify(readOGR(shapefile_dir, "nm_mtns"))) %>% 
+    filter(lat <= 35 & long >= -107.5)
   
   sf_desert <-
     fill_region(desert_name, fortify(readOGR(shapefile_dir, "chihuahuan_desert")))
+  
   usa_map <- map_data("state")
   
   sf_data <- list(
     "sf_shortgrass" = sf_shortgrass,
+    "sf_shortgrass_chunk" = sf_shortgrass_chunk,
     "sf_northern" = sf_northern,
+    "sf_desert_chunk" = sf_desert_chunk,
     "sf_desert" = sf_desert,
     "usa_map" = usa_map
   )
@@ -47,6 +60,57 @@ generate_shapefile_data <- function() {
 plot_site_map_with_ecoregions <- function(sf_data) {
   gg <- ggplot() +
     
+    # Add shapefile polygons for different ecoregions, using different data
+    geom_polygon(
+      data = sf_data$sf_shortgrass,
+      aes(
+        x = long,
+        y = lat,
+        group = group,
+        fill = region
+      ),
+    ) +
+    
+    geom_polygon(
+      data = sf_data$sf_shortgrass_chunk,
+      aes(
+        x = long,
+        y = lat,
+        group = group,
+        fill = region
+      ),
+    ) +
+    
+    geom_polygon(
+      data = sf_data$sf_northern,
+      aes(
+        x = long,
+        y = lat,
+        group = group,
+        fill = region
+      ),
+    ) +
+    
+    geom_polygon(
+      data = sf_data$sf_desert_chunk,
+      aes(
+        x = long,
+        y = lat,
+        group = group,
+        fill = region
+      )
+    ) +
+    
+    geom_polygon(
+      data = sf_data$sf_desert,
+      aes(
+        x = long,
+        y = lat,
+        group = group,
+        fill = region
+      )
+    ) +
+  
     # Add base map on which to plot
     geom_map(
       data = sf_data$usa_map,
@@ -66,40 +130,6 @@ plot_site_map_with_ecoregions <- function(sf_data) {
     
     theme_map() + # Remove axes
     coord_map(xlim = c(-110, -95), ylim = c(27, 45)) + # Crop map
-    
-    # Add shapefile polygons for different ecoregions, using different data
-    geom_polygon(
-      data = sf_data$sf_shortgrass,
-      aes(
-        x = long,
-        y = lat,
-        group = group,
-        fill = region
-      ),
-      alpha = 0.3
-    ) +
-    
-    geom_polygon(
-      data = sf_data$sf_northern,
-      aes(
-        x = long,
-        y = lat,
-        group = group,
-        fill = region
-      ),
-      alpha = 0.3
-    ) +
-    
-    geom_polygon(
-      data = sf_data$sf_desert,
-      aes(
-        x = long,
-        y = lat,
-        group = group,
-        fill = region
-      ),
-      alpha = 0.3
-    ) +
     
     # Add points
     geom_point(aes(x = -104.8, y = 40.9), size = 1.5, color = SGS_color) + ## SGS
