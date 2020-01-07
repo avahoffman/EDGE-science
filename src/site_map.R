@@ -137,10 +137,10 @@ plot_site_map_with_ecoregions <- function(sf_data) {
     geom_point(aes(x = -106.7, y = 34.1), size = 1.5, color = SEV_Black_color) +  ## Sev Black
     
     # Add labels
-    geom_text(aes(x = -104.8, y = 40.3), label = "SGS", size=4) + ## SGS
-    geom_text(aes(x = -104.8, y = 41.8), label = "CHY", size=4) + ## CHY
-    geom_text(aes(x = -105.4, y = 34.5), label = "SEV Blue", size=4) + ## Sev
-    geom_text(aes(x = -107.6, y = 33.5), label = "SEV Black", size=4) + ## Sev
+    geom_text(aes(x = -104.8, y = 40.3), label = "SGS", size=3) + ## SGS
+    geom_text(aes(x = -104.8, y = 41.7), label = "CHY", size=3) + ## CHY
+    geom_text(aes(x = -105.35, y = 34.75), label = "SEV Blue", size=3) + ## Sev
+    geom_text(aes(x = -107.55, y = 33.55), label = "SEV Black", size=3) + ## Sev
     geom_text(aes(x = -105, y = 30), label = desert_name, color = desert_color) + ## Desert grassland label
     geom_text(aes(x = -102.5, y = 38), label = shortgrass_name, color = shortgrass_color) + ## Shortgrass label
     geom_text(aes(x = -103, y = 44), label = northern_name, color = northern_color) + ## Northern grassland label
