@@ -114,12 +114,11 @@ plot_dapc <- function(genind_final, filename) {
       aes(fill = ordered_pop),
       shape = 21,
       size = 2.5,
-      alpha = 0.3,
-      color = "black"
+      color = "grey"
     ) +
     scale_fill_manual(
       name = "",
-      values = custom_colors_bold,
+      values = custom_colors_pale,
       labels = c("NB", "KNZ", "SEV", "SGS")
     ) +
     theme(legend.position = "top")

@@ -116,8 +116,7 @@ plot_site_map_with_ecoregions <- function(sf_data) {
       data = sf_data$usa_map,
       map = sf_data$usa_map,
       aes(x = long, y = lat, map_id = region),
-      fill = "black",
-      alpha = 0.05
+      fill = NA
     ) + #add size command to make country lines visible
     
     geom_map(
@@ -125,7 +124,7 @@ plot_site_map_with_ecoregions <- function(sf_data) {
       map = sf_data$usa_map,
       aes(x = long, y = lat, map_id = region),
       fill = NA,
-      colour = "grey"
+      colour = "grey" # State outlines
     ) +
     
     theme_map() + # Remove axes
