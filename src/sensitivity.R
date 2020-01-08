@@ -8,17 +8,49 @@ setwd(wd)
 ###########################################################################################
 ## load libraries
 library(ggplot2)
+library(dplyr)
 
 ###########################################################################################
 
 get_huxman_2004_data <- function() {
   setwd(data_dir)
   huxman_dat <- read.csv("huxman_2004.csv")
+  
   return(huxman_dat)
 }
 
 
-make_sensitivity_plot <- function(huxman_dat) {
+get_slope <- function(df, sitename) {
+  est <- summary(glm(
+    formula = anpp_gm.2 ~ precip_mm,
+    data = df %>% filter(site == sitename)
+  ))$coefficients[2]
+  return(est)
+}
+
+
+get_edge_data <- function(){
+  setwd(data_dir)
+  edge_dat <- drop_na( read.csv("precip.csv") )#%>% filter(trt == "hist")
+  
+  # Gather slopes
+  CHY_est <- get_slope(edge_dat, "CHY")
+  SBK_est <- get_slope(edge_dat, "SBK")
+  SBL_est <- get_slope(edge_dat, "SBL")
+  SGS_est <- get_slope(edge_dat, "SGS")
+  slopes <- c(CHY_est, SBK_est, SBL_est, SGS_est)
+  
+  # Get average precip
+  precip <- edge_dat %>% group_by(site) %>% summarise(MAP = mean(precip_mm))
+  
+  # datapoints
+  edge_dat <- cbind(precip, slopes)
+  setwd(wd)
+  return(edge_dat)
+}
+
+
+make_sensitivity_plot <- function(huxman_dat, edge_dat, filename) {
   gg <- ggplot() +
     
     # Add panel for arid sites
@@ -75,8 +107,27 @@ make_sensitivity_plot <- function(huxman_dat) {
       formula = y ~ log(x),
       se = FALSE,
       color = "black"
-    )
+    ) +
+    
+    # Add site points
+    geom_point(data = edge_dat %>% filter(site == "SGS"),
+               aes(x = MAP, y = slopes), size = 2, color = SGS_color) + ## SGS
+    geom_point(data = edge_dat %>% filter(site == "SBL"),
+               aes(x = MAP, y = slopes), size = 2, color = SEV_Blue_color) + ## SBL
+    geom_point(data = edge_dat %>% filter(site == "SBK"),
+               aes(x = MAP, y = slopes), size = 2, color = SEV_Black_color) + ## SBK
+    geom_point(data = edge_dat %>% filter(site == "CHY"),
+               aes(x = MAP, y = slopes), size = 2, color = CHY_color) ## CHY
   
   
   gg
+  ggsave(file = filename,
+         height = 3,
+         width = 4)
+  return(gg)
 }
+
+
+make_sensitivity_plot(get_huxman_2004_data(),
+                      get_edge_data(),
+                      filename = "figures/sensitivity.pdf")
