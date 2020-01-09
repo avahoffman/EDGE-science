@@ -1,8 +1,9 @@
 ###########################################################################################
 ## set working directory
-setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/src/")
-source("config.R")
-source("utils.R")
+setwd("/Users/hoffman ava/EDGE-science/")
+#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+source("src/config.R")
+source("src/utils.R")
 setwd(wd)
 
 ###########################################################################################
@@ -31,7 +32,7 @@ load_and_clean_trait_data <- function() {
 }
 
 
-plot_traits <- function(summary_dat, filename) {
+plot_traits <- function(summary_dat, filename = NA) {
   gg <- ggplot(data = summary_dat) +
     
     # Add standard error first
@@ -90,12 +91,10 @@ plot_traits <- function(summary_dat, filename) {
     scale_x_discrete(labels = c("Dry", "Wet"))
   
   gg
-  ggsave(file = filename,
-         height = 5,
-         width = 3.5)
+  if (!(is.na(filename))) {
+    ggsave(file = filename,
+           height = 5,
+           width = 3.5)
+  }
   return(gg)
 }
-
-
-plot_traits(load_and_clean_trait_data(),
-            filename = "figures/gracilis_biomass.pdf")

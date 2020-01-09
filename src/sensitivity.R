@@ -1,8 +1,9 @@
 ###########################################################################################
 ## set working directory
-setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/src/")
-source("config.R")
-source("utils.R")
+setwd("/Users/hoffman ava/EDGE-science/")
+#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+source("src/config.R")
+source("src/utils.R")
 setwd(wd)
 
 ###########################################################################################
@@ -50,7 +51,7 @@ get_edge_data <- function(){
 }
 
 
-make_sensitivity_plot <- function(huxman_dat, edge_dat, filename) {
+make_sensitivity_plot <- function(huxman_dat, edge_dat, filename = NA) {
   gg <- ggplot() +
     
     # Add panel for arid sites
@@ -121,13 +122,10 @@ make_sensitivity_plot <- function(huxman_dat, edge_dat, filename) {
   
   
   gg
-  ggsave(file = filename,
-         height = 3,
-         width = 4)
+  if (!(is.na(filename))) {
+    ggsave(file = filename,
+           height = 3,
+           width = 4)
+  }
   return(gg)
 }
-
-
-make_sensitivity_plot(get_huxman_2004_data(),
-                      get_edge_data(),
-                      filename = "figures/sensitivity.pdf")

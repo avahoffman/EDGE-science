@@ -1,8 +1,9 @@
 ###########################################################################################
 ## set working directory
-setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/src/")
-source("config.R")
-source("utils.R")
+setwd("/Users/hoffman ava/EDGE-science/")
+#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+source("src/config.R")
+source("src/utils.R")
 setwd(wd)
 
 ###########################################################################################
@@ -73,7 +74,7 @@ perform_cross_validation_DAPC <- function(genind_final, XV_skip) {
 }
 
 
-plot_dapc <- function(genind_final, filename) {
+plot_dapc <- function(genind_final, filename = NA) {
   # Make the data frame
   # Group is population
   grp <- pop(genind_final)
@@ -113,7 +114,7 @@ plot_dapc <- function(genind_final, filename) {
     geom_point(
       aes(fill = ordered_pop),
       shape = 21,
-      size = 2.5,
+      size = 2,
       color = "grey"
     ) +
     scale_fill_manual(
@@ -124,14 +125,16 @@ plot_dapc <- function(genind_final, filename) {
     theme(legend.position = "top")
   
   gg
-  ggsave(file = filename,
-         height = 3,
-         width = 4)
+  if (!(is.na(filename))) {
+    ggsave(file = filename,
+           height = 3,
+           width = 4)
+  }
   return(gg)
 }
 
 
-plot_prob_assign <- function(genind_final, filename) {
+plot_prob_assign <- function(genind_final, filename = NA) {
   # Make the data frame
   # Group is population
   grp <- pop(genind_final)
@@ -194,19 +197,25 @@ plot_prob_assign <- function(genind_final, filename) {
     xlab(NULL) +
     
     # Adjust legend and colors
-    theme(legend.position = "none") +
-    scale_fill_manual(values = custom_colors_pale) +
+    scale_fill_manual(
+      name = "",
+      values = custom_colors_pale,
+      labels = c("NB", "KNZ", "SEV", "SGS")
+    ) +
+    theme(legend.position = "top") +
     scale_x_discrete(labels = c("SGS", "SEV"))
   
   gg
-  ggsave(file = filename,
-         height = 2.5,
-         width = 3.5)
+  if (!(is.na(filename))) {
+    ggsave(file = filename,
+           height = 2.5,
+           width = 3.5)
+  }
   return(gg)
 }
 
 
-plot_genetic_structure <- function(genind_final, filename) {
+plot_genetic_structure <- function(genind_final, filename = NA) {
   # TODO: CLEANUP, NEEDS WORK
   # Make the data frame
   # Group is population
@@ -262,16 +271,18 @@ plot_genetic_structure <- function(genind_final, filename) {
     )
   
   gg
-  ggsave(file = filename,
-         height = 2,
-         width = 3)
+  if (!(is.na(filename))) {
+    ggsave(file = filename,
+           height = 2,
+           width = 3)
+  }
   return(gg)
 }
 
 
 
 combine_dapc_and_assign <-
-  function(plot_dapc, plot_prob, filename) {
+  function(plot_dapc, plot_prob, filename = NA) {
     # Make an inset for prob of assignment
     plot_with_inset <-
       ggdraw(plot_dapc) +
@@ -284,17 +295,10 @@ combine_dapc_and_assign <-
       )
     
     plot_with_inset
-    ggsave(file = filename,
-           height = 4,
-           width = 5)
+    if (!(is.na(filename))) {
+      ggsave(file = filename,
+             height = 4,
+             width = 5)
+    }
     return(plot_with_inset)
   }
-
-perform_cross_validation_DAPC(load_and_clean_genind_data(), XV_skip = TRUE)
-combine_dapc_and_assign(
-  plot_dapc(load_and_clean_genind_data(),
-            filename = "figures/genetic_dapc.pdf"),
-  plot_prob_assign(load_and_clean_genind_data(),
-                   filename = "figures/genetic_prob_assign.pdf"),
-  "figures/genetic_dapc_assign_inset.pdf"
-)

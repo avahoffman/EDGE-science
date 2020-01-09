@@ -1,7 +1,8 @@
 ###########################################################################################
 ## set working directory
-setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/src/")
-source("config.R")
+setwd("/Users/hoffman ava/EDGE-science/")
+#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+source("src/config.R")
 setwd(wd)
 
 ###########################################################################################
@@ -57,7 +58,7 @@ generate_shapefile_data <- function() {
   return(sf_data)
 }
 
-plot_site_map_with_ecoregions <- function(sf_data) {
+plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
   gg <- ggplot() +
     
     # Add shapefile polygons for different ecoregions, using different data
@@ -117,8 +118,9 @@ plot_site_map_with_ecoregions <- function(sf_data) {
       map = sf_data$usa_map,
       aes(x = long, y = lat, map_id = region),
       fill = NA
-    ) + #add size command to make country lines visible
+    ) + 
     
+    #add size command to make country lines visible
     geom_map(
       data = sf_data$usa_map,
       map = sf_data$usa_map,
@@ -127,8 +129,10 @@ plot_site_map_with_ecoregions <- function(sf_data) {
       colour = "grey" # State outlines
     ) +
     
-    theme_map() + # Remove axes
-    coord_map(xlim = c(-110, -95), ylim = c(27, 45)) + # Crop map
+    # Remove axes
+    theme_map() +
+    # Crop to smaller area 
+    coord_map(xlim = c(-112, -95), ylim = c(29, 45)) +
     
     # Add points
     geom_point(aes(x = -104.77, y = 40.82), size = 1.5, color = SGS_color) + ## SGS
@@ -159,10 +163,10 @@ plot_site_map_with_ecoregions <- function(sf_data) {
     scale_fill_manual(values = climate_colors)
   
   gg
-  ggsave(file = "figures/site_map_with_ecoregions.pdf",
-         height = 5,
-         width = 3)
+  if (!(is.na(filename))) {
+    ggsave(file = filename,
+           height = 5,
+           width = 3)
+  }
   return(gg)
 }
-
-plot_site_map_with_ecoregions(generate_shapefile_data())

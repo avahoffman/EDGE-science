@@ -1,4 +1,9 @@
 ## Utility functions for EDGE project
+###########################################################################################
+library(cowplot)
+
+###########################################################################################
+
 
 theme_sigmaplot <- function(xticks = TRUE) {
   # This function adds Sigma-plot like theme elements to a ggplot object.

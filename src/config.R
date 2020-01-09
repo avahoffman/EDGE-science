@@ -3,7 +3,8 @@
 ## General
 # Set working directory for the repository (should be the git repo)
 wd <-
-  "/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/"
+  "/Users/hoffman ava/EDGE-science/"
+#"/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/"
 data_dir <- paste(toString(wd), "data/", sep = "")
 figure_dir <- paste(toString(wd), "figures/", sep = "")
 write_dir <- paste(toString(wd), "output/", sep = "")
@@ -28,7 +29,10 @@ shapefile_dir <- paste(toString(wd), "data/shapefiles/", sep = "")
 shortgrass_name <- "Shortgrass Steppe"
 northern_name <- "Northern Mixed Grass"
 desert_name <- "Desert Grassland"
-climate_colors <- c(desert_color_pale, northern_color_pale, shortgrass_color_pale)
+climate_colors <-
+  c(desert_color_pale,
+    northern_color_pale,
+    shortgrass_color_pale)
 
 # C4 vs C3 grass coverage
 c4_c3_sites <- c("CHY", "SGS")

@@ -1,8 +1,9 @@
 ###########################################################################################
 ## set working directory
-setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/src/")
-source("config.R")
-source("utils.R")
+setwd("/Users/hoffman ava/EDGE-science/")
+#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+source("src/config.R")
+source("src/utils.R")
 setwd(wd)
 
 ###########################################################################################
@@ -24,16 +25,16 @@ collect_sev_data <-
     raw_dat <- read.csv("SGS-CHY_TRT-ANPP_long.csv")
     
     # Filter out old years
-    dat <- raw_dat[(raw_dat$Year %in% eri_grac_years),]
+    dat <- raw_dat[(raw_dat$Year %in% eri_grac_years), ]
     
     # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
-    dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")),]
+    dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")), ]
     dat <- dat %>%
       mutate(Trt = as.character(Trt)) %>% mutate(Trt = replace(Trt, Trt == "chr" |
                                                                  Trt == "int", "drt"))
     
     # Collect only C4 grasses
-    c4_dat <- as_tibble(dat[(dat$category %in% eri_grac_grasses),])
+    c4_dat <- as_tibble(dat[(dat$category %in% eri_grac_grasses), ])
     
     # IF cumulative, sum across all years to get a more stable number
     if (sum_across_years) {
@@ -85,9 +86,9 @@ collect_sev_data <-
       
       # Subset based on species
       BUDA <-
-        compare_dat %>% filter(Site == "SGS") %>% filter(BUDA.x > 0) %>% select(-BOGR.x, -BOGR.y)
+        compare_dat %>% filter(Site == "SGS") %>% filter(BUDA.x > 0) %>% select(-BOGR.x,-BOGR.y)
       BOGR <-
-        compare_dat %>% filter(Site == "CHY") %>% filter(BOGR.x > 0) %>% select(-BUDA.x, -BUDA.y)
+        compare_dat %>% filter(Site == "CHY") %>% filter(BOGR.x > 0) %>% select(-BUDA.x,-BUDA.y)
       
       # Calculate the difference
       BOGR$diff <-
@@ -120,7 +121,7 @@ collect_sev_data <-
   }
 
 
-plot_spp_sev <- function(summary_dat, filename) {
+plot_spp_sev <- function(summary_dat, filename = NA) {
   gg <- ggplot(data = summary_dat) +
     
     # Draw bars
@@ -185,14 +186,16 @@ plot_spp_sev <- function(summary_dat, filename) {
     )
   
   gg
-  ggsave(file = filename,
-         height = 5,
-         width = 3.5)
+  if (!(is.na(filename))) {
+    ggsave(file = filename,
+           height = 5,
+           width = 3.5)
+  }
   return(gg)
 }
 
 
-plot_sev_diff <- function(summary_dat, filename) {
+plot_sev_diff <- function(summary_dat, filename = NA) {
   gg <- ggplot(data = summary_dat) +
     
     # Add zero line
@@ -242,15 +245,10 @@ plot_sev_diff <- function(summary_dat, filename) {
   
   
   gg
-  ggsave(file = filename,
-         height = 5,
-         width = 3.5)
+  if (!(is.na(filename))) {
+    ggsave(file = filename,
+           height = 5,
+           width = 3.5)
+  }
   return(gg)
 }
-
-plot_spp_sev(collect_sev_data(ambient_composition = TRUE,
-                              sum_across_years = TRUE),
-             filename = "figures/eriopoda_v_gracilis_DRAFT.pdf")
-plot_sev_diff(collect_sev_data(ambient_composition = FALSE,
-                               sum_across_years = TRUE),
-              filename = "figures/eriopoda_v_gracilis_diff_chr_DRAFT.pdf")
