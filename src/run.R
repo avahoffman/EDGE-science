@@ -46,7 +46,7 @@ plot_grid(
   )),
   plot_c3_v_c4_diff(summarize_difference_data(
     collect_c3_c4_data(sum_across_years = TRUE)
-  )),
+  ))
 )
 ggsave(file = "figures/c3_v_c4.pdf",
        height = 3,
@@ -64,7 +64,7 @@ plot_grid(
   plot_sev_diff(
     collect_sev_data(ambient_composition = FALSE,
                      sum_across_years = TRUE)
-  ),
+  )
 )
 ggsave(file = "figures/eriopoda_v_gracilis_DRAFT.pdf",
        height = 3,
