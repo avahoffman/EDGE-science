@@ -1,14 +1,13 @@
 ###########################################################################################
-## set working directory
-setwd("/Users/hoffman ava/EDGE-science/")
-#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+# Set working directory
+setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
 source("src/config.R")
 source("src/utils.R")
 setwd(wd)
 
 ###########################################################################################
-## load libraries
-library(adegenet) ## deal with genind objects
+# Load libraries
+library(adegenet) # deal with genind objects
 library(ade4)
 library(ggplot2)
 library(cowplot)

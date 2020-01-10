@@ -1,12 +1,11 @@
 ###########################################################################################
-## set working directory
-setwd("/Users/hoffman ava/EDGE-science/")
-#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+# Set working directory
+setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
 source("src/config.R")
 setwd(wd)
 
 ###########################################################################################
-## load libraries
+# Load libraries
 library(ggplot2)  # FYI you need v2.0
 library(mapproj)
 library(cowplot)

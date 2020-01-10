@@ -1,13 +1,12 @@
 ###########################################################################################
-## set working directory
-setwd("/Users/hoffman ava/EDGE-science/")
-#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+# Set working directory
+setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
 source("src/config.R")
 source("src/utils.R")
 setwd(wd)
 
 ###########################################################################################
-## load libraries
+# Load libraries
 library(ggplot2)
 library(dplyr)
 
@@ -22,6 +21,7 @@ get_huxman_2004_data <- function() {
 
 
 get_slope <- function(df, sitename) {
+  # Calculate the slope of the production / precip relationship
   est <- summary(glm(
     formula = anpp_gm.2 ~ precip_mm,
     data = df %>% filter(site == sitename)
@@ -32,16 +32,18 @@ get_slope <- function(df, sitename) {
 
 get_edge_data <- function(){
   setwd(data_dir)
-  edge_dat <- drop_na( read.csv("precip.csv") )#%>% filter(trt == "hist")
+  edge_dat <- drop_na( read.csv("precip.csv") )
   
   # Gather slopes
   CHY_est <- get_slope(edge_dat, "CHY")
   SBK_est <- get_slope(edge_dat, "SBK")
   SBL_est <- get_slope(edge_dat, "SBL")
   SGS_est <- get_slope(edge_dat, "SGS")
+  
+  # Concatenate slopes
   slopes <- c(CHY_est, SBK_est, SBL_est, SGS_est)
   
-  # Get average precip
+  # Get average precip for plotting edge dots
   precip <- edge_dat %>% group_by(site) %>% summarise(MAP = mean(precip_mm))
   
   # datapoints
