@@ -1,15 +1,10 @@
-###########################################################################################
-# Set working directory
-setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
-source("src/config.R")
-setwd(wd)
-
+# 
 ###########################################################################################
 # Load libraries
-library(ggplot2)  # FYI you need v2.0
+library(ggplot2)  # REQUIRES: v2.0
 library(mapproj)
 library(cowplot)
-library(ggthemes) # theme_map and tableau colors
+library(ggthemes) # theme_map
 library(maps)
 library(rgdal)
 library(dplyr)

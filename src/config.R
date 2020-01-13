@@ -1,4 +1,5 @@
-## Config file for EDGE project
+# Config file for EDGE project
+###########################################################################################
 
 ## General
 # Set working directory for the repository (should be the git repo)

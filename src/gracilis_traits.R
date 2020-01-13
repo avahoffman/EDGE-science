@@ -1,10 +1,5 @@
-###########################################################################################
-# Set working directory
-setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
-source("src/config.R")
-source("src/utils.R")
-setwd(wd)
-
+# This script analyzes and plots Bouteloua gracilis traits from both SGS and Sevilleta 
+# sites.
 ###########################################################################################
 # Load libraries
 library(ggplot2)
@@ -16,13 +11,13 @@ library(dplyr)
 load_and_clean_trait_data <- function() {
   # Load data
   biomass_dat <- read.csv("data/genetic/gracilis_traits.csv")
-  # Calculate total biomass
+  # Calculate total biomass trait
   biomass_dat$total <-
     biomass_dat$biomass_aboveground +
     biomass_dat$biomass_belowground +
     biomass_dat$biomass_rhizome +
     biomass_dat$flwr_mass_lifetime
-  # Summarize
+  # Summarize data by population and treatment
   summary_dat <- biomass_dat %>% group_by(pop, trt) %>%
     summarise(mean = mean(total),
               se = sd(total) / sqrt(n()))

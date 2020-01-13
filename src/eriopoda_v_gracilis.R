@@ -1,10 +1,4 @@
-###########################################################################################
-# Set working directory
-setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
-source("src/config.R")
-source("src/utils.R")
-setwd(wd)
-
+# 
 ###########################################################################################
 # Load libraries
 library(dplyr)

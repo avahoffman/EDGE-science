@@ -1,3 +1,5 @@
+# Execution script for EDGE Science project pipeline.
+# Generates plots and prints results to the R console.
 ###########################################################################################
 # Set working directory
 setwd("/Users/hoffman ava/EDGE-science/")

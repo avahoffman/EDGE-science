@@ -1,4 +1,4 @@
-## Utility functions for EDGE project
+# Utility functions for EDGE project
 ###########################################################################################
 library(cowplot)
 
