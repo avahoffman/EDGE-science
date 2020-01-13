@@ -1,4 +1,4 @@
-# 
+# This script plots the site map and ecorergions for the EDGE project.
 ###########################################################################################
 # Load libraries
 library(ggplot2)  # REQUIRES: v2.0

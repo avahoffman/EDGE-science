@@ -1,4 +1,5 @@
-# 
+# This script analyzes and plots differences between composition of Bouteloua species
+# at the two Sevilleta sites, and relates it to sensitivity to precipitation limitation.
 ###########################################################################################
 # Load libraries
 library(dplyr)

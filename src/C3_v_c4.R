@@ -1,4 +1,4 @@
-# 
+# This script compares the composition of C3 and C4 grasses at CHY and SGS sites.
 ###########################################################################################
 # Load libraries
 library(dplyr)

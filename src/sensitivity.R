@@ -1,4 +1,5 @@
-# 
+# This script examines the sensitivity of different EDGE sites, with respect to data
+# from the Huxman et al. 2004 publication.
 ###########################################################################################
 # Load libraries
 library(ggplot2)
