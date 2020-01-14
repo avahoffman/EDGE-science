@@ -44,7 +44,29 @@ include_in_drt_trt <- c("chr")
 # eripoda v gracilis coverage
 eri_grac_sites <- c("CHY", "SGS")
 eri_grac_years <- c(2017, 2016, 2015, 2014)
-eri_grac_grasses <- c("BOGR", "BUDA", "C4")
+eri_grac_grasses <- c(
+  "ARAD",
+  "ARPU",
+  "BOBA2",
+  "BOER4",
+  "BOGR",
+  "DAPU7",
+  "ENDE",
+  "MUAR2",
+  "MUSQ3",
+  "PLJA",
+  "SCBR2",
+  "SPCO4",
+  "SPCR",
+  "SPFL2",
+  "SPORO",
+  "ANGE",
+  "BOCU",
+  "BOHI",
+  "BUDA",
+  "SPAS",
+  "C4"
+)
 
 # Genetic comparison
 # Very important not to mess around with these unless cross validation has been performed!!

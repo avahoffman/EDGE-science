@@ -2,8 +2,8 @@
 # Generates plots and prints results to the R console.
 ###########################################################################################
 # Set working directory
-setwd("/Users/hoffman ava/EDGE-science/")
-#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+#setwd("/Users/hoffman ava/EDGE-science/")
+setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
 
 # General functions and configuration
 source("src/config.R")
@@ -68,7 +68,7 @@ plot_grid(
                      sum_across_years = TRUE)
   )
 )
-ggsave(file = "figures/eriopoda_v_gracilis_DRAFT.pdf",
+ggsave(file = "figures/eriopoda_v_gracilis.pdf",
        height = 3,
        width = 5.5)
 

@@ -13,7 +13,7 @@ collect_c3_c4_data <-
     # OR whether to add up all the years cumulatively first (TRUE)
     
     setwd(data_dir)
-    raw_dat <- read.csv("SGS-CHY_TRT-ANPP_long.csv")
+    raw_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
     
     # Filter out old years
     dat <- raw_dat[(raw_dat$Year %in% c3_c4_years),]
