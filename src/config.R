@@ -17,28 +17,28 @@ write_dir <- paste(toString(wd), "output/", sep = "")
 ## Colors
 
 # Ecoregion labels:
-shortgrass_label_color <- "#CC0000"
-northern_label_color <- "#0000CC"
-desert_label_color <- "#CC9900"
+shortgrass_label_color <- "#41ab5d"
+northern_label_color <- "#08519c"
+desert_label_color <- "#cb181d"
 
 # Ecoregion colors (pale):
-shortgrass_color <- "#F5D6D6"
-northern_color <- "#D4E0F7"
-desert_color <- "#FFE6CC"
+shortgrass_color <- "#e5f5e0"
+northern_color <- "#deebf7"
+desert_color <- "#fee0d2"
 
 # Colors for points representing these sites
-CHY_color <- "#0000CC"
-SGS_color <- "#CC0000"
-SEV_Blue_color <- "#00CC33"
-SEV_Black_color <- "#FF9900"
+CHY_color <- "#08519c"
+SGS_color <- "#41ab5d"
+SEV_Blue_color <- "#fd8d3c"
+SEV_Black_color <- "#cb181d"
 
 # Type colors
-C4_color <- "#F5D6D6"
-C3_color <- "#D4E0F7"
-eriopoda_color <- "#FF9900"
-gracilis_color <- "#CC0000"
-sev_grac_color <- "#CC0000"
-sgs_grac_color <- "#00CC33"
+C4_color <- "white"
+C3_color <- "#deebf7"
+eriopoda_color <- "#fb6a4a"
+gracilis_color <- "#fdae6b"
+sev_grac_color <- "#f16913"
+sgs_grac_color <- "#fdae6b"
 
 # Drought treatments to include in effect:
 include_in_drt_trt <- c("chr")
