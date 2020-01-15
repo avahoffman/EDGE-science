@@ -58,7 +58,7 @@ make_sensitivity_plot <- function(huxman_dat, edge_dat, filename = NA) {
       ymin = -0.2,
       ymax = 1
     ),
-    fill = desert_color_pale) +
+    fill = desert_color) +
     
     # Add points
     geom_point(data = huxman_dat,

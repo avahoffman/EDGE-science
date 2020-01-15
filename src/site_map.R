@@ -141,7 +141,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
     geom_text(aes(x = -107.55, y = 33.55), label = "SEV Black", size=3) + ## Sev
     geom_text(aes(x = -105, y = 30), label = desert_name, color = desert_label_color) + ## Desert grassland label
     geom_text(aes(x = -102.5, y = 38), label = shortgrass_name, color = shortgrass_label_color) + ## Shortgrass label
-    geom_text(aes(x = -103, y = 44), label = northern_name, color = northern__label_color) + ## Northern grassland label
+    geom_text(aes(x = -103, y = 44), label = northern_name, color = northern_label_color) + ## Northern grassland label
     
     # Add border and remove legend
     theme(

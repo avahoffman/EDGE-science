@@ -26,13 +26,19 @@ shortgrass_color <- "#F5D6D6"
 northern_color <- "#D4E0F7"
 desert_color <- "#FFE6CC"
 
+# Colors for points representing these sites
+CHY_color <- "#0000CC"
+SGS_color <- "#CC0000"
+SEV_Blue_color <- "#00CC33"
+SEV_Black_color <- "#FF9900"
+
 # Type colors
 C4_color <- "#F5D6D6"
 C3_color <- "#D4E0F7"
-eriopoda_color <- "white"
-gracilis_color <- "white"
-sev_grac_color <- "orange"
-sgs_grac_color <- "red"
+eriopoda_color <- "#FF9900"
+gracilis_color <- "#CC0000"
+sev_grac_color <- "#CC0000"
+sgs_grac_color <- "#00CC33"
 
 # Drought treatments to include in effect:
 include_in_drt_trt <- c("chr")
@@ -40,12 +46,6 @@ include_in_drt_trt <- c("chr")
 
 ###########################################################################################
 ## Map
-
-# Colors for points representing these sites
-CHY_color <- "#CC0000"
-SGS_color <- "#0000CC"
-SEV_Blue_color <- "#00CC33"
-SEV_Black_color <- "#FF9900"
 
 # Directory where map shapefiles representing ecoregions should be:
 shapefile_dir <- paste(toString(wd), "data/shapefiles/", sep = "")
