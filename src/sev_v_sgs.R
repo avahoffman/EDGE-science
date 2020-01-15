@@ -76,7 +76,7 @@ collect_sev_sgs_data <-
     # Convert species level to wide format
     wide_dat <-
       dcast(full_dat, Site + Block + Plot + Trt ~ category, value.var = "biomass")
-    # Join total to wide format and replace any NAs with zeros
+    # Join total to wide format and replace any NAs (species not appearing in plot) with zeros
     full_dat <-
       full_join(totals, wide_dat, by = c("Site", "Block", "Plot", "Trt")) %>%
       mutate(BOGR = replace(BOGR, (is.na(BOGR)), 0)) %>%
@@ -105,28 +105,23 @@ collect_sev_sgs_data <-
     else{
       # Ambient
       full_dat_amb <- full_dat %>% filter(Trt == "con")
-      # Take the mean of drt treatments (including chr and int)
+      # Take the mean of drt treatments (including chr and int if indicated)
       full_dat_drt <- full_dat %>% group_by(Site, Block, Trt) %>%
         summarise(
           total_biomass = mean(total_biomass),
-          BOGR = mean(BOGR),
-          BOER4 = mean(BOER4)
+          BOGR = mean(BOGR)
         ) %>% filter(Trt == "drt")
       # Join tables
       compare_dat <-
-        full_join(full_dat_amb, full_dat_drt, by = c("Site", "Block")) %>% select(-C4)
+        full_join(full_dat_amb, full_dat_drt, by = c("Site", "Block")) %>% select(-C4, -C3)
       
-      # Subset based on species
-      BOER4 <-
-        compare_dat %>% filter(Site == "SEV.black") %>% filter(BOER4.x > 0) %>% select(-BOGR.x,-BOGR.y)
+      # Subset
       BOGR <-
-        compare_dat %>% filter(Site == "SEV.blue") %>% filter(BOGR.x > 0) %>% select(-BOER4.x,-BOER4.y)
+        compare_dat %>% filter(Site %in% sev_sgs_sites) %>% filter(BOGR.x > 0)
       
       # Calculate the difference
       BOGR$diff <-
         100 * (BOGR$BOGR.y - BOGR$BOGR.x) / BOGR$BOGR.x
-      BOER4$diff <-
-        100 * (BOER4$BOER4.y - BOER4$BOER4.x) / BOER4$BOER4.x
       
       # Summarize by site
       summary_dat <- BOGR %>% group_by(Site) %>%
@@ -135,17 +130,6 @@ collect_sev_sgs_data <-
           se = sd(diff) / sqrt(n()),
           type = "bogr"
         )
-      
-      # Repeat data for C4
-      summary_dat <- rbind(
-        summary_dat,
-        BOER4 %>% group_by(Site) %>%
-          summarise(
-            mean = mean(diff),
-            se = sd(diff) / sqrt(n()),
-            type = "boer"
-          )
-      )
       
       setwd(wd)
       return(summary_dat)
@@ -215,7 +199,7 @@ plot_spp_sev_sgs <- function(summary_dat, filename = NA) {
       legend.title = element_blank(),
     ) +
     scale_fill_manual(
-      values = c(shortgrass_color_pale, northern_color_pale, "white"),
+      values = c(gracilis_color, C3_color, C4_color),
       labels = c("B. gracilis", "C3 grasses", "Other C4")
     )
   
@@ -229,11 +213,11 @@ plot_spp_sev_sgs <- function(summary_dat, filename = NA) {
 }
 
 
-plot_sev_diff <- function(summary_dat, filename = NA) {
+plot_sev_sgs_diff <- function(summary_dat, filename = NA) {
   gg <- ggplot(data = summary_dat) +
     
     # Add zero line
-    #geom_hline(yintercept = 0, lty = 3) +
+    geom_hline(yintercept = 0, lty = 3) +
     
     # Add standard error first
     geom_errorbar(
@@ -251,7 +235,7 @@ plot_sev_diff <- function(summary_dat, filename = NA) {
     
     # Draw points
     geom_point(
-      aes(fill = type, y = mean, x = Site),
+      aes(fill = Site, y = mean, x = Site),
       color = "black",
       shape = 21,
       size = 4,
@@ -272,8 +256,8 @@ plot_sev_diff <- function(summary_dat, filename = NA) {
       legend.title = element_blank()
     ) +
     scale_fill_manual(
-      values = c(northern_color_pale, shortgrass_color_pale),
-      labels = c("B. eriopoda", "B. gracilis")
+      values = c(sev_grac_color, sgs_grac_color),
+      labels = c("SEV.blue", "SGS")
     )
   
   

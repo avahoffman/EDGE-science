@@ -191,7 +191,7 @@ plot_spp_sev <- function(summary_dat, filename = NA) {
       legend.title = element_blank(),
     ) +
     scale_fill_manual(
-      values = c(northern_color_pale, shortgrass_color_pale, "white"),
+      values = c(eriopoda_color, gracilis_color, C4_color),
       labels = c("B. eriopoda", "B. gracilis", "Other C4")
     )
   
@@ -248,7 +248,7 @@ plot_sev_diff <- function(summary_dat, filename = NA) {
       legend.title = element_blank()
     ) +
     scale_fill_manual(
-      values = c(northern_color_pale, shortgrass_color_pale),
+      values = c(eriopoda_color, gracilis_color),
       labels = c("B. eriopoda", "B. gracilis")
     )
   

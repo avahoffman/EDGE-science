@@ -78,10 +78,10 @@ plot_traits <- function(summary_dat, filename = NA) {
       legend.title = element_blank()
     ) +
     scale_fill_manual(
-      values = c(northern_color_pale, shortgrass_color_pale),
+      values = c(sev_grac_color, sgs_grac_color),
       labels = c("SEV", "SGS")
     ) +
-    scale_color_manual(values = c(northern_color_pale, shortgrass_color_pale)) +
+    scale_color_manual(values = c(sev_grac_color, sgs_grac_color)) +
     scale_x_discrete(labels = c("Dry", "Wet"))
   
   gg

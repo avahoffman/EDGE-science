@@ -190,7 +190,7 @@ plot_c3_v_c4 <-
         legend.title = element_blank()
       ) +
       scale_fill_manual(
-        values = c("white", shortgrass_color_pale),
+        values = c(C3_color, C4_color),
         labels = c("C3 Grasses", "C4 Grasses")
       )
     
@@ -249,7 +249,7 @@ plot_c3_v_c4_diff <-
         legend.title = element_blank()
       ) +
       scale_fill_manual(
-        values = c("white", shortgrass_color_pale),
+        values = c(C3_color, C4_color),
         labels = c("C3 Grasses", "C4 Grasses")
       )
     

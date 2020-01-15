@@ -92,7 +92,6 @@ plot_dapc <- function(genind_final, filename = NA) {
   write.csv(plot_dat, file = "genetic/DAPC_loadings.csv")
   setwd(wd)
   # Set colors by reordering alphabetically
-  custom_colors_bold <- DAPC_colors_bold[order(genetic_pops_to_use)]
   custom_colors_pale <- DAPC_colors_pale[order(genetic_pops_to_use)]
   sorted_pops <- sort(genetic_pops_to_use)
   plot_dat$ordered_pop <- tolower(plot_dat$pop)
@@ -245,8 +244,8 @@ plot_genetic_structure <- function(genind_final, filename = NA) {
     scale_fill_manual(values = c(
       "grey",
       "lightgrey",
-      northern_color_pale,
-      shortgrass_color_pale
+      northern_color,
+      shortgrass_color
     )) +
     labs(fill = "Population") + xlab("Individual") + ylab("Probability of Assignment") +
     theme_sigmaplot(xticks = FALSE) +

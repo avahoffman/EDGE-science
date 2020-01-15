@@ -14,6 +14,7 @@ source("src/site_map.R")
 source("src/sensitivity.R")
 source("src/C3_v_c4.R")
 source("src/eriopoda_v_gracilis.R")
+source("src/sev_v_sgs.R")
 source("src/genetic_diversity.R")
 source("src/gracilis_traits.R")
 
@@ -78,11 +79,22 @@ ggsave(file = "figures/eriopoda_v_gracilis.pdf",
 # Trait differences between sites
 perform_cross_validation_DAPC(load_and_clean_genind_data(), XV_skip = XV_skip)
 plot_grid(
+    plot_spp_sev_sgs(
+      collect_sev_sgs_data(ambient_composition = TRUE,
+                       sum_across_years = TRUE)
+    ) +
+      guides(fill = guide_legend(nrow = 2)),
+    plot_sev_sgs_diff(
+      collect_sev_sgs_data(ambient_composition = FALSE,
+                       sum_across_years = TRUE)
+    ),
   plot_dapc(load_and_clean_genind_data()) +
     guides(fill = guide_legend(nrow = 2)),
   plot_traits(load_and_clean_trait_data()),
-  rel_widths = c(3,2)
+  rel_widths = c(3,2),
+  nrow = 2,
+  ncol = 2
 )
 ggsave(file = "figures/gracilis_genetic_diversity.pdf",
-       height = 3,
+       height = 6,
        width = 5.5)

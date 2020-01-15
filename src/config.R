@@ -14,15 +14,25 @@ data_dir <- paste(toString(wd), "data/", sep = "")
 figure_dir <- paste(toString(wd), "figures/", sep = "")
 write_dir <- paste(toString(wd), "output/", sep = "")
 
-# Ecoregion colors (bold) (will be reused to stay theme-consistent):
-shortgrass_color <- "#CC0000"
-northern_color <- "#0000CC"
-desert_color <- "#CC9900"
+## Colors
+
+# Ecoregion labels:
+shortgrass_label_color <- "#CC0000"
+northern_label_color <- "#0000CC"
+desert_label_color <- "#CC9900"
 
 # Ecoregion colors (pale):
-shortgrass_color_pale <- "#F5D6D6"
-northern_color_pale <- "#D4E0F7"
-desert_color_pale <- "#FFE6CC"
+shortgrass_color <- "#F5D6D6"
+northern_color <- "#D4E0F7"
+desert_color <- "#FFE6CC"
+
+# Type colors
+C4_color <- "#F5D6D6"
+C3_color <- "#D4E0F7"
+eriopoda_color <- "white"
+gracilis_color <- "white"
+sev_grac_color <- "orange"
+sgs_grac_color <- "red"
 
 # Drought treatments to include in effect:
 include_in_drt_trt <- c("chr")
@@ -47,9 +57,9 @@ desert_name <- "Desert Grassland"
 
 # Colors for ecoregions:
 climate_colors <-
-  c(desert_color_pale,
-    northern_color_pale,
-    shortgrass_color_pale)
+  c(desert_color,
+    northern_color,
+    shortgrass_color)
 
 
 ###########################################################################################
@@ -92,11 +102,9 @@ sev_sgs_years <- c(2017, 2016, 2015, 2014)
 genetic_data <-
   paste(toString(wd), "data/genetic/genind_all.R", sep = "")
 genetic_pops_to_use <- c("SGS", "Sevilleta", "Konza", "Cedar Point")
-DAPC_colors_bold <-
-  c(shortgrass_color, northern_color, "black", "darkgrey") # order of pops and colors will be matched
 DAPC_colors_pale <-
-  c(shortgrass_color_pale,
-    northern_color_pale,
+  c(sgs_grac_color,
+    sev_grac_color,
     "grey",
     "lightgrey")
 XV_skip <- TRUE
