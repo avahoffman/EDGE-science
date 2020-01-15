@@ -72,7 +72,7 @@ collect_sev_data <-
       summary_dat <- long_dat %>% group_by(Site, spp) %>%
         summarise(mean = mean(pct),
                   se = sd(pct) / sqrt(n())) %>% 
-        filter(Site %in% c("SEV.blue", "SEV.black"))
+        filter(Site %in% eri_grac_sites)
       
       setwd(wd)
       return(summary_dat)
