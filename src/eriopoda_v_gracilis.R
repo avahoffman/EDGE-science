@@ -28,6 +28,9 @@ collect_sev_data <-
                                                                  Trt == "int", "drt"))
     
     # Collect only C4 grasses
+    C4_taxa <- read.csv("Taxa_info.csv") %>% 
+      filter(Photo.path == "C4" & Funct.grp == "grass") %>% 
+      select(Plant.code)
     c4_dat <- as_tibble(dat[(dat$category %in% eri_grac_grasses),])
     # Exclude Bouteloua gracilis and eriopoda, and describe as C4
     c4_dat_other <-
