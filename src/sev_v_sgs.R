@@ -158,7 +158,7 @@ plot_spp_sev_sgs <- function(summary_dat, filename = NA) {
         ymin = mean - se,
         ymax = mean + se
       ),
-      size = 1,
+      size = 0.5,
       width = 0
     ) +
     
@@ -172,7 +172,7 @@ plot_spp_sev_sgs <- function(summary_dat, filename = NA) {
         ymin = mean + 58.4 - se,
         ymax = mean + 58.4 + se
       ),
-      size = 1,
+      size = 0.5,
       width = 0
     ) +
     
@@ -229,7 +229,7 @@ plot_sev_sgs_diff <- function(summary_dat, filename = NA) {
         ymin = mean - se,
         ymax = mean + se
       ),
-      size = 1,
+      size = 0.5,
       width = 0
     ) +
     

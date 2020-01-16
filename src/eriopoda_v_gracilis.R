@@ -151,20 +151,20 @@ plot_spp_sev <- function(summary_dat, filename = NA) {
         ymin = mean - se,
         ymax = mean + se
       ),
-      size = 1,
+      size = 0.5,
       width = 0
     ) +
     
     # Add standard error for BOER4 - not a good workaround for this - considered bad practice to have
     # stacked error bars
     geom_errorbar(
-      data = summary_dat %>% filter(spp == "BOGR"),
+      data = summary_dat %>% filter(spp == "BOGR" & Site == "SEV.blue"),
       aes(
         x = Site,
         ymin = mean + 31.5 - se,
         ymax = mean + 31.5 + se
       ),
-      size = 1,
+      size = 0.5,
       width = 0
     ) +
     
@@ -221,7 +221,7 @@ plot_sev_diff <- function(summary_dat, filename = NA) {
         ymin = mean - se,
         ymax = mean + se
       ),
-      size = 1,
+      size = 0.5,
       width = 0
     ) +
     

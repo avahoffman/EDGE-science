@@ -163,7 +163,7 @@ plot_c3_v_c4 <-
           ymin = mean - se,
           ymax = mean + se
         ),
-        size = 1,
+        size = 0.5,
         width = 0
       ) +
       
@@ -222,7 +222,7 @@ plot_c3_v_c4_diff <-
           ymin = mean - se,
           ymax = mean + se
         ),
-        size = 1,
+        size = 0.5,
         width = 0
       ) +
       

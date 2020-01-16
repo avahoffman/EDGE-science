@@ -112,8 +112,9 @@ plot_dapc <- function(genind_final, filename = NA) {
       aes(fill = ordered_pop),
       shape = 21,
       size = 2,
-      color = "grey"
+      color = "black"
     ) +
+  
     scale_fill_manual(
       name = "",
       values = custom_colors_pale,

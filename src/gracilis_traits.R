@@ -39,7 +39,7 @@ plot_traits <- function(summary_dat, filename = NA) {
         ymin = mean - se,
         ymax = mean + se
       ),
-      size = 1,
+      size = 0.5,
       width = 0
     ) +
     
