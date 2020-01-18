@@ -75,6 +75,12 @@ c3_grasses <- c("CAREX", "PASM", "C3")
 # Years to include:
 c3_c4_years <- c(2017, 2016, 2015, 2014)
 
+# Figure details
+x_ticks_3 <- c("CHY","SGS")
+y_lab_3 <- "Percent of Grass ANPP"
+legend_names_3 <- c("C3 Grasses", "C4 Grasses")
+y_lab_4 <- "Percent Change in ANPP"
+
 
 ###########################################################################################
 ## Bouteloua eripoda v gracilis coverage at Sevilleta sites 

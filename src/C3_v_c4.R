@@ -180,7 +180,7 @@ plot_c3_v_c4 <-
         color = c("transparent", "black", "black", "black", "black", "black")
       )) +
       
-      ylab("Percent of Grass ANPP") +
+      ylab(y_lab_3) +
       xlab(NULL) +
       
       # Adjust legend and colors
@@ -191,8 +191,9 @@ plot_c3_v_c4 <-
       ) +
       scale_fill_manual(
         values = c(C3_color, C4_color),
-        labels = c("C3 Grasses", "C4 Grasses")
-      )
+        labels = legend_names_3
+      ) +
+      scale_x_discrete(labels = x_ticks_3)
     
     gg
     if (!(is.na(filename))) {
@@ -239,7 +240,7 @@ plot_c3_v_c4_diff <-
       # Add theme and adjust axes
       theme_sigmaplot(xticks = FALSE) +
       scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
-      ylab("Percent Change in ANPP") +
+      ylab(y_lab_4) +
       xlab(NULL) +
       
       # Adjust legend and colors
@@ -250,8 +251,9 @@ plot_c3_v_c4_diff <-
       ) +
       scale_fill_manual(
         values = c(C3_color, C4_color),
-        labels = c("C3 Grasses", "C4 Grasses")
-      )
+        labels = legend_names_3
+      ) +
+      scale_x_discrete(labels = x_ticks_3)
     
     gg
     if (!(is.na(filename))) {
