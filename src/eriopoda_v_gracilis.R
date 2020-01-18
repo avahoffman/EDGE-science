@@ -181,7 +181,7 @@ plot_spp_sev <- function(summary_dat, filename = NA) {
       color = c("transparent", "black", "black", "black", "black", "black")
     )) +
     
-    ylab("Percent of Grass ANPP") +
+    ylab(y_lab_5) +
     xlab(NULL) +
     
     # Adjust legend and colors
@@ -192,8 +192,9 @@ plot_spp_sev <- function(summary_dat, filename = NA) {
     ) +
     scale_fill_manual(
       values = c(eriopoda_color, gracilis_color, C4_color),
-      labels = c("B. eriopoda", "B. gracilis", "Other C4")
-    )
+      labels = c(legend_names_5)
+    ) +
+    scale_x_discrete(labels = x_ticks_5)
   
   gg
   if (!(is.na(filename))) {
@@ -238,7 +239,7 @@ plot_sev_diff <- function(summary_dat, filename = NA) {
     # Add theme and adjust axes
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
-    ylab("Percent Change in ANPP") +
+    ylab(y_lab_6) +
     xlab(NULL) +
     
     # Adjust legend and colors
@@ -249,10 +250,9 @@ plot_sev_diff <- function(summary_dat, filename = NA) {
     ) +
     scale_fill_manual(
       values = c(eriopoda_color, gracilis_color),
-      labels = c("B. eriopoda", "B. gracilis")
-    )
-  
-  
+      labels = c(legend_names_6)
+    ) +
+    scale_x_discrete(labels = x_ticks_5)
   
   gg
   if (!(is.na(filename))) {

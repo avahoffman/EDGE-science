@@ -68,7 +68,7 @@ plot_traits <- function(summary_dat, filename = NA) {
     # Add theme and adjust axes
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
-    ylab("B. gracilis Biomass (g)") +
+    ylab(y_lab_10) +
     xlab(NULL) +
     
     # Adjust legend and colors
@@ -79,10 +79,14 @@ plot_traits <- function(summary_dat, filename = NA) {
     ) +
     scale_fill_manual(
       values = c(sev_grac_color, sgs_grac_color),
-      labels = c("SEV", "SGS")
+      labels = legend_names_10
     ) +
-    scale_color_manual(values = c(sev_grac_color, sgs_grac_color)) +
-    scale_x_discrete(labels = c("Dry", "Wet"))
+    
+    scale_color_manual(
+      values = c(sev_grac_color, sgs_grac_color),
+      labels = legend_names_10
+    ) +
+    scale_x_discrete(labels = x_ticks_10)
   
   gg
   if (!(is.na(filename))) {

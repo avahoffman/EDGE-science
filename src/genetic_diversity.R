@@ -115,10 +115,13 @@ plot_dapc <- function(genind_final, filename = NA) {
       color = "black"
     ) +
   
+    ylab(y_lab_9) +
+    xlab(x_lab_9) +
+     
     scale_fill_manual(
       name = "",
       values = custom_colors_pale,
-      labels = c("NB", "KNZ", "SEV", "SGS")
+      labels = legend_names_9
     ) +
     theme(legend.position = "top")
   
@@ -198,10 +201,9 @@ plot_prob_assign <- function(genind_final, filename = NA) {
     scale_fill_manual(
       name = "",
       values = custom_colors_pale,
-      labels = c("NB", "KNZ", "SEV", "SGS")
+      labels = legend_names_9
     ) +
-    theme(legend.position = "top") +
-    scale_x_discrete(labels = c("SGS", "SEV"))
+    theme(legend.position = "top")
   
   gg
   if (!(is.na(filename))) {

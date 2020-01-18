@@ -92,6 +92,17 @@ eri_grac_sites <- c("SEV.blue", "SEV.black")
 eri_grac_years <- c(2017, 2016, 2015, 2014)
 
 
+# Figure details
+x_ticks_5 <- c("SEV Blue", "SEV Black")
+y_lab_5 <- "Percent of Grass ANPP"
+legend_names_5 <- c(expression(paste(italic("B. eriopoda"))),
+                    expression(paste(italic("B. gracilis"))),
+                    "Other C4")
+y_lab_6 <- "Percent of Change in ANPP"
+legend_names_6 <- c(expression(paste(italic("B. eriopoda"))),
+                   expression(paste(italic("B. gracilis"))))
+
+
 ###########################################################################################
 ## Bouteloua gracilis comparison at SGS and Sevilleta sites 
 
@@ -101,8 +112,15 @@ sev_sgs_sites <- c("SEV.blue", "SGS")
 # Years to include:
 sev_sgs_years <- c(2017, 2016, 2015, 2014)
 
+# Figure details
+x_ticks_7 <- c("SEV Blue", "SGS")
+y_lab_7 <- "Percent of Grass ANPP"
+legend_names_7 <- c(expression(paste(italic("B. gracilis"))),
+                    "C3 Grasses",
+                    "Other C4")
+y_lab_8 <- "Percent Change in ANPP"
 
-###########################################################################################
+######################################################s#####################################
 ## Genetic comparison
 # Very important not to mess around with these unless cross validation has been performed!!
 genetic_data <-
@@ -115,3 +133,12 @@ DAPC_colors_pale <-
     "lightgrey")
 XV_skip <- TRUE
 n_prin_comp <- 15
+
+# Figure details
+x_lab_9 <- "LD1"
+y_lab_9 <- "LD2"
+legend_names_9 <- c("NB", "KNZ", "SEV Blue", "SGS")
+y_lab_10 <- expression(paste(italic("B. gracilis"), " Biomass (g)"))
+x_ticks_10 <- c("Dry", "Wet")
+legend_names_10 <- c("SEV Blue", "SGS")
+

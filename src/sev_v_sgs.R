@@ -189,7 +189,7 @@ plot_spp_sev_sgs <- function(summary_dat, filename = NA) {
       color = c("transparent", "black", "black", "black", "black", "black")
     )) +
     
-    ylab("Percent of Grass ANPP") +
+    ylab(y_lab_7) +
     xlab(NULL) +
     
     # Adjust legend and colors
@@ -200,8 +200,9 @@ plot_spp_sev_sgs <- function(summary_dat, filename = NA) {
     ) +
     scale_fill_manual(
       values = c(gracilis_color, C3_color, C4_color),
-      labels = c("B. gracilis", "C3 grasses", "Other C4")
-    )
+      labels = legend_names_7
+    ) +
+    scale_x_discrete(labels = x_ticks_7)
   
   gg
   if (!(is.na(filename))) {
@@ -246,7 +247,7 @@ plot_sev_sgs_diff <- function(summary_dat, filename = NA) {
     # Add theme and adjust axes
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
-    ylab("Percent Change in ANPP") +
+    ylab(y_lab_8) +
     xlab(NULL) +
     
     # Adjust legend and colors
@@ -257,10 +258,9 @@ plot_sev_sgs_diff <- function(summary_dat, filename = NA) {
     ) +
     scale_fill_manual(
       values = c(sev_grac_color, sgs_grac_color),
-      labels = c("SEV.blue", "SGS")
-    )
-  
-  
+      labels = x_ticks_7
+    ) +
+    scale_x_discrete(labels = x_ticks_7)
   
   gg
   if (!(is.na(filename))) {
