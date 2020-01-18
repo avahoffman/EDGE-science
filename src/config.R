@@ -95,12 +95,12 @@ eri_grac_years <- c(2017, 2016, 2015, 2014)
 # Figure details
 x_ticks_5 <- c("SEV Blue", "SEV Black")
 y_lab_5 <- "Percent of Grass ANPP"
-legend_names_5 <- c(expression(paste(italic("B. eriopoda"))),
-                    expression(paste(italic("B. gracilis"))),
+legend_names_5 <- c(expression(~italic("B. eriopoda")),
+                    expression(~italic("B. gracilis")),
                     "Other C4")
 y_lab_6 <- "Percent of Change in ANPP"
-legend_names_6 <- c(expression(paste(italic("B. eriopoda"))),
-                   expression(paste(italic("B. gracilis"))))
+legend_names_6 <- c(expression(~italic("B. eriopoda")),
+                   expression(~italic("B. gracilis")))
 
 
 ###########################################################################################
@@ -115,7 +115,7 @@ sev_sgs_years <- c(2017, 2016, 2015, 2014)
 # Figure details
 x_ticks_7 <- c("SEV Blue", "SGS")
 y_lab_7 <- "Percent of Grass ANPP"
-legend_names_7 <- c(expression(paste(italic("B. gracilis"))),
+legend_names_7 <- c(expression(~italic("B. gracilis")),
                     "C3 Grasses",
                     "Other C4")
 y_lab_8 <- "Percent Change in ANPP"

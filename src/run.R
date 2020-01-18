@@ -63,7 +63,8 @@ plot_grid(
     collect_sev_data(ambient_composition = TRUE,
                      sum_across_years = TRUE)
   ) +
-    guides(fill = guide_legend(nrow = 2)),
+    guides(fill = guide_legend(nrow = 2)) +
+    theme(legend.text.align = 0),
   plot_sev_diff(
     collect_sev_data(ambient_composition = FALSE,
                      sum_across_years = TRUE)
@@ -83,13 +84,15 @@ plot_grid(
       collect_sev_sgs_data(ambient_composition = TRUE,
                        sum_across_years = TRUE)
     ) +
-      guides(fill = guide_legend(nrow = 2)),
+      guides(fill = guide_legend(nrow = 2)) +
+      theme(legend.text.align = 0),
     plot_sev_sgs_diff(
       collect_sev_sgs_data(ambient_composition = FALSE,
                        sum_across_years = TRUE)
     ),
   plot_dapc(load_and_clean_genind_data()) +
-    guides(fill = guide_legend(nrow = 2)),
+    guides(fill = guide_legend(nrow = 2)) +
+    theme(legend.text.align = 0),
   plot_traits(load_and_clean_trait_data()),
   rel_widths = c(3,2),
   nrow = 2,
