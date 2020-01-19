@@ -49,6 +49,7 @@ get_edge_data <- function(){
 
 
 get_percent_decline <- function(sum_across_years = TRUE){
+  
   setwd(data_dir)
   decline_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
   
@@ -72,6 +73,29 @@ get_percent_decline <- function(sum_across_years = TRUE){
         biomass = sum(biomass) / length(sensitivity_years)
       )
   }
+  
+  # Calculate ambient first
+  full_dat_amb <- full_dat %>% filter(Trt == "con")
+  # Take the mean of drt treatments (including chr and int)
+  full_dat_drt <- full_dat %>% group_by(Site, Block, Trt) %>%
+    summarise(biomass = mean(biomass)) %>% filter(Trt == "drt")
+  # Join tables
+  compare_dat <-
+    full_join(full_dat_amb, full_dat_drt, by = c("Site", "Block"))
+  
+  # Calculate the difference
+  compare_dat$diff <-
+    100 * (compare_dat$biomass.y - compare_dat$biomass.x) / compare_dat$biomass.x
+  
+  # Summarize by site
+  summary_dat <- compare_dat %>% group_by(Site) %>%
+    summarise(
+      mean = mean(diff),
+      se = sd(diff) / sqrt(n()),
+      type = "diff"
+    ) %>% filter(Site %in% sensitivity_sites)
+  
+  return(summary_dat)
 }
 
 
@@ -152,4 +176,59 @@ make_sensitivity_plot <- function(huxman_dat, edge_dat, filename = NA) {
            width = 4)
   }
   return(gg)
+}
+
+
+make_inset_decline_plot <- function(summary_dat,
+                                    filename = NA){
+  gg <- ggplot(data = summary_dat) +
+    
+    # Add zero line
+    geom_hline(yintercept = 0, lty = 3) +
+    
+    # Draw bars - multiply by -1 to get % DECLINE
+    geom_bar(
+      aes(y = mean *-1, x = Site),
+      fill = "black",
+      stat = "identity",
+      position = position_stack(reverse = TRUE),
+      color = "black",
+      width = 0.5,
+    ) +
+    
+    # Add standard error
+    geom_errorbar(
+      data = summary_dat,
+      aes(
+        x = Site,
+        ymin = mean * -1 - se,
+        ymax = mean * -1 + se
+      ),
+      size = 0.5,
+      width = 0
+    ) +
+    
+    # Add theme and adjust axes
+    theme_sigmaplot(xticks = FALSE) +
+    scale_y_continuous(
+      limits = c(-15, 105),
+      breaks = c(0, 20, 40, 60, 80, 100),
+      expand = c(0, 0),
+      labels = c(0, 20, 40, 60, 80, 100),
+      sec.axis = dup_axis(labels = NULL, name = "")
+    ) +
+    theme(axis.ticks.y = element_line(
+      color = c("transparent", "black", "black", "black", "black", "black")
+    )) +
+    
+    ylab(y_lab_inset) +
+    xlab(NULL) +
+    
+    # Adjust legend and colors
+    theme(
+      legend.position = "none"
+    ) +
+    scale_x_discrete(labels = x_ticks_inset)
+  
+  gg
 }
