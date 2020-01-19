@@ -48,6 +48,33 @@ get_edge_data <- function(){
 }
 
 
+get_percent_decline <- function(sum_across_years = TRUE){
+  setwd(data_dir)
+  decline_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
+  
+  # Filter out old years
+  dat <- decline_dat[(decline_dat$Year %in% sensitivity_years),]
+  
+  # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
+  dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")),]
+  dat <- dat %>%
+    mutate(Trt = as.character(Trt)) %>% mutate(Trt = replace(Trt, Trt == "chr" |
+                                                               Trt == "int", "drt"))
+  
+  # Group to plot level by year, site, treatment
+  by_plot_sensitivity <-
+    dat %>% group_by(Site, Block, Plot, Year, Trt) %>% summarise(biomass = sum(biomass))
+  
+  # IF cumulative, sum across all years to get a more stable number
+  if (sum_across_years) {
+    full_dat <-
+      by_plot_sensitivity %>% group_by(Site, Block, Plot, Trt) %>% summarise(
+        biomass = sum(biomass) / length(sensitivity_years)
+      )
+  }
+}
+
+
 make_sensitivity_plot <- function(huxman_dat, edge_dat, filename = NA) {
   gg <- ggplot() +
     

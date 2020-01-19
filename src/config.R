@@ -45,7 +45,7 @@ include_in_drt_trt <- c("chr")
 
 
 ###########################################################################################
-## Map
+## Map and Huxman data with inset (sensitivity)
 
 # Directory where map shapefiles representing ecoregions should be:
 shapefile_dir <- paste(toString(wd), "data/shapefiles/", sep = "")
@@ -60,6 +60,10 @@ climate_colors <-
   c(desert_color,
     northern_color,
     shortgrass_color)
+
+# Years for inset sensitivity
+sensitivity_years <- c(2017, 2016, 2015, 2014)
+sensitivity_sites <- c("CHY","SGS","SEV.blue","SEV.black")
 
 
 ###########################################################################################
