@@ -95,6 +95,7 @@ get_percent_decline <- function(sum_across_years = TRUE){
       type = "diff"
     ) %>% filter(Site %in% sensitivity_sites)
   
+  setwd(wd)
   return(summary_dat)
 }
 
@@ -234,4 +235,10 @@ make_inset_decline_plot <- function(summary_dat,
     scale_x_discrete(labels = x_ticks_inset)
   
   gg
+  if (!(is.na(filename))) {
+    ggsave(file = filename,
+           height = 3,
+           width = 4)
+  }
+  return(gg)
 }

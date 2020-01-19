@@ -34,8 +34,15 @@ library(cowplot)
 # Plot showing sensitivity underlaid with Huxman 2004 data
 plot_grid(
   plot_site_map_with_ecoregions(generate_shapefile_data()),
-  make_sensitivity_plot(get_huxman_2004_data(),
-                        get_edge_data())
+  ggdraw(make_sensitivity_plot(get_huxman_2004_data(),
+                               get_edge_data())) +
+    draw_plot(
+      make_inset_decline_plot(get_percent_decline()),
+      x = 0.3,
+      y = 0.45,
+      height = 0.35,
+      width = 0.5
+    )
 )
 ggsave(file = "figures/sites_sensitivity.pdf",
        height = 3,

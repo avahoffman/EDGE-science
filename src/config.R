@@ -66,7 +66,8 @@ sensitivity_years <- c(2017, 2016, 2015, 2014)
 sensitivity_sites <- c("CHY","SGS","SEV.blue","SEV.black")
 
 # Figure details
-y_lab_inset <- "Percent Decline in Total ANPP"
+#y_lab_inset <- "Percent Decline in Total ANPP"
+y_lab_inset <- ""
 x_ticks_inset <- c("SEV Black", "SEV Blue", "SGS", "CHY")
 
 
