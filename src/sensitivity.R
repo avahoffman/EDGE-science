@@ -181,6 +181,9 @@ make_sensitivity_plot <- function(huxman_dat, edge_dat, filename = NA) {
 
 make_inset_decline_plot <- function(summary_dat,
                                     filename = NA){
+  # Add index for order
+  summary_dat$position <- as.factor(c(4,1,2,3))
+  
   gg <- ggplot(data = summary_dat) +
     
     # Add zero line
@@ -188,7 +191,7 @@ make_inset_decline_plot <- function(summary_dat,
     
     # Draw bars - multiply by -1 to get % DECLINE
     geom_bar(
-      aes(y = mean *-1, x = Site),
+      aes(y = mean *-1, x = position),
       fill = "black",
       stat = "identity",
       position = position_stack(reverse = TRUE),
@@ -200,7 +203,7 @@ make_inset_decline_plot <- function(summary_dat,
     geom_errorbar(
       data = summary_dat,
       aes(
-        x = Site,
+        x = position,
         ymin = mean * -1 - se,
         ymax = mean * -1 + se
       ),

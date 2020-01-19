@@ -67,7 +67,7 @@ sensitivity_sites <- c("CHY","SGS","SEV.blue","SEV.black")
 
 # Figure details
 y_lab_inset <- "Percent Decline in Total ANPP"
-x_ticks_inset <- c("CHY","SEV Black", "SEV Blue", "SGS")
+x_ticks_inset <- c("SEV Black", "SEV Blue", "SGS", "CHY")
 
 
 ###########################################################################################
