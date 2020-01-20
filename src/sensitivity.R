@@ -188,7 +188,7 @@ make_inset_decline_plot <- function(summary_dat,
   gg <- ggplot(data = summary_dat) +
     
     # Add zero line
-    geom_hline(yintercept = 0, lty = 5) +
+    geom_hline(yintercept = 0, lty = 3) +
     
     # Draw bars - multiply by -1 to get % DECLINE
     geom_bar(
@@ -213,7 +213,7 @@ make_inset_decline_plot <- function(summary_dat,
     ) +
     
     # Add theme and adjust axes
-    theme_sigmaplot(xticks = FALSE) +
+    theme_sigmaplot(xticks = FALSE, ticklen = -0.15) +
     scale_y_continuous(
       limits = c(-15, 105),
       breaks = c(0, 50, 100),
