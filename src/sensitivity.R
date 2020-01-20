@@ -54,10 +54,10 @@ get_percent_decline <- function(sum_across_years = TRUE) {
   decline_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
   
   # Filter out old years
-  dat <- decline_dat[(decline_dat$Year %in% sensitivity_years),]
+  dat <- decline_dat[(decline_dat$Year %in% sensitivity_years), ]
   
   # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
-  dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")),]
+  dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")), ]
   dat <- dat %>%
     mutate(Trt = as.character(Trt)) %>% mutate(Trt = replace(Trt, Trt == "chr" |
                                                                Trt == "int", "drt"))
@@ -244,9 +244,7 @@ make_inset_decline_plot <- function(summary_dat,
     scale_x_discrete(labels = x_ticks_inset) +
     
     # Remove white background on inset
-    theme(axis.line = element_line(colour = "black"),
-          panel.border = element_blank(),
-          panel.background = element_blank())
+    theme(rect = element_rect(fill = "transparent"))
   
   gg
   if (!(is.na(filename))) {

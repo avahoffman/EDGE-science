@@ -34,15 +34,18 @@ library(cowplot)
 # Plot showing sensitivity underlaid with Huxman 2004 data
 plot_grid(
   plot_site_map_with_ecoregions(generate_shapefile_data()),
-  ggdraw(make_sensitivity_plot(get_huxman_2004_data(),
-                               get_edge_data())) +
+  ggdraw(
+    make_sensitivity_plot(get_huxman_2004_data(),
+                          get_edge_data())
+  ) +
     draw_plot(
       make_inset_decline_plot(get_percent_decline()),
-      x = 0.3,
-      y = 0.45,
-      height = 0.35,
-      width = 0.5
-    )
+      x = 0.36,
+      y = 0.41,
+      height = 0.5,
+      width = 0.6
+    ),
+  rel_widths = c(2, 3)
 )
 ggsave(file = "figures/sites_sensitivity.pdf",
        height = 3,
@@ -87,21 +90,21 @@ ggsave(file = "figures/eriopoda_v_gracilis.pdf",
 # Trait differences between sites
 perform_cross_validation_DAPC(load_and_clean_genind_data(), XV_skip = XV_skip)
 plot_grid(
-    plot_spp_sev_sgs(
-      collect_sev_sgs_data(ambient_composition = TRUE,
-                       sum_across_years = TRUE)
-    ) +
-      guides(fill = guide_legend(nrow = 2)) +
-      theme(legend.text.align = 0),
-    plot_sev_sgs_diff(
-      collect_sev_sgs_data(ambient_composition = FALSE,
-                       sum_across_years = TRUE)
-    ),
+  plot_spp_sev_sgs(
+    collect_sev_sgs_data(ambient_composition = TRUE,
+                         sum_across_years = TRUE)
+  ) +
+    guides(fill = guide_legend(nrow = 2)) +
+    theme(legend.text.align = 0),
+  plot_sev_sgs_diff(
+    collect_sev_sgs_data(ambient_composition = FALSE,
+                         sum_across_years = TRUE)
+  ),
   plot_dapc(load_and_clean_genind_data()) +
     guides(fill = guide_legend(nrow = 2)) +
     theme(legend.text.align = 0),
   plot_traits(load_and_clean_trait_data()),
-  rel_widths = c(3,2),
+  rel_widths = c(3, 2),
   nrow = 2,
   ncol = 2
 )
