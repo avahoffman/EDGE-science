@@ -25,9 +25,9 @@ get_slope <- function(df, sitename) {
 }
 
 
-get_edge_data <- function(){
+get_edge_data <- function() {
   setwd(data_dir)
-  edge_dat <- drop_na( read.csv("precip.csv") )
+  edge_dat <- drop_na(read.csv("precip.csv"))
   
   # Gather slopes
   CHY_est <- get_slope(edge_dat, "CHY")
@@ -39,7 +39,8 @@ get_edge_data <- function(){
   slopes <- c(CHY_est, SBK_est, SBL_est, SGS_est)
   
   # Get average precip for plotting edge dots
-  precip <- edge_dat %>% group_by(site) %>% summarise(MAP = mean(precip_mm))
+  precip <-
+    edge_dat %>% group_by(site) %>% summarise(MAP = mean(precip_mm))
   
   # datapoints
   edge_dat <- cbind(precip, slopes)
@@ -48,8 +49,7 @@ get_edge_data <- function(){
 }
 
 
-get_percent_decline <- function(sum_across_years = TRUE){
-  
+get_percent_decline <- function(sum_across_years = TRUE) {
   setwd(data_dir)
   decline_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
   
@@ -69,9 +69,7 @@ get_percent_decline <- function(sum_across_years = TRUE){
   # IF cumulative, sum across all years to get a more stable number
   if (sum_across_years) {
     full_dat <-
-      by_plot_sensitivity %>% group_by(Site, Block, Plot, Trt) %>% summarise(
-        biomass = sum(biomass) / length(sensitivity_years)
-      )
+      by_plot_sensitivity %>% group_by(Site, Block, Plot, Trt) %>% summarise(biomass = sum(biomass) / length(sensitivity_years))
   }
   
   # Calculate ambient first
@@ -89,101 +87,116 @@ get_percent_decline <- function(sum_across_years = TRUE){
   
   # Summarize by site
   summary_dat <- compare_dat %>% group_by(Site) %>%
-    summarise(
-      mean = mean(diff),
-      se = sd(diff) / sqrt(n()),
-      type = "diff"
-    ) %>% filter(Site %in% sensitivity_sites)
+    summarise(mean = mean(diff),
+              se = sd(diff) / sqrt(n()),
+              type = "diff") %>% filter(Site %in% sensitivity_sites)
   
   setwd(wd)
   return(summary_dat)
 }
 
 
-make_sensitivity_plot <- function(huxman_dat, edge_dat, filename = NA) {
-  gg <- ggplot() +
+make_sensitivity_plot <-
+  function(huxman_dat, edge_dat, filename = NA) {
+    gg <- ggplot() +
+      
+      # Add panel for arid sites
+      geom_rect(aes(
+        xmin = 0,
+        xmax = 500,
+        ymin = -0.2,
+        ymax = 1
+      ),
+      fill = desert_color) +
+      
+      # Add points
+      geom_point(data = huxman_dat,
+                 aes(x = map, y = slope),
+                 color = "black") +
+      
+      # Style and axes
+      theme_sigmaplot() +
+      ylab("Sensitivity") +
+      xlab("MAP (mm yr-1)") +
+      scale_x_continuous(
+        limits = c(0, 2650),
+        expand = c(0, 0),
+        breaks = c(0, 500, 1000, 1500, 2000, 2500),
+        sec.axis = dup_axis(labels = NULL, name = "")
+      ) +
+      scale_y_continuous(
+        limits = c(-0.2, 1.0),
+        expand = c(0, 0),
+        breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1.0),
+        sec.axis = dup_axis(labels = NULL, name = "")
+      ) +
+      # Remove awkward tick mark on axis
+      theme(axis.ticks.x = element_line(
+        color = c(
+          "transparent",
+          "black",
+          "black",
+          "black",
+          "black",
+          "black",
+          "black"
+        )
+      ),
+      axis.ticks.y = element_line(
+        color = c("black", "black", "black", "black", "black", "transparent")
+      )) +
+      
+      # Add trendline
+      geom_smooth(
+        data = huxman_dat,
+        aes(x = map, y = slope),
+        method = "glm",
+        formula = y ~ log(x),
+        se = FALSE,
+        color = "black"
+      ) +
+      
+      # Add site points
+      geom_point(
+        data = edge_dat %>% filter(site == "SGS"),
+        aes(x = MAP, y = slopes),
+        size = 2,
+        color = SGS_color
+      ) + ## SGS
+      geom_point(
+        data = edge_dat %>% filter(site == "SBL"),
+        aes(x = MAP, y = slopes),
+        size = 2,
+        color = SEV_Blue_color
+      ) + ## SBL
+      geom_point(
+        data = edge_dat %>% filter(site == "SBK"),
+        aes(x = MAP, y = slopes),
+        size = 2,
+        color = SEV_Black_color
+      ) + ## SBK
+      geom_point(
+        data = edge_dat %>% filter(site == "CHY"),
+        aes(x = MAP, y = slopes),
+        size = 2,
+        color = CHY_color
+      ) ## CHY
     
-    # Add panel for arid sites
-    geom_rect(aes(
-      xmin = 0,
-      xmax = 500,
-      ymin = -0.2,
-      ymax = 1
-    ),
-    fill = desert_color) +
     
-    # Add points
-    geom_point(data = huxman_dat,
-               aes(x = map, y = slope),
-               color = "black") +
-    
-    # Style and axes
-    theme_sigmaplot() +
-    ylab("Sensitivity") +
-    xlab("MAP (mm yr-1)") +
-    scale_x_continuous(
-      limits = c(0, 2650),
-      expand = c(0, 0),
-      breaks = c(0, 500, 1000, 1500, 2000, 2500),
-      sec.axis = dup_axis(labels = NULL, name = "")
-    ) +
-    scale_y_continuous(
-      limits = c(-0.2, 1.0),
-      expand = c(0, 0),
-      breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1.0),
-      sec.axis = dup_axis(labels = NULL, name = "")
-    ) +
-    # Remove awkward tick mark on axis
-    theme(axis.ticks.x = element_line(
-      color = c(
-        "transparent",
-        "black",
-        "black",
-        "black",
-        "black",
-        "black",
-        "black"
-      )
-    ),
-    axis.ticks.y = element_line(
-      color = c("black", "black", "black", "black", "black", "transparent")
-    )) +
-    
-    # Add trendline
-    geom_smooth(
-      data = huxman_dat,
-      aes(x = map, y = slope),
-      method = "glm",
-      formula = y ~ log(x),
-      se = FALSE,
-      color = "black"
-    ) +
-    
-    # Add site points
-    geom_point(data = edge_dat %>% filter(site == "SGS"),
-               aes(x = MAP, y = slopes), size = 2, color = SGS_color) + ## SGS
-    geom_point(data = edge_dat %>% filter(site == "SBL"),
-               aes(x = MAP, y = slopes), size = 2, color = SEV_Blue_color) + ## SBL
-    geom_point(data = edge_dat %>% filter(site == "SBK"),
-               aes(x = MAP, y = slopes), size = 2, color = SEV_Black_color) + ## SBK
-    geom_point(data = edge_dat %>% filter(site == "CHY"),
-               aes(x = MAP, y = slopes), size = 2, color = CHY_color) ## CHY
-  
-  
-  gg
-  if (!(is.na(filename))) {
-    ggsave(file = filename,
-           height = 3,
-           width = 4)
+    gg
+    if (!(is.na(filename))) {
+      ggsave(file = filename,
+             height = 3,
+             width = 4)
+    }
+    return(gg)
   }
-  return(gg)
-}
 
 
 make_inset_decline_plot <- function(summary_dat,
-                                    filename = NA){
+                                    filename = NA) {
   # Add index for order
-  summary_dat$position <- as.factor(c(4,1,2,3))
+  summary_dat$position <- as.factor(c(4, 1, 2, 3))
   
   gg <- ggplot(data = summary_dat) +
     
@@ -192,7 +205,7 @@ make_inset_decline_plot <- function(summary_dat,
     
     # Draw bars - multiply by -1 to get % DECLINE
     geom_bar(
-      aes(y = mean *-1, x = position),
+      aes(y = mean * -1, x = position),
       fill = "black",
       stat = "identity",
       position = position_stack(reverse = TRUE),
@@ -221,18 +234,19 @@ make_inset_decline_plot <- function(summary_dat,
       labels = c(0, 50, 100),
       sec.axis = dup_axis(labels = NULL, name = "")
     ) +
-    theme(axis.ticks.y = element_line(
-      color = c("transparent", "black", "black")
-    )) +
+    theme(axis.ticks.y = element_line(color = c("transparent", "black", "black"))) +
     
     ylab(y_lab_inset) +
     xlab(NULL) +
     
     # Adjust legend and colors
-    theme(
-      legend.position = "none"
-    ) +
-    scale_x_discrete(labels = x_ticks_inset)
+    theme(legend.position = "none") +
+    scale_x_discrete(labels = x_ticks_inset) +
+    
+    # Remove white background on inset
+    theme(axis.line = element_line(colour = "black"),
+          panel.border = element_blank(),
+          panel.background = element_blank())
   
   gg
   if (!(is.na(filename))) {
