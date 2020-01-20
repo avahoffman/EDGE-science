@@ -5,7 +5,7 @@ library(cowplot)
 ###########################################################################################
 
 
-theme_sigmaplot <- function(xticks = TRUE) {
+theme_sigmaplot <- function(xticks = TRUE, ticklen = -0.25) {
   # This function adds Sigma-plot like theme elements to a ggplot object.
   # Use as an additional arg, eg:
   # ggplot() + theme_sigmaplot()
@@ -14,9 +14,9 @@ theme_sigmaplot <- function(xticks = TRUE) {
     panel.background = element_blank(),
     panel.border = element_rect(size = 1, fill = NA),
     legend.key = element_rect(fill = NA),
-    axis.ticks.length.y = unit(-0.25, "cm"),
-    axis.ticks.length.y.right = unit(-0.25, "cm"),
-    axis.ticks.length.x = unit(-0.25, "cm"),
+    axis.ticks.length.y = unit(ticklen, "cm"),
+    axis.ticks.length.y.right = unit(ticklen, "cm"),
+    axis.ticks.length.x = unit(ticklen, "cm"),
     axis.text.x = element_text(
       color = "black",
       margin = margin(
