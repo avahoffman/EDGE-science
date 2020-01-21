@@ -129,10 +129,10 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
     coord_map(xlim = c(-112, -95), ylim = c(29, 45)) +
     
     # Add points
-    geom_point(aes(x = -104.77, y = 40.82), size = 1.25, color = SGS_color) + ## SGS
-    geom_point(aes(x = -104.88, y = 41.2), size = 1.25, color = CHY_color) + ## CHY
-    geom_point(aes(x = -106.6, y = 34.2), size = 1.25, color = SEV_Blue_color) +  ## Sev Blue
-    geom_point(aes(x = -106.7, y = 34.1), size = 1.25, color = SEV_Black_color) +  ## Sev Black
+    geom_point(aes(x = -104.77, y = 40.82), size = 1, color = SGS_color) + ## SGS
+    geom_point(aes(x = -104.88, y = 41.2), size = 1, color = CHY_color) + ## CHY
+    geom_point(aes(x = -106.6, y = 34.2), size = 1, color = SEV_Blue_color) +  ## Sev Blue
+    geom_point(aes(x = -106.7, y = 34.1), size = 1, color = SEV_Black_color) +  ## Sev Black
     
     # Add labels
     geom_text(aes(x = -104.8, y = 40.3), label = "SGS", size=3) + ## SGS
