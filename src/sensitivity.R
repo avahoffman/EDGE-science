@@ -11,6 +11,7 @@ get_huxman_2004_data <- function() {
   setwd(data_dir)
   huxman_dat <- read.csv("huxman_2004.csv")
   
+  setwd(wd)
   return(huxman_dat)
 }
 
@@ -117,7 +118,7 @@ make_sensitivity_plot <-
       # Style and axes
       theme_sigmaplot() +
       ylab("Sensitivity") +
-      xlab("MAP (mm yr-1)") +
+      xlab(expression(paste("MAP (mm y", r^{-1}, ")"))) +
       scale_x_continuous(
         limits = c(0, 2650),
         expand = c(0, 0),
@@ -243,7 +244,7 @@ make_inset_decline_plot <- function(summary_dat,
     theme(legend.position = "none") +
     scale_x_discrete(labels = x_ticks_inset) +
     
-    # Remove white background on inset
+    # Remove white background and border on inset
     theme(rect = element_rect(fill = "transparent"))
   
   gg
