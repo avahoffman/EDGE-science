@@ -102,12 +102,12 @@ eri_grac_years <- c(2017, 2016, 2015, 2014)
 
 
 # Figure details
-x_ticks_5 <- c("SEV Blue", "SEV Black")
+x_ticks_5 <- c("SEV Black", "SEV Blue")
 y_lab_5 <- "Percent of Grass ANPP"
 legend_names_5 <- c(expression(~italic("B. eriopoda")),
                     expression(~italic("B. gracilis")),
                     "Other C4")
-y_lab_6 <- "Percent of Change in ANPP"
+y_lab_6 <- "Percent of Change in ANPP" 
 legend_names_6 <- c(expression(~italic("B. eriopoda")),
                    expression(~italic("B. gracilis")))
 
