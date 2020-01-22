@@ -30,14 +30,15 @@ library(cowplot)
 ###########################################################################################
 
 
-# Plot ecoregion and site map
-# Plot showing sensitivity underlaid with Huxman 2004 data
 plot_grid(
+  # Plot ecoregion and site map
   plot_site_map_with_ecoregions(generate_shapefile_data()),
+  # Plot showing sensitivity underlaid with Huxman 2004 data
   ggdraw(
     make_sensitivity_plot(get_huxman_2004_data(),
                           get_edge_data())
   ) +
+    # Specify inset portion
     draw_plot(
       make_inset_decline_plot(get_percent_decline()),
       x = 0.36,
@@ -45,6 +46,7 @@ plot_grid(
       height = 0.5,
       width = 0.6
     ),
+  # Specify different widths of plot grid
   rel_widths = c(2, 3)
 )
 ggsave(file = "figures/sites_sensitivity.pdf",
