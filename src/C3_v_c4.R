@@ -80,6 +80,7 @@ summarize_ambient_data <- function(full_dat) {
   print("T test of true difference in c3 percent (CHY vs SGS) is not equal to 0")
   print(var.test(chy, sgs)) # Variance is similar
   print(t.test(chy, sgs, var.equal = TRUE, alternative = "two.sided"))
+  
   sink()
   
   # Summarize by site
@@ -122,6 +123,29 @@ summarize_difference_data <- function(full_dat) {
     100 * (compare_dat$c3_biomass.y - compare_dat$c3_biomass.x) / compare_dat$c3_biomass.x
   compare_dat$c4_diff <-
     100 * (compare_dat$c4_biomass.y - compare_dat$c4_biomass.x) / compare_dat$c4_biomass.x
+  
+  # Perform T.tests
+  chy_c3 <- compare_dat %>% filter(Site == "CHY") %>% pull(c3_diff)
+  chy_c4 <- compare_dat %>% filter(Site == "CHY") %>% pull(c4_diff)
+  sgs_c3 <- compare_dat %>% filter(Site == "SGS") %>% pull(c3_diff)
+  sgs_c4 <- compare_dat %>% filter(Site == "SGS") %>% pull(c4_diff)
+  
+  # Run test and write results
+  sink("output/statistical/tests.txt", append = TRUE)
+  
+  print("T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0")
+  print(var.test(chy_c3, chy_c4)) # Variance is different
+  print(t.test(chy_c3, chy_c4, var.equal = FALSE, alternative = "two.sided"))
+  
+  print("T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0")
+  print(var.test(sgs_c3, sgs_c4)) # Variance is similar
+  print(t.test(sgs_c3, sgs_c4, var.equal = TRUE, alternative = "two.sided"))
+  print("T test of true difference in ANPP change (C3 at SGS) is not equal to 0")
+  print(t.test(sgs_c3, var.equal = TRUE, alternative = "two.sided"))
+  print("T test of true difference in ANPP change (C4 at SGS) is not equal to 0")
+  print(t.test(sgs_c4, var.equal = TRUE, alternative = "two.sided"))
+  
+  sink()
   
   # Summarize by site
   summary_dat <- compare_dat %>% group_by(Site) %>%
