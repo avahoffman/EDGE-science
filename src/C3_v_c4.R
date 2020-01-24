@@ -61,6 +61,7 @@ collect_c3_c4_data <-
     full_dat$c4_pct <-
       100 * full_dat$c4_biomass / (full_dat$c3_biomass + full_dat$c4_biomass)
     
+    setwd(wd)
     return(full_dat)
   }
 
@@ -72,9 +73,14 @@ summarize_ambient_data <- function(full_dat) {
   # Perform T.test
   chy <- full_dat %>% filter(Site == "CHY") %>% pull(c3_pct)
   sgs <- full_dat %>% filter(Site == "SGS") %>% pull(c3_pct)
-  var.test(chy, sgs) # Variance is similar
+  
+  # Run test and write results
+  sink("output/statistical/tests.txt", append = TRUE)
+  
   print("T test of true difference in c3 percent (CHY vs SGS) is not equal to 0")
+  print(var.test(chy, sgs)) # Variance is similar
   print(t.test(chy, sgs, var.equal = TRUE, alternative = "two.sided"))
+  sink()
   
   # Summarize by site
   summary_dat <- full_dat %>% group_by(Site) %>%
