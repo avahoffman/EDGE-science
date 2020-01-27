@@ -19,23 +19,23 @@ collect_sev_data <-
     raw_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
     
     # Filter out old years
-    dat <- raw_dat[(raw_dat$Year %in% eri_grac_years),]
+    dat <- raw_dat[(raw_dat$Year %in% eri_grac_years), ]
     
     # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
-    dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")),]
+    dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")), ]
     dat <- dat %>%
       mutate(Trt = as.character(Trt)) %>% mutate(Trt = replace(Trt, Trt == "chr" |
                                                                  Trt == "int", "drt"))
     
     # Collect only C4 grasses
-    c4_taxa <- read.csv("Taxa_info.csv") %>% 
-      filter(Photo.path == "C4" & Funct.grp == "grass") %>% 
+    c4_taxa <- read.csv("Taxa_info.csv") %>%
+      filter(Photo.path == "C4" & Funct.grp == "grass") %>%
       pull(Plant.code)
-    c4_dat <- as_tibble(dat[(dat$category %in% c4_taxa),])
+    c4_dat <- as_tibble(dat[(dat$category %in% c4_taxa), ])
     # Exclude Bouteloua gracilis and eriopoda, and describe as C4
     c4_dat_other <-
       c4_dat %>% filter(category != "BOGR" &
-                          category != "BOER4") %>% mutate(category = replace(category,!(is.na(category)), "C4"))
+                          category != "BOER4") %>% mutate(category = replace(category, !(is.na(category)), "C4"))
     # Save B. gracilis and eriopoda seperately
     c4_dat_main <-
       c4_dat %>% filter(category == "BOGR" | category == "BOER4")
@@ -56,7 +56,7 @@ collect_sev_data <-
       dcast(full_dat, Site + Block + Plot + Trt ~ category, value.var = "biomass")
     # Join total to wide format and replace any NAs with zeros
     full_dat <-
-      full_join(totals, wide_dat, by = c("Site", "Block", "Plot", "Trt")) %>% 
+      full_join(totals, wide_dat, by = c("Site", "Block", "Plot", "Trt")) %>%
       mutate(BOER4 = replace(BOER4, (is.na(BOER4)), 0)) %>%
       mutate(BOGR = replace(BOGR, (is.na(BOGR)), 0)) %>%
       mutate(C4 = replace(C4, (is.na(C4)), 0))
@@ -71,10 +71,36 @@ collect_sev_data <-
       # Make long format
       long_dat <- full_dat %>% gather(spp, pct, BOER4:C4)
       
+      # Perform T.test
+      SEV_black_eriopoda <-
+        long_dat %>% filter(Site == "SEV.black" &
+                              spp == "BOER4") %>% pull(pct)
+      SEV_blue_eriopoda <-
+        long_dat %>% filter(Site == "SEV.blue" &
+                              spp == "BOER4") %>% pull(pct)
+      
+      # Run test and write results
+      sink("output/statistical/tests.txt", append = TRUE)
+      
+      print(
+        "T test of true difference in Bouteloua eriopoda percent (SEV Black vs SEV Blue) is not equal to 0"
+      )
+      print(var.test(SEV_black_eriopoda, SEV_blue_eriopoda)) # Variance is similar
+      print(
+        t.test(
+          SEV_black_eriopoda,
+          SEV_blue_eriopoda,
+          var.equal = TRUE,
+          alternative = "two.sided"
+        )
+      )
+      
+      sink()
+      
       # Summarize by site
       summary_dat <- long_dat %>% group_by(Site, spp) %>%
         summarise(mean = mean(pct),
-                  se = sd(pct) / sqrt(n())) %>% 
+                  se = sd(pct) / sqrt(n())) %>%
         filter(Site %in% eri_grac_sites)
       
       setwd(wd)
@@ -96,9 +122,9 @@ collect_sev_data <-
       
       # Subset based on species
       BOER4 <-
-        compare_dat %>% filter(Site == "SEV.black") %>% filter(BOER4.x > 0) %>% select(-BOGR.x, -BOGR.y)
+        compare_dat %>% filter(Site == "SEV.black") %>% filter(BOER4.x > 0) %>% select(-BOGR.x,-BOGR.y)
       BOGR <-
-        compare_dat %>% filter(Site == "SEV.blue") %>% filter(BOGR.x > 0) %>% select(-BOER4.x, -BOER4.y)
+        compare_dat %>% filter(Site == "SEV.blue") %>% filter(BOGR.x > 0) %>% select(-BOER4.x,-BOER4.y)
       
       # Calculate the difference
       BOGR$diff <-

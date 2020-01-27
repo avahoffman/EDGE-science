@@ -16,21 +16,21 @@ collect_c3_c4_data <-
     raw_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
     
     # Filter out old years
-    dat <- raw_dat[(raw_dat$Year %in% c3_c4_years),]
+    dat <- raw_dat[(raw_dat$Year %in% c3_c4_years), ]
     
     # Keep only CHY, SGS
-    dat <- dat[(dat$Site %in% c4_c3_sites),]
+    dat <- dat[(dat$Site %in% c4_c3_sites), ]
     
     # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
-    dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")),]
+    dat <- dat[(dat$Trt %in% c(include_in_drt_trt, "con")), ]
     dat <- dat %>%
       mutate(Trt = as.character(Trt)) %>% mutate(Trt = replace(Trt, Trt == "chr" |
                                                                  Trt == "int", "drt"))
     
     # Collect only C4 grasses
-    c4_dat <- as_tibble(dat[(dat$category %in% c4_grasses),])
+    c4_dat <- as_tibble(dat[(dat$category %in% c4_grasses), ])
     # Collect only C3 grasses
-    c3_dat <- as_tibble(dat[(dat$category %in% c3_grasses),])
+    c3_dat <- as_tibble(dat[(dat$category %in% c3_grasses), ])
     
     # Group to plot level by year, site, treatment
     by_plot_c4 <-
@@ -113,7 +113,8 @@ summarize_difference_data <- function(full_dat) {
   # Take the mean of drt treatments (including chr and int)
   full_dat_drt <- full_dat %>% group_by(Site, Block, Trt) %>%
     summarise(c3_biomass = mean(c3_biomass),
-              c4_biomass = mean(c4_biomass),) %>% filter(Trt == "drt")
+              c4_biomass = mean(c4_biomass),
+    ) %>% filter(Trt == "drt")
   # Join tables
   compare_dat <-
     full_join(full_dat_amb, full_dat_drt, by = c("Site", "Block"))
@@ -135,11 +136,21 @@ summarize_difference_data <- function(full_dat) {
   
   print("T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0")
   print(var.test(chy_c3, chy_c4)) # Variance is different
-  print(t.test(chy_c3, chy_c4, var.equal = FALSE, alternative = "two.sided"))
+  print(t.test(
+    chy_c3,
+    chy_c4,
+    var.equal = FALSE,
+    alternative = "two.sided"
+  ))
   
   print("T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0")
   print(var.test(sgs_c3, sgs_c4)) # Variance is similar
-  print(t.test(sgs_c3, sgs_c4, var.equal = TRUE, alternative = "two.sided"))
+  print(t.test(
+    sgs_c3,
+    sgs_c4,
+    var.equal = TRUE,
+    alternative = "two.sided"
+  ))
   print("T test of true difference in ANPP change (C3 at SGS) is not equal to 0")
   print(t.test(sgs_c3, var.equal = TRUE, alternative = "two.sided"))
   print("T test of true difference in ANPP change (C4 at SGS) is not equal to 0")
@@ -219,10 +230,8 @@ plot_c3_v_c4 <-
         legend.direction = "horizontal",
         legend.title = element_blank()
       ) +
-      scale_fill_manual(
-        values = c(C3_color, C4_color),
-        labels = legend_names_3
-      ) +
+      scale_fill_manual(values = c(C3_color, C4_color),
+                        labels = legend_names_3) +
       scale_x_discrete(labels = x_ticks_3)
     
     gg
@@ -279,10 +288,8 @@ plot_c3_v_c4_diff <-
         legend.direction = "horizontal",
         legend.title = element_blank()
       ) +
-      scale_fill_manual(
-        values = c(C3_color, C4_color),
-        labels = legend_names_3
-      ) +
+      scale_fill_manual(values = c(C3_color, C4_color),
+                        labels = legend_names_3) +
       scale_x_discrete(labels = x_ticks_3)
     
     gg
