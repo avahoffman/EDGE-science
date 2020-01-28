@@ -121,8 +121,7 @@ collect_sev_data <-
       # Run test and write results
       sink("output/statistical/tests.txt", append = TRUE)
       print(
-        "T test of true difference in Bouteloua eriopoda percent
-        (SEV Black vs SEV Blue) is not equal to 0"
+        "T test of true difference in Bouteloua eriopoda percent (SEV Black vs SEV Blue) is not equal to 0"
       )
       ttest_with_var_check(SEV_blue_eriopoda,
                            SEV_black_eriopoda)
@@ -190,8 +189,7 @@ collect_sev_data <-
       # Run test and write results
       sink("output/statistical/tests.txt", append = TRUE)
       print(
-        "T test of true difference in percent change of ANPP (SEV Black B.
-        eriopoda vs SEV Blue B. gracilis) is not equal to 0"
+        "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
       )
       ttest_with_var_check(SEV_blue_gracilis,
                            SEV_black_eriopoda)
