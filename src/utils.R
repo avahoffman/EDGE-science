@@ -5,7 +5,8 @@ library(cowplot)
 ###########################################################################################
 
 
-theme_sigmaplot <- function(xticks = TRUE, ticklen = -0.25) {
+theme_sigmaplot <- function(xticks = TRUE,
+                            ticklen = -0.25) {
   # This function adds Sigma-plot like theme elements to a ggplot object.
   # Use as an additional arg, eg:
   # ggplot() + theme_sigmaplot()
@@ -44,4 +45,20 @@ theme_sigmaplot <- function(xticks = TRUE, ticklen = -0.25) {
       theme(axis.ticks.x = element_blank())
   }
   return(sigmaplot)
+}
+
+ttest_with_var_check <- function(x, y) {
+  # This function checks for equal variance before proceeding with the t test.
+  if (var.test(x, y)$p.value > 0.05) {
+    equalvar = TRUE
+    print("Variance is similar between samples.")
+  }
+  else{
+    equalvar = FALSE
+    print("Variance is not similar between samples.")
+  }
+  print(t.test(x,
+               y,
+               var.equal = equalvar,
+               alternative = "two.sided"))
 }
