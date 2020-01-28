@@ -83,6 +83,8 @@ collect_sev_sgs_data <-
       mutate(C4 = replace(C4, (is.na(C4)), 0)) %>%
       mutate(C3 = replace(C3, (is.na(C3)), 0))
     
+    setwd(wd)
+    
     if (ambient_composition) {
       # Convert to percent of total
       for (i in c("BOGR", "C4", "C3")) {
@@ -122,6 +124,24 @@ collect_sev_sgs_data <-
       # Calculate the difference
       BOGR$diff <-
         100 * (BOGR$BOGR.y - BOGR$BOGR.x) / BOGR$BOGR.x
+      
+      # Perform T.tests
+      BOGR_sgs <- 
+        BOGR %>% 
+        filter(Site == "SGS") %>% 
+        pull(diff)
+      BOGR_sev <- 
+        BOGR %>% 
+        filter(Site == "SEV.blue") %>% 
+        pull(diff)
+      
+      # Run test and write results
+      sink("output/statistical/tests.txt", append = TRUE)
+      
+      print("T test of true difference in B. gracilis ANPP change (SGS vs SEV.blue) is not equal to 0")
+      ttest_with_var_check(BOGR_sgs, BOGR_sev)
+      
+      sink()
       
       # Summarize by site
       summary_dat <- BOGR %>% group_by(Site) %>%
