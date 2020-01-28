@@ -134,6 +134,29 @@ collect_sev_data <-
       BOER4$diff <-
         100 * (BOER4$BOER4.y - BOER4$BOER4.x) / BOER4$BOER4.x
       
+      # Perform T.tests
+      SEV_blue_gracilis <- BOGR %>% pull(diff)
+      SEV_black_eriopoda <- BOER4 %>% pull(diff)
+      
+      # Run test and write results
+      sink("output/statistical/tests.txt", append = TRUE)
+      
+      print(
+        "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) 
+        is not equal to 0"
+      )
+      print(var.test(SEV_black_eriopoda, SEV_blue_gracilis)) # Variance is NOT similar
+      print(
+        t.test(
+          SEV_black_eriopoda,
+          SEV_blue_gracilis,
+          var.equal = FALSE,
+          alternative = "two.sided"
+        )
+      )
+      
+      sink()
+      
       # Summarize by site
       summary_dat <- BOGR %>% group_by(Site) %>%
         summarise(
