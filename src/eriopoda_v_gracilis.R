@@ -83,20 +83,10 @@ collect_sev_data <-
       
       # Run test and write results
       sink("output/statistical/tests.txt", append = TRUE)
-      
       print(
         "T test of true difference in Bouteloua eriopoda percent (SEV Black vs SEV Blue) is not equal to 0"
       )
-      print(var.test(SEV_black_eriopoda, SEV_blue_eriopoda)) # Variance is similar
-      print(
-        t.test(
-          SEV_black_eriopoda,
-          SEV_blue_eriopoda,
-          var.equal = TRUE,
-          alternative = "two.sided"
-        )
-      )
-      
+      ttest_with_var_check(SEV_blue_eriopoda, SEV_black_eriopoda)
       sink()
       
       # Summarize by site
@@ -137,24 +127,13 @@ collect_sev_data <-
       # Perform T.tests
       SEV_blue_gracilis <- BOGR %>% pull(diff)
       SEV_black_eriopoda <- BOER4 %>% pull(diff)
-      
       # Run test and write results
       sink("output/statistical/tests.txt", append = TRUE)
-      
       print(
         "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) 
         is not equal to 0"
       )
-      print(var.test(SEV_black_eriopoda, SEV_blue_gracilis)) # Variance is NOT similar
-      print(
-        t.test(
-          SEV_black_eriopoda,
-          SEV_blue_gracilis,
-          var.equal = FALSE,
-          alternative = "two.sided"
-        )
-      )
-      
+      ttest_with_var_check(SEV_blue_gracilis, SEV_black_eriopoda)
       sink()
       
       # Summarize by site

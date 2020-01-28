@@ -51,11 +51,11 @@ ttest_with_var_check <- function(x, y) {
   # This function checks for equal variance before proceeding with the t test.
   if (var.test(x, y)$p.value > 0.05) {
     equalvar = TRUE
-    print("Variance is similar between samples.")
+    print("Variance is similar between samples for the following:")
   }
   else{
     equalvar = FALSE
-    print("Variance is not similar between samples.")
+    print("Variance is not similar between samples for the following:")
   }
   print(t.test(x,
                y,
