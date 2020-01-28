@@ -16,38 +16,38 @@ collect_c3_c4_data <-
     raw_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
     
     # Filter out old years
-    dat <- raw_dat[(raw_dat$Year %in% 
-                      c3_c4_years), ]
+    dat <- raw_dat[(raw_dat$Year %in%
+                      c3_c4_years),]
     
     # Keep only CHY, SGS
-    dat <- dat[(dat$Site %in% 
-                  c4_c3_sites), ]
+    dat <- dat[(dat$Site %in%
+                  c4_c3_sites),]
     
     # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
-    dat <- dat[(dat$Trt %in% 
-                  c(include_in_drt_trt, "con")), ]
-    dat <- 
+    dat <- dat[(dat$Trt %in%
+                  c(include_in_drt_trt, "con")),]
+    dat <-
       dat %>%
-      mutate(Trt = as.character(Trt)) %>% 
-      mutate(Trt = replace(Trt, 
+      mutate(Trt = as.character(Trt)) %>%
+      mutate(Trt = replace(Trt,
                            Trt == "chr" |
                              Trt == "int", "drt"))
     
     # Collect only C4 grasses
-    c4_dat <- as_tibble(dat[(dat$category %in% 
-                               c4_grasses), ])
+    c4_dat <- as_tibble(dat[(dat$category %in%
+                               c4_grasses),])
     # Collect only C3 grasses
-    c3_dat <- as_tibble(dat[(dat$category %in% 
-                               c3_grasses), ])
+    c3_dat <- as_tibble(dat[(dat$category %in%
+                               c3_grasses),])
     
     # Group to plot level by year, site, treatment
     by_plot_c4 <-
-      c4_dat %>% 
-      group_by(Site, Block, Plot, Year, Trt) %>% 
+      c4_dat %>%
+      group_by(Site, Block, Plot, Year, Trt) %>%
       summarise(c4_biomass = sum(biomass))
     by_plot_c3 <-
-      c3_dat %>% 
-      group_by(Site, Block, Plot, Year, Trt) %>% 
+      c3_dat %>%
+      group_by(Site, Block, Plot, Year, Trt) %>%
       summarise(c3_biomass = sum(biomass))
     # Join tables
     full_dat <-
@@ -56,16 +56,16 @@ collect_c3_c4_data <-
                 by = c("Site", "Block", "Plot", "Year", "Trt"))
     
     # Filter if there is no grass whatsoever
-    full_dat <- 
-      full_dat %>% 
-      filter(c4_biomass > 0 & 
+    full_dat <-
+      full_dat %>%
+      filter(c4_biomass > 0 &
                c3_biomass > 0)
     
     # IF cumulative, sum across all years to get a more stable number
     if (sum_across_years) {
       full_dat <-
-        full_dat %>% 
-        group_by(Site, Block, Plot, Trt) %>% 
+        full_dat %>%
+        group_by(Site, Block, Plot, Trt) %>%
         summarise(
           c3_biomass = sum(c3_biomass) / length(c3_c4_years),
           c4_biomass = sum(c4_biomass) / length(c3_c4_years)
@@ -85,18 +85,18 @@ collect_c3_c4_data <-
 
 summarize_ambient_data <- function(full_dat) {
   # Keep only control plots
-  full_dat <- 
-    full_dat %>% 
+  full_dat <-
+    full_dat %>%
     filter(Trt == "con")
   
   # Perform T.test
-  chy <- 
-    full_dat %>% 
-    filter(Site == "CHY") %>% 
+  chy <-
+    full_dat %>%
+    filter(Site == "CHY") %>%
     pull(c3_pct)
-  sgs <- 
-    full_dat %>% 
-    filter(Site == "SGS") %>% 
+  sgs <-
+    full_dat %>%
+    filter(Site == "SGS") %>%
     pull(c3_pct)
   
   # Run test and write results
@@ -106,8 +106,8 @@ summarize_ambient_data <- function(full_dat) {
   sink()
   
   # Summarize by site
-  summary_dat <- 
-    full_dat %>% 
+  summary_dat <-
+    full_dat %>%
     group_by(Site) %>%
     summarise(
       mean = mean(c3_pct),
@@ -116,17 +116,17 @@ summarize_ambient_data <- function(full_dat) {
     )
   
   # Repeat data for inverse of C3 percent (so that C3 and C4 bars can be stacked in the plot)
-  summary_dat <- 
+  summary_dat <-
     rbind(
-    summary_dat,
-    full_dat %>% 
-      group_by(Site) %>%
-      summarise(
-        mean = 100 - mean(c3_pct),
-        se = sd(c3_pct) / sqrt(n()),
-        type = "c4"
-      )
-  )
+      summary_dat,
+      full_dat %>%
+        group_by(Site) %>%
+        summarise(
+          mean = 100 - mean(c3_pct),
+          se = sd(c3_pct) / sqrt(n()),
+          type = "c4"
+        )
+    )
   
   setwd(wd)
   return(summary_dat)
@@ -135,21 +135,20 @@ summarize_ambient_data <- function(full_dat) {
 
 summarize_difference_data <- function(full_dat) {
   # Ambient first
-  full_dat_amb <- 
-    full_dat %>% 
+  full_dat_amb <-
+    full_dat %>%
     filter(Trt == "con")
   # Take the mean of drt treatments (including chr and int)
-  full_dat_drt <- 
-    full_dat %>% 
+  full_dat_drt <-
+    full_dat %>%
     group_by(Site, Block, Trt) %>%
     summarise(c3_biomass = mean(c3_biomass),
-              c4_biomass = mean(c4_biomass),
-    ) %>% 
+              c4_biomass = mean(c4_biomass),) %>%
     filter(Trt == "drt")
   # Join tables
   compare_dat <-
-    full_join(full_dat_amb, 
-              full_dat_drt, 
+    full_join(full_dat_amb,
+              full_dat_drt,
               by = c("Site", "Block"))
   
   # Calculate the difference
@@ -159,21 +158,21 @@ summarize_difference_data <- function(full_dat) {
     100 * (compare_dat$c4_biomass.y - compare_dat$c4_biomass.x) / compare_dat$c4_biomass.x
   
   # Perform T.tests
-  chy_c3 <- 
-    compare_dat %>% 
-    filter(Site == "CHY") %>% 
+  chy_c3 <-
+    compare_dat %>%
+    filter(Site == "CHY") %>%
     pull(c3_diff)
-  chy_c4 <- 
-    compare_dat %>% 
-    filter(Site == "CHY") %>% 
+  chy_c4 <-
+    compare_dat %>%
+    filter(Site == "CHY") %>%
     pull(c4_diff)
-  sgs_c3 <- 
-    compare_dat %>% 
-    filter(Site == "SGS") %>% 
+  sgs_c3 <-
+    compare_dat %>%
+    filter(Site == "SGS") %>%
     pull(c3_diff)
-  sgs_c4 <- 
-    compare_dat %>% 
-    filter(Site == "SGS") %>% 
+  sgs_c4 <-
+    compare_dat %>%
+    filter(Site == "SGS") %>%
     pull(c4_diff)
   
   # Run test and write results
@@ -194,8 +193,8 @@ summarize_difference_data <- function(full_dat) {
   sink()
   
   # Summarize by site
-  summary_dat <- 
-    compare_dat %>% 
+  summary_dat <-
+    compare_dat %>%
     group_by(Site) %>%
     summarise(
       mean = mean(c3_diff),
@@ -204,17 +203,17 @@ summarize_difference_data <- function(full_dat) {
     )
   
   # Repeat data for C4
-  summary_dat <- 
+  summary_dat <-
     rbind(
-    summary_dat,
-    compare_dat %>% 
-      group_by(Site) %>%
-      summarise(
-        mean = mean(c4_diff),
-        se = sd(c4_diff) / sqrt(n()),
-        type = "c4"
-      )
-  )
+      summary_dat,
+      compare_dat %>%
+        group_by(Site) %>%
+        summarise(
+          mean = mean(c4_diff),
+          se = sd(c4_diff) / sqrt(n()),
+          type = "c4"
+        )
+    )
   
   setwd(wd)
   return(summary_dat)
@@ -228,8 +227,8 @@ plot_c3_v_c4 <-
       
       # Draw bars
       geom_bar(
-        aes(fill = type, 
-            y = mean, 
+        aes(fill = type,
+            y = mean,
             x = Site),
         stat = "identity",
         position = position_stack(reverse = TRUE),
@@ -239,7 +238,7 @@ plot_c3_v_c4 <-
       
       # Add standard error
       geom_errorbar(
-        data = summary_dat %>% 
+        data = summary_dat %>%
           filter(type == "c3"),
         aes(
           x = Site,
@@ -254,30 +253,28 @@ plot_c3_v_c4 <-
       theme_sigmaplot(xticks = FALSE) +
       scale_y_continuous(
         limits = c(0, 105),
-        breaks = c(0, 
-                   20, 
-                   40, 
-                   60, 
-                   80, 
+        breaks = c(0,
+                   20,
+                   40,
+                   60,
+                   80,
                    100),
         expand = c(0, 0),
-        labels = c(0, 
-                   20, 
-                   40, 
-                   60, 
-                   80, 
+        labels = c(0,
+                   20,
+                   40,
+                   60,
+                   80,
                    100),
         sec.axis = dup_axis(labels = NULL, name = "")
       ) +
       theme(axis.ticks.y = element_line(
-        color = c(
-          "transparent", 
-          "black", 
-          "black", 
-          "black", 
-          "black", 
-          "black"
-          )
+        color = c("transparent",
+                  "black",
+                  "black",
+                  "black",
+                  "black",
+                  "black")
       )) +
       
       ylab(y_lab_3) +
@@ -289,7 +286,7 @@ plot_c3_v_c4 <-
         legend.direction = "horizontal",
         legend.title = element_blank()
       ) +
-      scale_fill_manual(values = c(C3_color, 
+      scale_fill_manual(values = c(C3_color,
                                    C4_color),
                         labels = legend_names_3) +
       scale_x_discrete(labels = x_ticks_3)
@@ -328,8 +325,8 @@ plot_c3_v_c4_diff <-
       
       # Draw points
       geom_point(
-        aes(fill = type, 
-            y = mean, 
+        aes(fill = type,
+            y = mean,
             x = Site),
         color = "black",
         shape = 21,
@@ -350,7 +347,7 @@ plot_c3_v_c4_diff <-
         legend.direction = "horizontal",
         legend.title = element_blank()
       ) +
-      scale_fill_manual(values = c(C3_color, 
+      scale_fill_manual(values = c(C3_color,
                                    C4_color),
                         labels = legend_names_3) +
       scale_x_discrete(labels = x_ticks_3)
