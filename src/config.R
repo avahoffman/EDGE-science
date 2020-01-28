@@ -88,9 +88,9 @@ c3_c4_years <- c(2017, 2016, 2015, 2014)
 
 # Figure details
 x_ticks_3 <- c("CHY","SGS")
-y_lab_3 <- "Percent of Grass ANPP"
+y_lab_3 <- "% of Grass ANPP"
 legend_names_3 <- c("C3 Grasses", "C4 Grasses")
-y_lab_4 <- "Percent Change in ANPP"
+y_lab_4 <- "% Change in ANPP"
 
 
 ###########################################################################################
@@ -105,11 +105,11 @@ eri_grac_years <- c(2017, 2016, 2015, 2014)
 
 # Figure details
 x_ticks_5 <- c("SEV Black", "SEV Blue")
-y_lab_5 <- "Percent of Grass ANPP"
+y_lab_5 <- "% of Grass ANPP"
 legend_names_5 <- c(expression(~italic("B. eriopoda")),
                     expression(~italic("B. gracilis")),
                     "Other C4")
-y_lab_6 <- "Percent of Change in ANPP" 
+y_lab_6 <- "% Change in ANPP" 
 legend_names_6 <- c(expression(~italic("B. eriopoda")),
                    expression(~italic("B. gracilis")))
 
@@ -125,11 +125,11 @@ sev_sgs_years <- c(2017, 2016, 2015, 2014)
 
 # Figure details
 x_ticks_7 <- c("SEV Blue", "SGS")
-y_lab_7 <- "Percent of Grass ANPP"
+y_lab_7 <- "% of Grass ANPP"
 legend_names_7 <- c(expression(~italic("B. gracilis")),
                     "C3 Grasses",
                     "Other C4")
-y_lab_8 <- "Percent Change in ANPP"
+y_lab_8 <- expression(paste("% Change in ",italic("B. gracilis"), " Biomass (g)"))
 
 ######################################################s#####################################
 ## Genetic comparison
