@@ -151,9 +151,9 @@ summarize_difference_data <- function(full_dat) {
     var.equal = TRUE,
     alternative = "two.sided"
   ))
-  print("T test of true difference in ANPP change (C3 at SGS) is not equal to 0")
+  print("T test of mean ANPP change (C3 at SGS) is not equal to 0")
   print(t.test(sgs_c3, var.equal = TRUE, alternative = "two.sided"))
-  print("T test of true difference in ANPP change (C4 at SGS) is not equal to 0")
+  print("T test of mean ANPP change (C4 at SGS) is not equal to 0")
   print(t.test(sgs_c4, var.equal = TRUE, alternative = "two.sided"))
   
   sink()

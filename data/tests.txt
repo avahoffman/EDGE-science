@@ -1,1 +1,0 @@
-T test of true difference in c3 percent (CHY vs SGS) is not equal to 0

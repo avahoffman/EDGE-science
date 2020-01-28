@@ -61,6 +61,8 @@ collect_sev_data <-
       mutate(BOGR = replace(BOGR, (is.na(BOGR)), 0)) %>%
       mutate(C4 = replace(C4, (is.na(C4)), 0))
     
+    setwd(wd)
+    
     if (ambient_composition) {
       # Convert to percent of total
       for (i in c("BOER4", "BOGR", "C4")) {

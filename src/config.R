@@ -7,7 +7,9 @@
 
 # Set working directory for the repository (should be the git repo):
 wd <-
-  "/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/"
+  "/Users/hoffman ava/EDGE-science/"
+# wd <-
+#   "/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/"
 
 # Directories for specific outputs/inputs:
 data_dir <- paste(toString(wd), "data/", sep = "")
