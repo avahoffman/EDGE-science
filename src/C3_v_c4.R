@@ -76,11 +76,8 @@ summarize_ambient_data <- function(full_dat) {
   
   # Run test and write results
   sink("output/statistical/tests.txt", append = TRUE)
-  
   print("T test of true difference in c3 percent (CHY vs SGS) is not equal to 0")
-  print(var.test(chy, sgs)) # Variance is similar
-  print(t.test(chy, sgs, var.equal = TRUE, alternative = "two.sided"))
-  
+  ttest_with_var_check(chy, sgs)
   sink()
   
   # Summarize by site
@@ -135,26 +132,16 @@ summarize_difference_data <- function(full_dat) {
   sink("output/statistical/tests.txt", append = TRUE)
   
   print("T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0")
-  print(var.test(chy_c3, chy_c4)) # Variance is different
-  print(t.test(
-    chy_c3,
-    chy_c4,
-    var.equal = FALSE,
-    alternative = "two.sided"
-  ))
+  ttest_with_var_check(chy_c3, chy_c4)
   
   print("T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0")
-  print(var.test(sgs_c3, sgs_c4)) # Variance is similar
-  print(t.test(
-    sgs_c3,
-    sgs_c4,
-    var.equal = TRUE,
-    alternative = "two.sided"
-  ))
+  ttest_with_var_check(sgs_c3, sgs_c4)
+  
   print("T test of mean ANPP change (C3 at SGS) is not equal to 0")
-  print(t.test(sgs_c3, var.equal = TRUE, alternative = "two.sided"))
+  print(t.test(sgs_c3, alternative = "two.sided"))
+  
   print("T test of mean ANPP change (C4 at SGS) is not equal to 0")
-  print(t.test(sgs_c4, var.equal = TRUE, alternative = "two.sided"))
+  print(t.test(sgs_c4, alternative = "two.sided"))
   
   sink()
   
