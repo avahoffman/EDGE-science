@@ -37,13 +37,13 @@ shortgrass_color <- "#e5f5e0"
 northern_color <- "#deebf7"
 desert_color <- "#fee0d2"
 
-# Colors for points representing these sites
+# Colors for points representing these sites on the map:
 CHY_color <- "#08519c"
 SGS_color <- "#41ab5d"
 SEV_Blue_color <- "#fd8d3c"
 SEV_Black_color <- "#cb181d"
 
-# Type colors
+# Type colors:
 C4_color <- "white"
 C3_color <- "#deebf7"
 eriopoda_color <- "#fb6a4a"
@@ -53,6 +53,8 @@ sgs_grac_color <- "#fdae6b"
 
 # Drought treatments to include in effect:
 include_in_drt_trt <- c("chr")
+
+## Time
 
 # Years to take into account:
 experiment_years <-
