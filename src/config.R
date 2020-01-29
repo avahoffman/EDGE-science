@@ -85,6 +85,7 @@ climate_colors <-
 
 # Years for inset sensitivity
 sensitivity_years <- experiment_years
+
 sensitivity_sites <-
   c("CHY",
     "SGS",
@@ -184,11 +185,13 @@ genetic_pops_to_use <-
     "Sevilleta",
     "Konza",
     "Cedar Point")
+
 DAPC_colors_pale <-
   c(sgs_grac_color,
     sev_grac_color,
     "grey",
     "lightgrey")
+
 XV_skip <- TRUE
 n_prin_comp <- 15
 
