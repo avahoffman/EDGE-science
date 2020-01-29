@@ -72,7 +72,8 @@ plot_grid(
   # Sevilleta Blue and Sevilleta Black composition comparison of Bouteloua species
   plot_spp_sev(collect_sev_data(ambient_composition = TRUE)) +
     # Break legend in to two rows so that it's not cut off
-    guides(fill = guide_legend(nrow = 2)) + theme(legend.text.align = 0),
+    guides(fill = guide_legend(nrow = 2)) + 
+    theme(legend.text.align = 0),
   # Percent change in ANPP in SEV Blue - gracilis and SEV Black eriopoda
   plot_sev_diff(collect_sev_data(ambient_composition = FALSE))
 )
