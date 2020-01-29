@@ -90,13 +90,15 @@ plot_grid(
   # Compare percent of Bouteloua gracilis with other functional groups at SEV Blue and SGS
   plot_spp_sev_sgs(collect_sev_sgs_data(ambient_composition = TRUE)) +
     # Break legend in to two rows so that it's not cut off
-    guides(fill = guide_legend(nrow = 2)) + theme(legend.text.align = 0),
+    guides(fill = guide_legend(nrow = 2)) +
+    theme(legend.text.align = 0),
   # Percent change in B. gracilis ANPP in SEV Blue and SGS
   plot_sev_sgs_diff(collect_sev_sgs_data(ambient_composition = FALSE)),
   # Plot SEV Blue and SGS individuals on principal components based on genetic markers (SNPs)
   plot_dapc(load_and_clean_genind_data()) +
     # Break legend in to two rows so that it's not cut off
-    guides(fill = guide_legend(nrow = 2)) + theme(legend.text.align = 0),
+    guides(fill = guide_legend(nrow = 2)) +
+    theme(legend.text.align = 0),
   # Plot change in biomass by greenhouse treatment, both SEV Blue and SGS populations
   plot_traits(load_and_clean_trait_data()),
   # Arrange plots in 2x2 with relative size
