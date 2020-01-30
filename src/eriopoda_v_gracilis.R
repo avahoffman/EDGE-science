@@ -35,7 +35,7 @@ collect_sev_data <-
           filter(category %in% c4_taxa &
                    category != "BOGR" &
                    category != "BOER4") %>%
-          mutate(category = replace(category,!(is.na(
+          mutate(category = replace(category, !(is.na(
             category
           )), "C4")),
         
@@ -160,12 +160,12 @@ diff_data_erio_grac <-
       compare_dat %>%
       filter(Site == "SEV.black") %>%
       filter(BOER4.x > 0) %>%
-      select(-BOGR.x,-BOGR.y)
+      select(-BOGR.x, -BOGR.y)
     BOGR <-
       compare_dat %>%
       filter(Site == "SEV.blue") %>%
       filter(BOGR.x > 0) %>%
-      select(-BOER4.x,-BOER4.y)
+      select(-BOER4.x, -BOER4.y)
     
     # Calculate the difference
     BOGR$diff <-
@@ -221,7 +221,7 @@ plot_spp_sev <-
     gg <-
       ggplot(data = summary_dat) +
       # Draw bars
-      geom_bar_custom(data = summary_dat, fill = "spp") +
+      geom_bar_custom(data = summary_dat, fill_name = "spp") +
       # Add standard error for BOGR
       geom_errorbar_custom(data = summary_dat %>%
                              filter(spp == "BOER4")) +
@@ -259,64 +259,39 @@ plot_spp_sev <-
   }
 
 
-plot_sev_diff <- function(summary_dat, filename = NA) {
-  gg <- ggplot(data = summary_dat) +
+plot_sev_diff <-
+  function(summary_dat, filename = NA) {
+    gg <-
+      ggplot(data = summary_dat) +
+      # Add zero line
+      #geom_hline(yintercept = 0, lty = 3) +
+      # Add standard error first
+      geom_errorbar_custom(data = summary_dat,
+                           group = "type",
+                           dodge = 0.3) +
+      # Draw points
+      geom_point_custom(data = summary_dat, dodge = 0.3) +
+      # Add theme and adjust axes
+      theme_sigmaplot(xticks = FALSE) +
+      scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
+      ylab(y_lab_6) +
+      xlab(NULL) +
+      # Adjust legend and colors
+      legend_custom() +
+      scale_fill_manual(
+        values = c(eriopoda_color,
+                   gracilis_color),
+        labels = c(legend_names_6)
+      ) +
+      scale_x_discrete(labels = x_ticks_5)
     
-    # Add zero line
-    #geom_hline(yintercept = 0, lty = 3) +
+    gg
     
-    # Add standard error first
-    geom_errorbar(
-      position = position_dodge(width = 0.3),
-      data = summary_dat,
-      aes(
-        group = type,
-        x = Site,
-        ymin = mean - se,
-        ymax = mean + se
-      ),
-      size = 0.5,
-      width = 0
-    ) +
+    if (!(is.na(filename))) {
+      ggsave(file = filename,
+             height = 5,
+             width = 3.5)
+    }
     
-    # Draw points
-    geom_point(
-      aes(fill = type,
-          y = mean,
-          x = Site),
-      color = "black",
-      shape = 21,
-      size = 4,
-      stat = "identity",
-      position = position_dodge(0.3)
-    ) +
-    
-    # Add theme and adjust axes
-    theme_sigmaplot(xticks = FALSE) +
-    scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
-    ylab(y_lab_6) +
-    xlab(NULL) +
-    
-    # Adjust legend and colors
-    theme(
-      legend.position = "top",
-      legend.direction = "horizontal",
-      legend.title = element_blank()
-    ) +
-    scale_fill_manual(
-      values = c(eriopoda_color,
-                 gracilis_color),
-      labels = c(legend_names_6)
-    ) +
-    scale_x_discrete(labels = x_ticks_5)
-  
-  gg
-  
-  if (!(is.na(filename))) {
-    ggsave(file = filename,
-           height = 5,
-           width = 3.5)
+    return(gg)
   }
-  
-  return(gg)
-}

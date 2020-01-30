@@ -183,7 +183,7 @@ plot_spp_sev_sgs <-
     gg <-
       ggplot(data = summary_dat) +
       # Draw bars
-      geom_bar_custom(data = summary_dat, fill = "spp") +
+      geom_bar_custom(data = summary_dat, fill_name = "spp") +
       # Add standard error for BOGR
       geom_errorbar_custom(data = summary_dat %>%
                              filter(spp == "BOGR")) +
@@ -217,50 +217,27 @@ plot_spp_sev_sgs <-
   }
 
 
-plot_sev_sgs_diff <- function(summary_dat, filename = NA) {
-  gg <- ggplot(data = summary_dat) +
-    
+plot_sev_sgs_diff <- 
+  function(summary_dat, filename = NA) {
+  gg <- 
+    ggplot(data = summary_dat) +
     # Add zero line
     geom_hline(yintercept = 0, lty = 3) +
-    
     # Add standard error first
-    geom_errorbar(
-      position = position_dodge(width = 0.3),
-      data = summary_dat,
-      aes(
-        group = type,
-        x = Site,
-        ymin = mean - se,
-        ymax = mean + se
-      ),
-      size = 0.5,
-      width = 0
-    ) +
-    
+    geom_errorbar_custom(data = summary_dat,
+                         group = "type",
+                         dodge = 0.3) +
     # Draw points
-    geom_point(
-      aes(fill = Site,
-          y = mean,
-          x = Site),
-      color = "black",
-      shape = 21,
-      size = 4,
-      stat = "identity",
-      position = position_dodge(0.3)
-    ) +
-    
+    geom_point_custom(data = summary_dat, 
+                      fill_name = "Site",
+                      dodge = 0.3) +
     # Add theme and adjust axes
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
     ylab(y_lab_8) +
     xlab(NULL) +
-    
     # Adjust legend and colors
-    theme(
-      legend.position = "top",
-      legend.direction = "horizontal",
-      legend.title = element_blank()
-    ) +
+    legend_custom() +
     scale_fill_manual(values = c(sev_grac_color,
                                  sgs_grac_color),
                       labels = x_ticks_7) +

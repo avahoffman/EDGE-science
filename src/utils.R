@@ -100,7 +100,7 @@ theme_sigmaplot <-
 
 
 geom_bar_custom <-
-  function(data,fill_name) {
+  function(data, fill_name = "type") {
     obj <- geom_bar(
       aes(fill = data[[fill_name]],
           y = mean,
@@ -115,19 +115,55 @@ geom_bar_custom <-
   }
 
 
-geom_errorbar_custom <-
-  function(data = data, add = 0) {
-    obj <- geom_errorbar(
-      data = data,
-      aes(
-        x = Site,
-        ymin = mean + add - se,
-        ymax = mean + add + se
-      ),
-      size = 0.5,
-      width = 0
+geom_point_custom <-
+  function(data,
+           fill_name = "type",
+           dodge = 0) {
+    obj <- geom_point(
+      aes(fill = data[[fill_name]],
+          y = mean,
+          x = Site),
+      color = "black",
+      shape = 21,
+      size = 4,
+      stat = "identity",
+      position = position_dodge(width = dodge)
     )
     
+    return(obj)
+  }
+
+geom_errorbar_custom <-
+  function(data,
+           group = NULL,
+           add = 0,
+           dodge = 0) {
+    if (is.null(group)) {
+      obj <- geom_errorbar(
+        position = position_dodge(width = dodge),
+        data = data,
+        aes(
+          x = Site,
+          ymin = mean + add - se,
+          ymax = mean + add + se
+        ),
+        size = 0.5,
+        width = 0
+      )
+    } else {
+      obj <- geom_errorbar(
+        position = position_dodge(width = dodge),
+        data = data,
+        aes(
+          group = get(group),
+          x = Site,
+          ymin = mean + add - se,
+          ymax = mean + add + se
+        ),
+        size = 0.5,
+        width = 0
+      )
+    }
     return(obj)
   }
 
@@ -160,8 +196,9 @@ scale_y_continuous_percent <-
 scale_y_continuous_percent_ticks <-
   function() {
     # Allows no tick mark at the zero line
-    obj <- theme(axis.ticks.y = element_line(color = c("transparent",
-                                                       rep("black", 5))))
+    obj <-
+      theme(axis.ticks.y = element_line(color = c("transparent",
+                                                  rep("black", 5))))
     
     return(obj)
   }

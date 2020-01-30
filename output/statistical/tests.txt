@@ -328,3 +328,281 @@ sample estimates:
 mean of x mean of y 
 -34.34343 -81.69786 
 
+[1] "T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0"
+[1] "T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0"
+[1] "T test of mean ANPP change (C3 at SGS) is not equal to 0"
+[1] "T test of mean ANPP change (C4 at SGS) is not equal to 0"
+[1] "T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0"
+[1] "Variance is not similar between samples for the following:"
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 0.71076, df = 12.377, p-value = 0.4904
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -23.02488  45.43206
+sample estimates:
+mean of x mean of y 
+-10.60564 -21.80923 
+
+[1] "T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0"
+[1] "Variance is similar between samples for the following:"
+
+	Two Sample t-test
+
+data:  x and y
+t = 2.016, df = 18, p-value = 0.05897
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -1.846104 89.528052
+sample estimates:
+mean of x mean of y 
+ 14.27808 -29.56290 
+
+[1] "T test of mean ANPP change (C3 at SGS) is not equal to 0"
+
+	One Sample t-test
+
+data:  sgs_c3
+t = 0.74074, df = 9, p-value = 0.4777
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -29.32595  57.88210
+sample estimates:
+mean of x 
+ 14.27808 
+
+[1] "T test of mean ANPP change (C4 at SGS) is not equal to 0"
+
+	One Sample t-test
+
+data:  sgs_c4
+t = -2.9365, df = 9, p-value = 0.01658
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -52.33728  -6.78851
+sample estimates:
+mean of x 
+ -29.5629 
+
+[1] "T test of true difference in c3 percent (CHY vs SGS) is not equal to 0"
+[1] "Variance is similar between samples for the following:"
+
+	Two Sample t-test
+
+data:  x and y
+t = 6.8756, df = 18, p-value = 1.973e-06
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 21.29123 40.02817
+sample estimates:
+mean of x mean of y 
+ 71.41686  40.75716 
+
+[1] "T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0"
+[1] "Variance is not similar between samples for the following:"
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 0.71076, df = 12.377, p-value = 0.4904
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -23.02488  45.43206
+sample estimates:
+mean of x mean of y 
+-10.60564 -21.80923 
+
+[1] "T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0"
+[1] "Variance is similar between samples for the following:"
+
+	Two Sample t-test
+
+data:  x and y
+t = 2.016, df = 18, p-value = 0.05897
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -1.846104 89.528052
+sample estimates:
+mean of x mean of y 
+ 14.27808 -29.56290 
+
+[1] "T test of mean ANPP change (C3 at SGS) is not equal to 0"
+
+	One Sample t-test
+
+data:  sgs_c3
+t = 0.74074, df = 9, p-value = 0.4777
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -29.32595  57.88210
+sample estimates:
+mean of x 
+ 14.27808 
+
+[1] "T test of mean ANPP change (C4 at SGS) is not equal to 0"
+
+	One Sample t-test
+
+data:  sgs_c4
+t = -2.9365, df = 9, p-value = 0.01658
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -52.33728  -6.78851
+sample estimates:
+mean of x 
+ -29.5629 
+
+[1] "T test of true difference in Bouteloua eriopoda percent (SEV Black vs SEV Blue) is not equal to 0"
+[1] "Variance is similar between samples for the following:"
+
+	Two Sample t-test
+
+data:  x and y
+t = -10.035, df = 18, p-value = 8.463e-09
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -67.07741 -43.85305
+sample estimates:
+mean of x mean of y 
+ 31.49732  86.96254 
+
+[1] "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
+[1] "Variance is not similar between samples for the following:"
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 5.3845, df = 10.572, p-value = 0.0002544
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+  7.600542 18.198658
+sample estimates:
+mean of x mean of y 
+-81.69786 -94.59746 
+
+[1] "T test of true difference in Bouteloua eriopoda percent (SEV Black vs SEV Blue) is not equal to 0"
+[1] "Variance is similar between samples for the following:"
+
+	Two Sample t-test
+
+data:  x and y
+t = -10.035, df = 18, p-value = 8.463e-09
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -67.07741 -43.85305
+sample estimates:
+mean of x mean of y 
+ 31.49732  86.96254 
+
+[1] "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
+[1] "Variance is not similar between samples for the following:"
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 5.3845, df = 10.572, p-value = 0.0002544
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+  7.600542 18.198658
+sample estimates:
+mean of x mean of y 
+-81.69786 -94.59746 
+
+[1] "T test of true difference in c3 percent (CHY vs SGS) is not equal to 0"
+[1] "Variance is similar between samples for the following:"
+
+	Two Sample t-test
+
+data:  x and y
+t = 6.8756, df = 18, p-value = 1.973e-06
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 21.29123 40.02817
+sample estimates:
+mean of x mean of y 
+ 71.41686  40.75716 
+
+[1] "T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0"
+[1] "Variance is not similar between samples for the following:"
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 0.71076, df = 12.377, p-value = 0.4904
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -23.02488  45.43206
+sample estimates:
+mean of x mean of y 
+-10.60564 -21.80923 
+
+[1] "T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0"
+[1] "Variance is similar between samples for the following:"
+
+	Two Sample t-test
+
+data:  x and y
+t = 2.016, df = 18, p-value = 0.05897
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -1.846104 89.528052
+sample estimates:
+mean of x mean of y 
+ 14.27808 -29.56290 
+
+[1] "T test of mean ANPP change (C3 at SGS) is not equal to 0"
+
+	One Sample t-test
+
+data:  sgs_c3
+t = 0.74074, df = 9, p-value = 0.4777
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -29.32595  57.88210
+sample estimates:
+mean of x 
+ 14.27808 
+
+[1] "T test of mean ANPP change (C4 at SGS) is not equal to 0"
+
+	One Sample t-test
+
+data:  sgs_c4
+t = -2.9365, df = 9, p-value = 0.01658
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -52.33728  -6.78851
+sample estimates:
+mean of x 
+ -29.5629 
+
+[1] "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
+[1] "Variance is not similar between samples for the following:"
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 5.3845, df = 10.572, p-value = 0.0002544
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+  7.600542 18.198658
+sample estimates:
+mean of x mean of y 
+-81.69786 -94.59746 
+
+[1] "T test of true difference in B. gracilis ANPP change (SGS vs SEV.blue) is not equal to 0"
+[1] "Variance is not similar between samples for the following:"
+
+	Welch Two Sample t-test
+
+data:  x and y
+t = 5.2679, df = 10.251, p-value = 0.0003352
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 27.39143 67.31744
+sample estimates:
+mean of x mean of y 
+-34.34343 -81.69786 
+
