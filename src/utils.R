@@ -100,7 +100,7 @@ theme_sigmaplot <-
 
 
 geom_bar_custom <-
-  function(data, fill_name = "type") {
+  function(data, fill_name) {
     obj <- geom_bar(
       aes(fill = data[[fill_name]],
           y = mean,
