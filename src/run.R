@@ -1,9 +1,13 @@
 # Execution script for EDGE Science project pipeline.
 # Generates plots and prints results to the R console.
 ###########################################################################################
-# Set working directory
-setwd("/Users/hoffman ava/EDGE-science/")
-#setwd("/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/")
+# Set working directory for the repository (should be the git repo):
+wd <-
+  "/Users/hoffman ava/EDGE-science/"
+# wd <-
+#   "/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/"
+
+setwd(wd)
 
 # General functions and configuration
 source("src/config.R")
@@ -17,8 +21,6 @@ source("src/eriopoda_v_gracilis.R")
 source("src/sev_v_sgs.R")
 source("src/genetic_diversity.R")
 source("src/gracilis_traits.R")
-
-setwd(wd)
 
 
 ###########################################################################################

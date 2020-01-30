@@ -5,12 +5,6 @@
 
 ## General
 
-# Set working directory for the repository (should be the git repo):
-wd <-
-  "/Users/hoffman ava/EDGE-science/"
-# wd <-
-#   "/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/"
-
 # Directories for specific outputs/inputs:
 data_dir <-
   paste(toString(wd),
@@ -179,6 +173,14 @@ genetic_data <-
   paste(toString(wd),
         "data/genetic/genind_all.R",
         sep = "")
+
+# Where to write the DAPC loadings
+DAPC_loadings_write_name <- 
+  "output/genetic/DAPC_loadings.csv"
+
+# Where to write variance and prin comps used:
+DAPC_stat_write_name <- 
+  "output/genetic/statistics.txt"
 
 genetic_pops_to_use <-
   c("SGS",

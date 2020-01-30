@@ -89,11 +89,17 @@ perform_cross_validation_DAPC <- function(genind_final, XV_skip) {
     
     setwd(wd)
     
-    # How much variance retained?
+    # Record how much variance is retained, and how many PCs should be used
+    sink(DAPC_stat_write_name, append = TRUE)
+    
+    print("CV results: Variance retained by optimized number of prin. comps.:")
     print(xval$DAPC$var)
     
-    # How many PCAs to use?
+    print("CV results: Number of optimal prin. comps. to use in DAPC to avoid over and under fitting:")
     print(xval$DAPC$n.pca)
+    
+    sink()
+    
   }
 }
 
@@ -109,8 +115,16 @@ plot_dapc <- function(genind_final, filename = NA) {
                n.pca = n_prin_comp,
                n.da = (length(genetic_pops_to_use) - 1))
   
-  # Recall how much variance retained
-  print(DAPC$var)
+  # Record how much variance is retained, and how many PCs are used
+  sink(DAPC_stat_write_name, append = TRUE)
+  
+  print("USED IN PLOTTING: Variance retained by number of prin. comps.:")
+  print(xval$DAPC$var)
+  
+  print("USED IN PLOTTING: Number of prin. comps. used in DAPC:")
+  print(xval$DAPC$n.pca)
+  
+  sink()
   
   # Combine LDs and Pop names
   plot_dat <- as.data.frame(DAPC$ind.coord)
@@ -122,11 +136,8 @@ plot_dapc <- function(genind_final, filename = NA) {
   names(plot_dat)[length(genetic_pops_to_use)] <- "pop"
   
   # Save plot data
-  setwd(write_dir)
-  write.csv(plot_dat, file = "DAPC_loadings.csv")
-  
-  setwd(wd)
-  
+  write.csv(plot_dat, file = DAPC_loadings_write_name)
+
   # Set colors by reordering alphabetically
   custom_colors_pale <- DAPC_colors_pale[order(genetic_pops_to_use)]
   sorted_pops <- sort(genetic_pops_to_use)

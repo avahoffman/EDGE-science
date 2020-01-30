@@ -101,8 +101,10 @@ summarize_ambient_data <- function(full_dat) {
   
   # Run test and write results
   sink("output/statistical/tests.txt", append = TRUE)
+  
   print("T test of true difference in c3 percent (CHY vs SGS) is not equal to 0")
   ttest_with_var_check(chy, sgs)
+  
   sink()
   
   # Summarize by site
