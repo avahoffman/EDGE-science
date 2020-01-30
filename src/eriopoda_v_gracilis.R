@@ -11,51 +11,40 @@ library(reshape2)
 
 
 collect_sev_data <-
-  function(ambient_composition, sum_across_years = TRUE) {
+  function(sum_across_years = TRUE) {
     # Sum across years option decides whether each year is a data point for site (FALSE), plot
     # OR whether to add up all the years cumulatively first (TRUE)
     
-    setwd(data_dir)
-    raw_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
-    
-    # Filter out old years
-    dat <- raw_dat[(raw_dat$Year %in%
-                      eri_grac_years), ]
-    
-    # Lump all experimental droughts into drought (if want to exclude
-    # one or the other, see config)
-    dat <- dat[(dat$Trt %in%
-                  c(include_in_drt_trt, "con")), ]
-    dat <-
-      dat %>%
-      mutate(Trt = as.character(Trt)) %>%
-      mutate(Trt = replace(Trt,
-                           Trt == "chr" |
-                             Trt == "int", "drt"))
+    setwd(wd)
+    dat <- filter_and_clean_raw_data(bio_dat,
+                                     sites = eri_grac_sites,
+                                     years = eri_grac_years)
     
     # Collect only C4 grasses
     c4_taxa <-
-      read.csv("Taxa_info.csv") %>%
+      read.csv("data/Taxa_info.csv") %>%
       filter(Photo.path == "C4" &
                Funct.grp == "grass") %>%
       pull(Plant.code)
-    c4_dat <- as_tibble(dat[(dat$category %in%
-                               c4_taxa), ])
+    
+    # Filter data frame for C4 taxa
     # Exclude Bouteloua gracilis and eriopoda, and describe as C4
-    c4_dat_other <-
-      c4_dat %>%
-      filter(category != "BOGR" &
-               category != "BOER4") %>%
-      mutate(category = replace(category, !(is.na(category)),
-                                "C4"))
-    # Save B. gracilis and eriopoda seperately
-    c4_dat_main <-
-      c4_dat %>%
-      filter(category == "BOGR" |
-               category == "BOER4")
-    # Combine data segments
-    c4_dat <- rbind(c4_dat_other,
-                    c4_dat_main)
+    c4_dat <-
+      rbind(
+        dat %>%
+          filter(category %in% c4_taxa &
+                   category != "BOGR" &
+                   category != "BOER4") %>%
+          mutate(category = replace(category,!(is.na(
+            category
+          )), "C4")),
+        
+        # Filter data frame for C4 taxa
+        # Save B. gracilis and eriopoda seperately
+        dat %>%
+          filter(category %in% c4_taxa &
+                   (category == "BOGR" | category == "BOER4"))
+      )
     
     # IF cumulative, sum across all years to get a more stable number
     if (sum_across_years) {
@@ -66,257 +55,208 @@ collect_sev_data <-
                     length(eri_grac_years))
     }
     
-    # Calculate total biomass
-    totals <-
-      full_dat %>%
-      group_by(Site, Block, Plot, Trt) %>%
-      summarise(total_biomass = sum(biomass))
-    # Convert species level to wide format
-    wide_dat <-
-      dcast(full_dat, Site + Block + Plot + Trt ~ category,
-            value.var = "biomass")
-    # Join total to wide format and replace any NAs with zeros
     full_dat <-
-      full_join(totals,
-                wide_dat,
-                by = c("Site", "Block", "Plot", "Trt")) %>%
-      mutate(BOER4 = replace(BOER4,
-                             (is.na(BOER4)),
-                             0)) %>%
-      mutate(BOGR = replace(BOGR,
-                            (is.na(BOGR)),
-                            0)) %>%
-      mutate(C4 = replace(C4,
-                          (is.na(C4)),
-                          0))
+      full_join(
+        # Calculate total biomass
+        full_dat %>%
+          group_by(Site,
+                   Block,
+                   Plot,
+                   Trt) %>%
+          summarise(total_biomass = sum(biomass)),
+        
+        # Convert species level to wide format
+        dcast(full_dat, Site + Block + Plot + Trt ~ category,
+              value.var = "biomass"),
+        
+        # Join together
+        by = c("Site",
+               "Block",
+               "Plot",
+               "Trt")
+      )
+    
+    # Replace missing values with zeros (no biomass)
+    for (i in c("BOER4", "BOGR", "C4")) {
+      full_dat[[i]] <- full_dat[[i]] %>% replace_na(0)
+    }
     
     setwd(wd)
     
-    if (ambient_composition) {
-      # Convert to percent of total
-      for (i in c("BOER4", "BOGR", "C4")) {
-        full_dat[[i]] <- 100 * full_dat[[i]] / full_dat$total_biomass
-      }
-      # Keep only control plots
-      full_dat <-
-        full_dat %>%
-        filter(Trt == "con")
-      # Make long format
-      long_dat <-
-        full_dat %>%
-        gather(spp, pct, BOER4:C4)
-      
-      # Perform T.test
-      SEV_black_eriopoda <-
-        long_dat %>%
-        filter(Site == "SEV.black" &
-                 spp == "BOER4") %>%
-        pull(pct)
-      SEV_blue_eriopoda <-
-        long_dat %>%
-        filter(Site == "SEV.blue" &
-                 spp == "BOER4") %>%
-        pull(pct)
-      
-      # Run test and write results
-      sink("output/statistical/tests.txt", append = TRUE)
-      print(
-        "T test of true difference in Bouteloua eriopoda percent (SEV Black vs SEV Blue) is not equal to 0"
-      )
-      ttest_with_var_check(SEV_blue_eriopoda,
-                           SEV_black_eriopoda)
-      sink()
-      
-      # Summarize by site
-      summary_dat <-
-        long_dat %>%
-        group_by(Site, spp) %>%
-        summarise(mean = mean(pct),
-                  se = sd(pct) / sqrt(n())) %>%
-        filter(Site %in%
-                 eri_grac_sites)
-      
-      setwd(wd)
-      return(summary_dat)
+    return(full_dat)
+  }
+
+ambient_data_erio_grac <-
+  function(full_dat = collect_sev_data()) {
+    # Convert to percent of total
+    for (i in c("BOER4", "BOGR", "C4")) {
+      full_dat[[i]] <- 100 * full_dat[[i]] / full_dat$total_biomass
     }
-    else{
-      # Ambient
-      full_dat_amb <-
+    # Keep only control plots and make long format
+    long_dat <-
+      full_dat %>%
+      filter(Trt == "con") %>%
+      gather(spp, pct, BOER4:C4)
+    
+    # Perform T.test
+    SEV_black_eriopoda <-
+      long_dat %>%
+      filter(Site == "SEV.black" &
+               spp == "BOER4") %>%
+      pull(pct)
+    SEV_blue_eriopoda <-
+      long_dat %>%
+      filter(Site == "SEV.blue" &
+               spp == "BOER4") %>%
+      pull(pct)
+    
+    # Run test and write results
+    sink("output/statistical/tests.txt", append = TRUE)
+    print(
+      "T test of true difference in Bouteloua eriopoda percent (SEV Black vs SEV Blue) is not equal to 0"
+    )
+    ttest_with_var_check(SEV_blue_eriopoda,
+                         SEV_black_eriopoda)
+    sink()
+    
+    # Summarize by site
+    summary_dat <-
+      long_dat %>%
+      group_by(Site, spp) %>%
+      summarise(mean = mean(pct),
+                se = sd(pct) / sqrt(n()))
+    
+    setwd(wd)
+    
+    return(summary_dat)
+  }
+
+diff_data_erio_grac <-
+  function(full_dat = collect_sev_data()) {
+    # Join ambient and drought data to get the difference, Join tables
+    compare_dat <-
+      full_join(
+        # Ambient data
         full_dat %>%
-        filter(Trt == "con")
-      # Take the mean of drt treatments (including chr and int)
-      full_dat_drt <-
+          filter(Trt == "con"),
+        
+        # Aggregate among drt treatments by mean (e.g., including chr and int)
         full_dat %>%
-        group_by(Site, Block, Trt) %>%
-        summarise(
-          total_biomass = mean(total_biomass),
-          BOGR = mean(BOGR),
-          BOER4 = mean(BOER4)
-        ) %>%
-        filter(Trt == "drt")
-      # Join tables
-      compare_dat <-
-        full_join(full_dat_amb,
-                  full_dat_drt,
-                  by = c("Site", "Block")) %>%
-        select(-C4)
+          group_by(Site, Block, Trt) %>%
+          summarise(
+            total_biomass = mean(total_biomass),
+            BOGR = mean(BOGR),
+            BOER4 = mean(BOER4)
+          ) %>%
+          filter(Trt == "drt"),
+        
+        # Join
+        by = c("Site", "Block")
+      ) %>%
+      select(-C4)
+    
+    # Subset based on species
+    BOER4 <-
+      compare_dat %>%
+      filter(Site == "SEV.black") %>%
+      filter(BOER4.x > 0) %>%
+      select(-BOGR.x,-BOGR.y)
+    BOGR <-
+      compare_dat %>%
+      filter(Site == "SEV.blue") %>%
+      filter(BOGR.x > 0) %>%
+      select(-BOER4.x,-BOER4.y)
+    
+    # Calculate the difference
+    BOGR$diff <-
+      100 * (BOGR$BOGR.y - BOGR$BOGR.x) / BOGR$BOGR.x
+    BOER4$diff <-
+      100 * (BOER4$BOER4.y - BOER4$BOER4.x) / BOER4$BOER4.x
+    
+    # Perform T.tests
+    SEV_blue_gracilis <-
+      BOGR %>%
+      pull(diff)
+    SEV_black_eriopoda <-
+      BOER4 %>%
+      pull(diff)
+    # Run test and write results
+    sink("output/statistical/tests.txt", append = TRUE)
+    print(
+      "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
+    )
+    ttest_with_var_check(SEV_blue_gracilis,
+                         SEV_black_eriopoda)
+    sink()
+    
+    # Summarize by site
+    summary_dat <-
       
-      # Subset based on species
-      BOER4 <-
-        compare_dat %>%
-        filter(Site == "SEV.black") %>%
-        filter(BOER4.x > 0) %>%
-        select(-BOGR.x, -BOGR.y)
-      BOGR <-
-        compare_dat %>%
-        filter(Site == "SEV.blue") %>%
-        filter(BOGR.x > 0) %>%
-        select(-BOER4.x, -BOER4.y)
-      
-      # Calculate the difference
-      BOGR$diff <-
-        100 * (BOGR$BOGR.y - BOGR$BOGR.x) / BOGR$BOGR.x
-      BOER4$diff <-
-        100 * (BOER4$BOER4.y - BOER4$BOER4.x) / BOER4$BOER4.x
-      
-      # Perform T.tests
-      SEV_blue_gracilis <-
+      rbind(
+        # Summarize by site for BOGR
         BOGR %>%
-        pull(diff)
-      SEV_black_eriopoda <-
+          group_by(Site) %>%
+          summarise(
+            mean = mean(diff),
+            se = sd(diff) / sqrt(n()),
+            type = "bogr"
+          ),
+        # Repeat for BOER
         BOER4 %>%
-        pull(diff)
-      # Run test and write results
-      sink("output/statistical/tests.txt", append = TRUE)
-      print(
-        "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
+          group_by(Site) %>%
+          summarise(
+            mean = mean(diff),
+            se = sd(diff) / sqrt(n()),
+            type = "boer"
+          )
       )
-      ttest_with_var_check(SEV_blue_gracilis,
-                           SEV_black_eriopoda)
-      sink()
-      
-      # Summarize by site
-      summary_dat <-
-        BOGR %>%
-        group_by(Site) %>%
-        summarise(
-          mean = mean(diff),
-          se = sd(diff) / sqrt(n()),
-          type = "bogr"
-        )
-      
-      # Repeat data for C4
-      summary_dat <-
-        rbind(
-          summary_dat,
-          BOER4 %>%
-            group_by(Site) %>%
-            summarise(
-              mean = mean(diff),
-              se = sd(diff) / sqrt(n()),
-              type = "boer"
-            )
-        )
-      
-      setwd(wd)
-      return(summary_dat)
+    
+    setwd(wd)
+    
+    return(summary_dat)
+  }
+
+plot_spp_sev <-
+  function(summary_dat, filename = NA) {
+    gg <-
+      ggplot(data = summary_dat) +
+      # Draw bars
+      geom_bar_custom(data = summary_dat, fill = "spp") +
+      # Add standard error for BOGR
+      geom_errorbar_custom(data = summary_dat %>%
+                             filter(spp == "BOER4")) +
+      # Add theme and adjust axes
+      theme_sigmaplot(xticks = FALSE) +
+      scale_y_continuous_percent() +
+      scale_y_continuous_percent_ticks() +
+      ylab(y_lab_5) +
+      xlab(NULL) +
+      # Adjust legend and colors
+      legend_custom() +
+      scale_fill_manual(
+        values = c(eriopoda_color,
+                   gracilis_color,
+                   C4_color),
+        labels = c(legend_names_5)
+      ) +
+      scale_x_discrete(labels = x_ticks_5) +
+      # Add standard error for BOER4 - not a good workaround for this -
+      # considered bad practice to have stacked error bars. Have to add 31.5.
+      geom_errorbar_custom(data = summary_dat %>%
+                             filter(spp == "BOGR" &
+                                      Site == "SEV.blue"),
+                           add = 31.5)
+    
+    gg
+    
+    if (!(is.na(filename))) {
+      ggsave(file = filename,
+             height = 5,
+             width = 3.5)
     }
+    
+    return(gg)
   }
-
-
-plot_spp_sev <- function(summary_dat, filename = NA) {
-  gg <- ggplot(data = summary_dat) +
-    
-    # Draw bars
-    geom_bar(
-      aes(fill = spp, y = mean, x = Site),
-      stat = "identity",
-      position = position_stack(reverse = TRUE),
-      color = "black",
-      width = 0.5,
-    ) +
-    
-    # Add standard error for BOGR
-    geom_errorbar(
-      data = summary_dat %>%
-        filter(spp == "BOER4"),
-      aes(
-        x = Site,
-        ymin = mean - se,
-        ymax = mean + se
-      ),
-      size = 0.5,
-      width = 0
-    ) +
-    
-    # Add standard error for BOER4 - not a good workaround for this -
-    # considered bad practice to have stacked error bars
-    geom_errorbar(
-      data = summary_dat %>%
-        filter(spp == "BOGR" &
-                 Site == "SEV.blue"),
-      aes(
-        x = Site,
-        ymin = mean + 31.5 - se,
-        ymax = mean + 31.5 + se
-      ),
-      size = 0.5,
-      width = 0
-    ) +
-    
-    # Add theme and adjust axes
-    theme_sigmaplot(xticks = FALSE) +
-    scale_y_continuous(
-      limits = c(0, 105),
-      breaks = c(0,
-                 20,
-                 40,
-                 60,
-                 80,
-                 100),
-      expand = c(0, 0),
-      labels = c(0,
-                 20,
-                 40,
-                 60,
-                 80,
-                 100),
-      sec.axis = dup_axis(labels = NULL, name = "")
-    ) +
-    theme(axis.ticks.y = element_line(
-      color = c("transparent",
-                "black",
-                "black",
-                "black",
-                "black",
-                "black")
-    )) +
-    
-    ylab(y_lab_5) +
-    xlab(NULL) +
-    
-    # Adjust legend and colors
-    theme(
-      legend.position = "top",
-      legend.direction = "horizontal",
-      legend.title = element_blank(),
-    ) +
-    scale_fill_manual(
-      values = c(eriopoda_color,
-                 gracilis_color,
-                 C4_color),
-      labels = c(legend_names_5)
-    ) +
-    scale_x_discrete(labels = x_ticks_5)
-  
-  gg
-  if (!(is.na(filename))) {
-    ggsave(file = filename,
-           height = 5,
-           width = 3.5)
-  }
-  return(gg)
-}
 
 
 plot_sev_diff <- function(summary_dat, filename = NA) {
@@ -371,10 +311,12 @@ plot_sev_diff <- function(summary_dat, filename = NA) {
     scale_x_discrete(labels = x_ticks_5)
   
   gg
+  
   if (!(is.na(filename))) {
     ggsave(file = filename,
            height = 5,
            width = 3.5)
   }
+  
   return(gg)
 }

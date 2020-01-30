@@ -18,6 +18,8 @@ write_dir <-
   paste(toString(wd),
         "output/",
         sep = "")
+bio_dat <- 
+  read.csv("data/EDGE_biomass_long_QAQC_final.csv")
 
 ## Colors
 
@@ -100,7 +102,7 @@ x_ticks_inset <-
 ## C4 vs C3 grass coverage
 
 # Sites to include:
-c4_c3_sites <- c("CHY", "SGS")
+c3_c4_sites <- c("CHY", "SGS")
 
 # C4 or C3 Grasses to include:
 c4_grasses <-

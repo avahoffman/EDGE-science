@@ -15,279 +15,206 @@ collect_sev_sgs_data <-
     # Sum across years option decides whether each year is a data point for site (FALSE), plot
     # OR whether to add up all the years cumulatively first (TRUE)
     
-    setwd(data_dir)
-    raw_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
+    setwd(wd)
+    dat <- filter_and_clean_raw_data(bio_dat,
+                                     sites = sev_sgs_sites,
+                                     years = sev_sgs_years)
     
-    # Filter out old years
-    dat <- raw_dat[(raw_dat$Year %in%
-                      sev_sgs_years), ]
-    
-    # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
-    dat <- dat[(dat$Trt %in%
-                  c(include_in_drt_trt, "con")), ]
-    dat <-
-      dat %>%
-      mutate(Trt = as.character(Trt)) %>%
-      mutate(Trt = replace(Trt,
-                           Trt == "chr" |
-                             Trt == "int",
-                           "drt"))
-    
-    # Collect only C4 grasses
+    # Collect only C4 grasses for filtering
     c4_taxa <-
-      read.csv("Taxa_info.csv") %>%
+      read.csv("data/Taxa_info.csv") %>%
       filter(Photo.path == "C4" &
                Funct.grp == "grass") %>%
       pull(Plant.code)
-    c4_dat <- as_tibble(dat[(dat$category %in%
-                               c4_taxa), ])
-    # Exclude Bouteloua gracilis and describe as C4
-    c4_dat_other <-
-      c4_dat %>%
-      filter(category != "BOGR") %>%
-      mutate(category = replace(category, !(is.na(category)),
-                                "C4"))
     
-    # Collect only C3 grasses
+    # Collect only C3 grasses for filtering
     c3_taxa <-
-      read.csv("Taxa_info.csv") %>%
+      read.csv("data/Taxa_info.csv") %>%
       filter(Photo.path == "C3" &
                Funct.grp == "grass") %>%
       pull(Plant.code)
-    c3_dat <- as_tibble(dat[(dat$category %in%
-                               c3_taxa), ])
-    # Describe as C3
-    c3_dat_other <-
-      c3_dat %>%
-      mutate(category = replace(category, !(is.na(category)),
-                                "C3"))
     
-    # Save B. gracilis seperately
-    bogr_dat <-
-      c4_dat %>%
-      filter(category == "BOGR")
-    # Combine data segments
-    bogr_dat <-
-      rbind(c4_dat_other,
-            c3_dat_other,
-            bogr_dat)
+    # Combine data chunks
+    full_dat <-
+      rbind(
+        # Non-BOGR C4 grasses
+        dat %>%
+          filter(category %in% c4_taxa &
+                   category != "BOGR") %>%
+          mutate(category = replace(category, !(is.na(
+            category
+          )),
+          "C4")),
+        # C3 grasses
+        dat %>%
+          filter(category %in% c3_taxa) %>%
+          mutate(category = replace(category, !(is.na(
+            category
+          )),
+          "C3")),
+        # BOGR only
+        dat %>%
+          filter(category == "BOGR")
+      )
     
     # IF cumulative, sum across all years to get a more stable number
     if (sum_across_years) {
       full_dat <-
-        bogr_dat %>%
+        full_dat %>%
         group_by(Site, Block, Plot, Trt, category) %>%
         summarise(biomass = sum(biomass) / length(sev_sgs_years))
     }
     
-    # Calculate total biomass
-    totals <-
-      full_dat %>%
-      group_by(Site, Block, Plot, Trt) %>%
-      summarise(total_biomass = sum(biomass))
-    # Convert species level to wide format
-    wide_dat <-
-      dcast(full_dat, Site + Block + Plot + Trt ~ category,
-            value.var = "biomass")
-    # Join total to wide format and replace any NAs (species not appearing in plot) with zeros
+    # Calculate total biomass for groups in question
     full_dat <-
-      full_join(totals,
-                wide_dat,
-                by = c("Site", "Block", "Plot", "Trt")) %>%
-      mutate(BOGR = replace(BOGR,
-                            (is.na(BOGR)),
-                            0)) %>%
-      mutate(C4 = replace(C4,
-                          (is.na(C4)),
-                          0)) %>%
-      mutate(C3 = replace(C3,
-                          (is.na(C3)),
-                          0))
+      full_join(
+        # Calculate total biomass
+        full_dat %>%
+          group_by(Site, Block, Plot, Trt) %>%
+          summarise(total_biomass = sum(biomass)),
+        
+        # Convert species level to wide format
+        dcast(full_dat, Site + Block + Plot + Trt ~ category,
+              value.var = "biomass"),
+        
+        # Join total to wide format
+        by = c("Site", "Block", "Plot", "Trt")
+      )
+    
+    # Replace missing values with zeros (no biomass - species not appearing in plot)
+    for (i in c("BOGR", "C3", "C4")) {
+      full_dat[[i]] <- full_dat[[i]] %>% replace_na(0)
+    }
     
     setwd(wd)
     
-    if (ambient_composition) {
-      # Convert to percent of total
-      for (i in c("BOGR", "C4", "C3")) {
-        full_dat[[i]] <- 100 * full_dat[[i]] / full_dat$total_biomass
-      }
-      # Keep only control plots
-      full_dat <-
-        full_dat %>%
-        filter(Trt == "con")
-      # Make long format
-      long_dat <-
-        full_dat %>%
-        gather(spp, pct, BOGR:C4)
-      
-      # Summarize by site
-      summary_dat <-
-        long_dat %>%
-        group_by(Site, spp) %>%
-        summarise(mean = mean(pct),
-                  se = sd(pct) / sqrt(n())) %>%
-        filter(Site %in%
-                 sev_sgs_sites)
-      
-      setwd(wd)
-      return(summary_dat)
-    }
-    else{
-      # Ambient
-      full_dat_amb <-
-        full_dat %>%
-        filter(Trt == "con")
-      # Take the mean of drt treatments (including chr and int if indicated)
-      full_dat_drt <-
-        full_dat %>%
-        group_by(Site, Block, Trt) %>%
-        summarise(total_biomass = mean(total_biomass),
-                  BOGR = mean(BOGR)) %>%
-        filter(Trt == "drt")
-      # Join tables
-      compare_dat <-
-        full_join(full_dat_amb,
-                  full_dat_drt,
-                  by = c("Site", "Block")) %>%
-        select(-C4, -C3)
-      
-      # Subset
-      BOGR <-
-        compare_dat %>%
-        filter(Site %in%
-                 sev_sgs_sites) %>%
-        filter(BOGR.x > 0)
-      
-      # Calculate the difference
-      BOGR$diff <-
-        100 * (BOGR$BOGR.y - BOGR$BOGR.x) / BOGR$BOGR.x
-      
-      # Perform T.tests
-      BOGR_sgs <-
-        BOGR %>%
-        filter(Site == "SGS") %>%
-        pull(diff)
-      BOGR_sev <-
-        BOGR %>%
-        filter(Site == "SEV.blue") %>%
-        pull(diff)
-      
-      # Run test and write results
-      sink("output/statistical/tests.txt", append = TRUE)
-      
-      print("T test of true difference in B. gracilis ANPP change (SGS vs SEV.blue) is not equal to 0")
-      ttest_with_var_check(BOGR_sgs, BOGR_sev)
-      
-      sink()
-      
-      # Summarize by site
-      summary_dat <-
-        BOGR %>%
-        group_by(Site) %>%
-        summarise(
-          mean = mean(diff),
-          se = sd(diff) / sqrt(n()),
-          type = "bogr"
-        )
-      
-      setwd(wd)
-      return(summary_dat)
-    }
+    return(full_dat)
   }
 
 
-plot_spp_sev_sgs <- function(summary_dat, filename = NA) {
-  gg <- ggplot(data = summary_dat) +
+ambient_data_sev_sgs <-
+  function(full_dat = collect_sev_sgs_data()) {
+    # Convert to percent of total
+    for (i in c("BOGR", "C4", "C3")) {
+      full_dat[[i]] <- 100 * full_dat[[i]] / full_dat$total_biomass
+    }
+    # Keep only control plots and make long format
+    long_dat <-
+      full_dat %>%
+      filter(Trt == "con") %>%
+      gather(spp, pct, BOGR:C4)
     
-    # Draw bars
-    geom_bar(
-      aes(fill = spp,
-          y = mean,
-          x = Site),
-      stat = "identity",
-      position = position_stack(reverse = TRUE),
-      color = "black",
-      width = 0.5,
-    ) +
+    # Summarize by site
+    summary_dat <-
+      long_dat %>%
+      group_by(Site, spp) %>%
+      summarise(mean = mean(pct),
+                se = sd(pct) / sqrt(n()))
     
-    # Add standard error for BOGR
-    geom_errorbar(
-      data = summary_dat %>%
-        filter(spp == "BOGR"),
-      aes(
-        x = Site,
-        ymin = mean - se,
-        ymax = mean + se
-      ),
-      size = 0.5,
-      width = 0
-    ) +
+    setwd(wd)
     
-    # Add standard error for C3 - not a good workaround for this - considered bad practice to have
-    # stacked error bars
-    geom_errorbar(
-      data = summary_dat %>%
-        filter(spp == "C3"),
-      aes(
-        x = Site,
-        ymin = mean + 58.4 - se,
-        ymax = mean + 58.4 + se
-      ),
-      size = 0.5,
-      width = 0
-    ) +
-    
-    # Add theme and adjust axes
-    theme_sigmaplot(xticks = FALSE) +
-    scale_y_continuous(
-      limits = c(0, 105),
-      breaks = c(0,
-                 20,
-                 40,
-                 60,
-                 80,
-                 100),
-      expand = c(0, 0),
-      labels = c(0,
-                 20,
-                 40,
-                 60,
-                 80,
-                 100),
-      sec.axis = dup_axis(labels = NULL, name = "")
-    ) +
-    theme(axis.ticks.y = element_line(
-      color = c("transparent",
-                "black",
-                "black",
-                "black",
-                "black",
-                "black")
-    )) +
-    
-    ylab(y_lab_7) +
-    xlab(NULL) +
-    
-    # Adjust legend and colors
-    theme(
-      legend.position = "top",
-      legend.direction = "horizontal",
-      legend.title = element_blank(),
-    ) +
-    scale_fill_manual(values = c(gracilis_color,
-                                 C3_color,
-                                 C4_color),
-                      labels = legend_names_7) +
-    scale_x_discrete(labels = x_ticks_7)
-  
-  gg
-  if (!(is.na(filename))) {
-    ggsave(file = filename,
-           height = 5,
-           width = 3.5)
+    return(summary_dat)
   }
-  return(gg)
-}
+
+
+diff_data_sev_sgs <-
+  function(full_dat = collect_sev_sgs_data()) {
+    # Join ambient and drought data to get the difference, Join tables
+    compare_dat <-
+      full_join(
+        # Ambeint data
+        full_dat %>%
+          filter(Trt == "con"),
+        
+        # Aggregate among drt treatments by mean (e.g., including chr and int)
+        full_dat %>%
+          group_by(Site, Block, Trt) %>%
+          summarise(
+            total_biomass = mean(total_biomass),
+            BOGR = mean(BOGR)
+          ) %>%
+          filter(Trt == "drt"),
+        
+        # Join
+        by = c("Site", "Block")
+      ) %>%
+      select(-C4, -C3) %>%
+      filter(BOGR.x > 0)
+    
+    # Calculate the difference
+    compare_dat$diff <-
+      100 * (compare_dat$BOGR.y - compare_dat$BOGR.x) / compare_dat$BOGR.x
+    
+    # Perform T.tests
+    BOGR_sgs <-
+      compare_dat %>%
+      filter(Site == "SGS") %>%
+      pull(diff)
+    BOGR_sev <-
+      compare_dat %>%
+      filter(Site == "SEV.blue") %>%
+      pull(diff)
+    
+    # Run test and write results
+    sink("output/statistical/tests.txt", append = TRUE)
+    
+    print("T test of true difference in B. gracilis ANPP change (SGS vs SEV.blue) is not equal to 0")
+    ttest_with_var_check(BOGR_sgs, BOGR_sev)
+    
+    sink()
+    
+    # Summarize by site
+    summary_dat <-
+      compare_dat %>%
+      group_by(Site) %>%
+      summarise(mean = mean(diff),
+                se = sd(diff) / sqrt(n()),
+                type = "bogr")
+    
+    setwd(wd)
+    
+    return(summary_dat)
+  }
+
+
+
+plot_spp_sev_sgs <-
+  function(summary_dat, filename = NA) {
+    gg <-
+      ggplot(data = summary_dat) +
+      # Draw bars
+      geom_bar_custom(data = summary_dat, fill = "spp") +
+      # Add standard error for BOGR
+      geom_errorbar_custom(data = summary_dat %>%
+                             filter(spp == "BOGR")) +
+      # Add theme and adjust axes
+      theme_sigmaplot(xticks = FALSE) +
+      scale_y_continuous_percent() +
+      scale_y_continuous_percent_ticks() +
+      ylab(y_lab_7) +
+      xlab(NULL) +
+      # Adjust legend and colors
+      legend_custom() +
+      scale_fill_manual(values = c(gracilis_color,
+                                   C3_color,
+                                   C4_color),
+                        labels = legend_names_7) +
+      scale_x_discrete(labels = x_ticks_7) +
+      # Add standard error for C3 - not a good workaround for this - 
+      # considered bad practice to have stacked error bars. Have to add 58.4.
+      geom_errorbar_custom(data = summary_dat %>%
+                             filter(spp == "C3"),
+                           add = 58.4)
+    gg
+    
+    if (!(is.na(filename))) {
+      ggsave(file = filename,
+             height = 5,
+             width = 3.5)
+    }
+    
+    return(gg)
+  }
 
 
 plot_sev_sgs_diff <- function(summary_dat, filename = NA) {
@@ -340,10 +267,12 @@ plot_sev_sgs_diff <- function(summary_dat, filename = NA) {
     scale_x_discrete(labels = x_ticks_7)
   
   gg
+  
   if (!(is.na(filename))) {
     ggsave(file = filename,
            height = 5,
            width = 3.5)
   }
+  
   return(gg)
 }

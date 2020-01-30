@@ -119,10 +119,10 @@ plot_dapc <- function(genind_final, filename = NA) {
   sink(DAPC_stat_write_name, append = TRUE)
   
   print("USED IN PLOTTING: Variance retained by number of prin. comps.:")
-  print(xval$DAPC$var)
+  print(DAPC$var)
   
   print("USED IN PLOTTING: Number of prin. comps. used in DAPC:")
-  print(xval$DAPC$n.pca)
+  print(DAPC$n.pca)
   
   sink()
   
