@@ -14,8 +14,6 @@ collect_sev_sgs_data <-
   function(ambient_composition, sum_across_years = TRUE) {
     # Sum across years option decides whether each year is a data point for site (FALSE), plot
     # OR whether to add up all the years cumulatively first (TRUE)
-    
-    setwd(wd)
     dat <- filter_and_clean_raw_data(bio_dat,
                                      sites = sev_sgs_sites,
                                      years = sev_sgs_years)
@@ -86,8 +84,6 @@ collect_sev_sgs_data <-
       full_dat[[i]] <- full_dat[[i]] %>% replace_na(0)
     }
     
-    setwd(wd)
-    
     return(full_dat)
   }
 
@@ -110,8 +106,6 @@ ambient_data_sev_sgs <-
       group_by(Site, spp) %>%
       summarise(mean = mean(pct),
                 se = sd(pct) / sqrt(n()))
-    
-    setwd(wd)
     
     return(summary_dat)
   }
@@ -170,8 +164,6 @@ diff_data_sev_sgs <-
       summarise(mean = mean(diff),
                 se = sd(diff) / sqrt(n()),
                 type = "bogr")
-    
-    setwd(wd)
     
     return(summary_dat)
   }

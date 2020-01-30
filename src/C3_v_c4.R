@@ -11,8 +11,6 @@ collect_c3_c4_data <-
   function(sum_across_years = TRUE) {
     # Sum across years option decides whether each year is a data point for site (FALSE), plot
     # OR whether to add up all the years cumulatively first (TRUE)
-    
-    setwd(wd)
     dat <- filter_and_clean_raw_data(bio_dat,
                                      sites = c3_c4_sites,
                                      years = c3_c4_years)
@@ -74,8 +72,6 @@ collect_c3_c4_data <-
     full_dat$c4_pct <-
       100 * full_dat$c4_biomass / (full_dat$c3_biomass + full_dat$c4_biomass)
     
-    setwd(wd)
-    
     return(full_dat)
   }
 
@@ -125,8 +121,6 @@ ambient_data_c3_c4 <-
             type = "c4"
           )
       )
-    
-    setwd(wd)
     
     return(summary_dat)
   }
@@ -218,8 +212,6 @@ diff_data_c3_c4 <-
             type = "c4"
           )
       )
-    
-    setwd(wd)
     
     return(summary_dat)
   }

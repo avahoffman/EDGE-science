@@ -14,8 +14,6 @@ collect_sev_data <-
   function(sum_across_years = TRUE) {
     # Sum across years option decides whether each year is a data point for site (FALSE), plot
     # OR whether to add up all the years cumulatively first (TRUE)
-    
-    setwd(wd)
     dat <- filter_and_clean_raw_data(bio_dat,
                                      sites = eri_grac_sites,
                                      years = eri_grac_years)
@@ -81,8 +79,6 @@ collect_sev_data <-
       full_dat[[i]] <- full_dat[[i]] %>% replace_na(0)
     }
     
-    setwd(wd)
-    
     return(full_dat)
   }
 
@@ -125,8 +121,6 @@ ambient_data_erio_grac <-
       group_by(Site, spp) %>%
       summarise(mean = mean(pct),
                 se = sd(pct) / sqrt(n()))
-    
-    setwd(wd)
     
     return(summary_dat)
   }
@@ -210,8 +204,6 @@ diff_data_erio_grac <-
             type = "boer"
           )
       )
-    
-    setwd(wd)
     
     return(summary_dat)
   }

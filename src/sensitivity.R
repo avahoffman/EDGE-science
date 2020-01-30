@@ -21,7 +21,6 @@ get_slope <- function(df, sitename) {
 
 get_edge_data <- function() {
   # Get anpp vs precip slope per site, and mean precip per site
-  setwd(wd)
   edge_dat <- drop_na(precip_dat)
   
   # Gather slopes
@@ -46,13 +45,11 @@ get_edge_data <- function() {
   # datapoints
   edge_dat <- cbind(precip, slopes)
   
-  setwd(wd)
   return(edge_dat)
 }
 
 
 get_percent_decline <- function(sum_across_years = TRUE) {
-  setwd(wd)
   decline_dat <- bio_dat
   
   # Filter out old years
@@ -124,7 +121,6 @@ get_percent_decline <- function(sum_across_years = TRUE) {
     filter(Site %in%
              sensitivity_sites)
   
-  setwd(wd)
   return(summary_dat)
 }
 
