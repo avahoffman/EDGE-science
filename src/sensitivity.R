@@ -50,23 +50,12 @@ get_edge_data <- function() {
 
 
 get_percent_decline <- function(sum_across_years = TRUE) {
-  decline_dat <- bio_dat
-  
-  # Filter out old years
-  dat <- decline_dat[(decline_dat$Year %in%
-                        sensitivity_years),]
-  
-  # Lump all experimental droughts into drought (if want to exclude one or the other, see config)
-  dat <- dat[(dat$Trt %in%
-                c(include_in_drt_trt,
-                  "con")),]
-  dat <-
-    dat %>%
-    mutate(Trt = as.character(Trt)) %>%
-    mutate(Trt = replace(Trt,
-                         Trt == "chr" |
-                           Trt == "int",
-                         "drt"))
+  # Sum across years option decides whether each year is a data point for site (FALSE), plot
+  # OR whether to add up all the years cumulatively first (TRUE)
+  # Keep only sites, years, and treatments of interest:
+  dat <- filter_and_clean_raw_data(bio_dat,
+                                   sites = sensitivity_sites,
+                                   years = sensitivity_years)
   
   # Group to plot level by year, site, treatment
   by_plot_sensitivity <-
@@ -89,23 +78,24 @@ get_percent_decline <- function(sum_across_years = TRUE) {
       summarise(biomass = sum(biomass) / length(sensitivity_years))
   }
   
-  # Calculate ambient first
-  full_dat_amb <-
-    full_dat %>%
-    filter(Trt == "con")
-  # Take the mean of drt treatments (including chr and int)
-  full_dat_drt <-
-    full_dat %>%
-    group_by(Site,
-             Block,
-             Trt) %>%
-    summarise(biomass = mean(biomass)) %>%
-    filter(Trt == "drt")
   # Join tables
   compare_dat <-
-    full_join(full_dat_amb,
-              full_dat_drt,
-              by = c("Site", "Block"))
+    full_join(
+      # Ambient data
+      full_dat %>%
+        filter(Trt == "con"),
+      
+      # Take the mean of drt treatments (including chr and int)
+      full_dat %>%
+        group_by(Site,
+                 Block,
+                 Trt) %>%
+        summarise(biomass = mean(biomass)) %>%
+        filter(Trt == "drt"),
+      
+      # Join
+      by = c("Site", "Block")
+    )
   
   # Calculate the difference
   compare_dat$diff <-
@@ -117,9 +107,7 @@ get_percent_decline <- function(sum_across_years = TRUE) {
     group_by(Site) %>%
     summarise(mean = mean(diff),
               se = sd(diff) / sqrt(n()),
-              type = "diff") %>%
-    filter(Site %in%
-             sensitivity_sites)
+              type = "diff")
   
   return(summary_dat)
 }
@@ -237,7 +225,6 @@ make_sensitivity_plot <-
         size = 2,
         color = CHY_color
       ) ## CHY
-    
     
     gg
     if (!(is.na(filename))) {
