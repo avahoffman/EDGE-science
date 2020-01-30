@@ -2,25 +2,6 @@
 # Includes relevant constants for all analysis
 ###########################################################################################
 
-
-## General
-
-# Directories for specific outputs/inputs:
-data_dir <-
-  paste(toString(wd),
-        "data/",
-        sep = "")
-figure_dir <-
-  paste(toString(wd),
-        "figures/",
-        sep = "")
-write_dir <-
-  paste(toString(wd),
-        "output/",
-        sep = "")
-bio_dat <- 
-  read.csv("data/EDGE_biomass_long_QAQC_final.csv")
-
 ## Colors
 
 # Ecoregion labels:
@@ -60,13 +41,54 @@ experiment_years <-
     2014)
 
 ###########################################################################################
-## Map and Huxman data with inset (sensitivity)
+## Data inputs / sources
 
 # Directory where map shapefiles representing ecoregions should be:
 shapefile_dir <-
   paste(toString(wd),
         "data/shapefiles/",
         sep = "")
+
+bio_dat <- 
+  read.csv("data/EDGE_biomass_long_QAQC_final.csv")
+
+taxa_dat <- 
+  read.csv("data/Taxa_info.csv")
+
+precip_dat <- 
+  read.csv("data/precip.csv")
+
+huxman_dat <- 
+  read.csv("data/huxman_2004.csv")
+
+biomass_dat <- 
+  read.csv("data/genetic/gracilis_traits.csv")
+
+genetic_data <-
+  paste(toString(wd),
+        "data/genetic/genind_all.R",
+        sep = "")
+
+
+###########################################################################################
+## Data outputs
+
+# Where to write the DAPC loadings:
+DAPC_loadings_write_name <- 
+  "output/genetic/DAPC_loadings.csv"
+
+# Where to write variance and prin comps used:
+DAPC_stat_write_name <- 
+  "output/genetic/statistics.txt"
+
+# Figure directory:
+figure_dir <-
+  paste(toString(wd),
+        "figures/",
+        sep = "")
+
+###########################################################################################
+## Map and Huxman data with inset (sensitivity)
 
 # Names for ecoregions:
 shortgrass_name <- "Shortgrass Steppe"
@@ -171,18 +193,6 @@ y_lab_8 <-
 ######################################################s#####################################
 ## Genetic comparison
 # Very important not to mess around with these unless cross validation has been performed!!
-genetic_data <-
-  paste(toString(wd),
-        "data/genetic/genind_all.R",
-        sep = "")
-
-# Where to write the DAPC loadings
-DAPC_loadings_write_name <- 
-  "output/genetic/DAPC_loadings.csv"
-
-# Where to write variance and prin comps used:
-DAPC_stat_write_name <- 
-  "output/genetic/statistics.txt"
 
 genetic_pops_to_use <-
   c("SGS",

@@ -7,15 +7,6 @@ library(dplyr)
 
 ###########################################################################################
 
-get_huxman_2004_data <- function() {
-  # Load Huxman 2004 data and return
-  setwd(data_dir)
-  huxman_dat <- read.csv("huxman_2004.csv")
-  
-  setwd(wd)
-  return(huxman_dat)
-}
-
 
 get_slope <- function(df, sitename) {
   # Calculate the slope of the production / precip relationship
@@ -30,8 +21,8 @@ get_slope <- function(df, sitename) {
 
 get_edge_data <- function() {
   # Get anpp vs precip slope per site, and mean precip per site
-  setwd(data_dir)
-  edge_dat <- drop_na(read.csv("precip.csv"))
+  setwd(wd)
+  edge_dat <- drop_na(precip_dat)
   
   # Gather slopes
   CHY_est <- get_slope(edge_dat, "CHY")
@@ -61,8 +52,8 @@ get_edge_data <- function() {
 
 
 get_percent_decline <- function(sum_across_years = TRUE) {
-  setwd(data_dir)
-  decline_dat <- read.csv("EDGE_biomass_long_QAQC_final.csv")
+  setwd(wd)
+  decline_dat <- bio_dat
   
   # Filter out old years
   dat <- decline_dat[(decline_dat$Year %in%

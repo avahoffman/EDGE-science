@@ -22,7 +22,7 @@ collect_sev_data <-
     
     # Collect only C4 grasses
     c4_taxa <-
-      read.csv("data/Taxa_info.csv") %>%
+      taxa_dat %>%
       filter(Photo.path == "C4" &
                Funct.grp == "grass") %>%
       pull(Plant.code)

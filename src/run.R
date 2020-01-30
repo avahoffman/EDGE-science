@@ -38,7 +38,7 @@ plot_grid(
   
   # Plot showing EDGE site sensitivity underlaid with Huxman 2004 data
   ggdraw(
-    make_sensitivity_plot(get_huxman_2004_data(),
+    make_sensitivity_plot(huxman_dat,
                           get_edge_data())
   ) +
     # Specify inset portion

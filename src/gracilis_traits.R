@@ -9,10 +9,6 @@ library(dplyr)
 
 
 load_and_clean_trait_data <- function() {
-  # Load data
-  biomass_dat <- 
-    read.csv("data/genetic/gracilis_traits.csv")
-  
   # Calculate total biomass trait
   biomass_dat$total <-
     biomass_dat$biomass_aboveground +

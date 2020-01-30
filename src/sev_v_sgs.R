@@ -22,14 +22,14 @@ collect_sev_sgs_data <-
     
     # Collect only C4 grasses for filtering
     c4_taxa <-
-      read.csv("data/Taxa_info.csv") %>%
+      taxa_dat %>%
       filter(Photo.path == "C4" &
                Funct.grp == "grass") %>%
       pull(Plant.code)
     
     # Collect only C3 grasses for filtering
     c3_taxa <-
-      read.csv("data/Taxa_info.csv") %>%
+      taxa_dat %>%
       filter(Photo.path == "C3" &
                Funct.grp == "grass") %>%
       pull(Plant.code)

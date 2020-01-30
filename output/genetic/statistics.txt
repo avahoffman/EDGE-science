@@ -2,3 +2,11 @@
 [1] 0.320452
 [1] "USED IN PLOTTING: Number of prin. comps. used in DAPC:"
 [1] 15
+[1] "USED IN PLOTTING: Variance retained by number of prin. comps.:"
+[1] 0.320452
+[1] "USED IN PLOTTING: Number of prin. comps. used in DAPC:"
+[1] 15
+[1] "USED IN PLOTTING: Variance retained by number of prin. comps.:"
+[1] 0.320452
+[1] "USED IN PLOTTING: Number of prin. comps. used in DAPC:"
+[1] 15
