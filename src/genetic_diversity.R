@@ -18,24 +18,46 @@ library(tidyr)
 
 
 load_and_clean_genind_data <- function() {
-  # Load processed SNP genind data
+  # Load processed SNP genind data, an object called "genind.data1"
   load(genetic_data)
+  
   # Remove all but one of each clone (clones were used to test efficacy of this method)
-  indNames(genind.data1)
   genind_1clone_only <-
-    genind.data1[c(5, 12, 18, 21, 27, 33, 41, 44, 48, 50, 55, 58, 65:335)]
-  # Clone sites were either EDGE or HQ - replace with SGS since they came from that site generally
+    genind.data1[c(5, 
+                   12, 
+                   18, 
+                   21, 
+                   27, 
+                   33, 
+                   41, 
+                   44, 
+                   48, 
+                   50, 
+                   55, 
+                   58, 
+                   65:335)]
+  
+  # Clone sites were either EDGE or HQ - replace with SGS since they came from 
+  # that site generally
   indNames(genind_1clone_only) <-
-    gsub("Bgedge", "SGS", indNames(genind_1clone_only))
+    gsub("Bgedge", 
+         "SGS", 
+         indNames(genind_1clone_only))
   indNames(genind_1clone_only) <-
-    gsub("BgHq", "SGS", indNames(genind_1clone_only))
-  indNames(genind_1clone_only)
+    gsub("BgHq", 
+         "SGS", 
+         indNames(genind_1clone_only))
+
   # Impute mean for missing data
   genind_1clone_only$tab <-
-    tab(genind_1clone_only, NA.method = "mean")
-  # Filter out only desired populations
+    tab(genind_1clone_only, 
+        NA.method = "mean")
+  
+  # Filter out only desired populations specified in config
   genind_final <-
-    genind_1clone_only[(pop(genind_1clone_only) %in% genetic_pops_to_use),]
+    genind_1clone_only[(pop(genind_1clone_only) %in% 
+                          genetic_pops_to_use),]
+  
   return(genind_final)
 }
 
@@ -45,6 +67,7 @@ perform_cross_validation_DAPC <- function(genind_final, XV_skip) {
   if (!XV_skip) {
     # Group is population
     grp <- pop(genind_final)
+    
     # Plot CV results
     setwd(figure_dir)
     pdf("XV_genetic.pdf")
@@ -63,9 +86,12 @@ perform_cross_validation_DAPC <- function(genind_final, XV_skip) {
         parallel = "multicore"
       )
     dev.off()
+    
     setwd(wd)
+    
     # How much variance retained?
     print(xval$DAPC$var)
+    
     # How many PCAs to use?
     print(xval$DAPC$n.pca)
   }
@@ -75,35 +101,47 @@ perform_cross_validation_DAPC <- function(genind_final, XV_skip) {
 plot_dapc <- function(genind_final, filename = NA) {
   # Make the data frame
   # Group is population
+  # num. of principal components is specified by config for time, but
+  # should be derived from cross validation analysis above
   grp <- pop(genind_final)
   DAPC <- dapc(genind_final$tab,
                grp,
                n.pca = n_prin_comp,
                n.da = (length(genetic_pops_to_use) - 1))
+  
   # Recall how much variance retained
   print(DAPC$var)
-  ## Combine LDs and Pop names
+  
+  # Combine LDs and Pop names
   plot_dat <- as.data.frame(DAPC$ind.coord)
-  plot_dat <- cbind(plot_dat, DAPC$grp)
+  plot_dat <- 
+    cbind(plot_dat, 
+          DAPC$grp)
+  
   # Rename column
   names(plot_dat)[length(genetic_pops_to_use)] <- "pop"
+  
   # Save plot data
   setwd(write_dir)
-  write.csv(plot_dat, file = "genetic/DAPC_loadings.csv")
+  write.csv(plot_dat, file = "DAPC_loadings.csv")
+  
   setwd(wd)
+  
   # Set colors by reordering alphabetically
   custom_colors_pale <- DAPC_colors_pale[order(genetic_pops_to_use)]
   sorted_pops <- sort(genetic_pops_to_use)
   plot_dat$ordered_pop <- tolower(plot_dat$pop)
   
   gg <- ggplot(data = plot_dat,
-               aes(x = LD1, y = LD2)) +
+               aes(x = LD1, 
+                   y = LD2)) +
     theme_sigmaplot() +
     scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
     scale_x_continuous(sec.axis = dup_axis(labels = NULL, name = ""))
   for (i in 1:4) {
     # Plot an ellipse for each pop
-    sub_dat = subset(plot_dat, `pop` == sorted_pops[i])
+    sub_dat = subset(plot_dat, 
+                     `pop` == sorted_pops[i])
     gg <- gg + stat_ellipse(data = sub_dat,
                             color = custom_colors_pale[i])
   }
@@ -143,15 +181,25 @@ plot_prob_assign <- function(genind_final, filename = NA) {
                grp,
                n.pca = n_prin_comp,
                n.da = (length(genetic_pops_to_use) - 1))
+  
   ## "Structure" plot
   # Add true population to predictions (posterior) and convert to long format
-  posts <- cbind(DAPC$posterior, as.data.frame(DAPC$grp))
+  posts <- 
+    cbind(DAPC$posterior, 
+          as.data.frame(DAPC$grp))
   posts <- posts %>%
     rename(true_pop = `DAPC$grp`) %>%
-    filter(true_pop %in% c("SGS", "Sevilleta")) %>%
-    gather(id_pop, prob, SGS:Sevilleta)
+    filter(true_pop %in% 
+             c("SGS", "Sevilleta")) %>%
+    gather(id_pop, 
+           prob, 
+           SGS:Sevilleta)
+  
   # Summarize by site
-  summary_dat <- posts %>% group_by(true_pop, id_pop) %>%
+  summary_dat <- 
+    posts %>% 
+    group_by(true_pop, 
+             id_pop) %>%
     summarise(mean = mean(prob),
               se = sd(prob) / sqrt(n()))
   
@@ -162,7 +210,9 @@ plot_prob_assign <- function(genind_final, filename = NA) {
     
     # Draw bars
     geom_bar(
-      aes(fill = id_pop, y = mean, x = true_pop),
+      aes(fill = id_pop, 
+          y = mean, 
+          x = true_pop),
       stat = "identity",
       position = position_stack(),
       color = "black",
@@ -171,7 +221,8 @@ plot_prob_assign <- function(genind_final, filename = NA) {
     
     # Add standard error for SGS + SGS
     geom_errorbar(
-      data = summary_dat %>% filter(id_pop == true_pop),
+      data = summary_dat %>% 
+        filter(id_pop == true_pop),
       aes(
         x = true_pop,
         ymin = mean - se,
@@ -185,13 +236,19 @@ plot_prob_assign <- function(genind_final, filename = NA) {
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(
       limits = c(0, 1.05),
-      breaks = c(0.0, 0.5, 1.00),
+      breaks = c(0.0, 
+                 0.5, 
+                 1.00),
       expand = c(0, 0),
-      labels = c(0, 0.5, "1.0"),
+      labels = c(0, 
+                 0.5, 
+                 "1.0"),
       sec.axis = dup_axis(labels = NULL, name = "")
     ) +
     theme(axis.ticks.y = element_line(
-      color = c("transparent", "black", "black")
+      color = c("transparent", 
+                "black", 
+                "black")
     )) +
     
     ylab("Probability of Assignment") +
@@ -215,79 +272,16 @@ plot_prob_assign <- function(genind_final, filename = NA) {
 }
 
 
-plot_genetic_structure <- function(genind_final, filename = NA) {
-  # TODO: CLEANUP, NEEDS WORK
-  # Make the data frame
-  # Group is population
-  grp <- pop(genind_final)
-  DAPC <- dapc(genind_final$tab,
-               grp,
-               n.pca = n_prin_comp,
-               n.da = (length(genetic_pops_to_use) - 1))
-  ## "structure" plot
-  # Add true population to predictions (posterior)
-  posts <- cbind(DAPC$posterior, as.data.frame(DAPC$grp))
-  posts <- posts %>% rename(true_pop = `DAPC$grp`)
-  posts$id <- row.names(posts)
-  # Make long format
-  long_dat <- posts %>% gather(id_pop, prob, SGS:Sevilleta)
-  long_dat <- long_dat[order(tolower(long_dat$true_pop)),]
-  
-  # write.csv(long.dat, "genomics_output/Structure_plot_data_total.csv")
-  # write.csv(posts, "genomics_output/Structure_plot_data_total_wide.csv")
-  
-  gg <- ggplot(data = long_dat,
-               aes(x = long_dat$id, y = long_dat$prob)) +
-    geom_bar(
-      aes(fill = long_dat$id_pop),
-      stat = "identity",
-      position = position_stack(),
-      width = 0.9
-    ) +
-    scale_fill_manual(values = c(
-      "grey",
-      "lightgrey",
-      northern_color,
-      shortgrass_color
-    )) +
-    labs(fill = "Population") + xlab("Individual") + ylab("Probability of Assignment") +
-    theme_sigmaplot(xticks = FALSE) +
-    scale_y_continuous(
-      limits = c(0, 1.0000),
-      breaks = c(0, .5, 1.00),
-      expand = c(0, 0),
-      labels = c(0, 0.5, "1.0"),
-      sec.axis = dup_axis(labels = NULL, name = "")
-    ) +
-    theme(axis.ticks.y = element_line(
-      color = c("transparent", "black", "transparent")
-    )) +
-    scale_x_discrete(expand = c(-1.05, 0)) +
-    theme(
-      legend.position = "top",
-      axis.text.x = element_blank(),
-      panel.border = element_blank(),
-      axis.line.y = element_line(colour = "black", size = 1)
-    )
-  
-  gg
-  if (!(is.na(filename))) {
-    ggsave(file = filename,
-           height = 2,
-           width = 3)
-  }
-  return(gg)
-}
-
-
-
 combine_dapc_and_assign <-
-  function(plot_dapc, plot_prob, filename = NA) {
+  function(plot_dapc, 
+           plot_prob, 
+           filename = NA) {
     # Make an inset for prob of assignment
     plot_with_inset <-
       ggdraw(plot_dapc) +
       draw_plot(
-        plot_prob + ylab("Probability of\nAssignment"),
+        plot_prob + 
+          ylab("Probability of\nAssignment"),
         x = 0.55,
         y = 0.115,
         height = 0.29,
