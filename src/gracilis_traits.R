@@ -10,15 +10,20 @@ library(dplyr)
 
 load_and_clean_trait_data <- function() {
   # Load data
-  biomass_dat <- read.csv("data/genetic/gracilis_traits.csv")
+  biomass_dat <- 
+    read.csv("data/genetic/gracilis_traits.csv")
+  
   # Calculate total biomass trait
   biomass_dat$total <-
     biomass_dat$biomass_aboveground +
     biomass_dat$biomass_belowground +
     biomass_dat$biomass_rhizome +
     biomass_dat$flwr_mass_lifetime
+  
   # Summarize data by population and treatment
-  summary_dat <- biomass_dat %>% group_by(pop, trt) %>%
+  summary_dat <- 
+    biomass_dat %>% 
+    group_by(pop, trt) %>%
     summarise(mean = mean(total),
               se = sd(total) / sqrt(n()))
   
@@ -29,7 +34,7 @@ load_and_clean_trait_data <- function() {
 plot_traits <- function(summary_dat, filename = NA) {
   gg <- ggplot(data = summary_dat) +
     
-    # Add standard error first
+    # Add standard error first (to fall behind the points)
     geom_errorbar(
       position = position_dodge(width = 0.1),
       data = summary_dat,
@@ -43,7 +48,7 @@ plot_traits <- function(summary_dat, filename = NA) {
       width = 0
     ) +
     
-    # Connect points
+    # Connect points with a line
     stat_summary(
       aes(
         y = mean,
@@ -57,7 +62,9 @@ plot_traits <- function(summary_dat, filename = NA) {
     
     # Draw points
     geom_point(
-      aes(fill = pop, y = mean, x = trt),
+      aes(fill = pop, 
+          y = mean, 
+          x = trt),
       color = "black",
       shape = 21,
       size = 4,
@@ -72,20 +79,29 @@ plot_traits <- function(summary_dat, filename = NA) {
     xlab(NULL) +
     
     # Adjust legend and colors
+    
+    # Legend positioning
     theme(
       legend.position = "top",
       legend.direction = "horizontal",
       legend.title = element_blank()
     ) +
+    
+    # Point color
     scale_fill_manual(
-      values = c(sev_grac_color, sgs_grac_color),
+      values = c(sev_grac_color, 
+                 sgs_grac_color),
       labels = legend_names_10
     ) +
     
+    # Slope (connecting) line color
     scale_color_manual(
-      values = c(sev_grac_color, sgs_grac_color),
+      values = c(sev_grac_color, 
+                 sgs_grac_color),
       labels = legend_names_10
     ) +
+    
+    # X axis category names
     scale_x_discrete(labels = x_ticks_10)
   
   gg
