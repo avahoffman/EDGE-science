@@ -32,9 +32,6 @@ library(cowplot)
 ## Outlier analysis on plots
 ## eg shitload of forbs for example
 ## Kate will send subplot data
-## colored sensitivity bars
-## smaller hash line
-
 
 ###########################################################################################
 
@@ -65,7 +62,7 @@ plot_grid(
 # Save plots
 ggsave(file = "figures/sites_sensitivity.pdf",
        height = 3.4,
-       width = 7)
+       width = 6.8)
 
 
 plot_grid(# Compare percent C3 grass at CHY and SGS
