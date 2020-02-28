@@ -29,7 +29,15 @@ library(ggplot2)
 library(cowplot)
 
 
+## Outlier analysis on plots
+## eg shitload of forbs for example
+## Kate will send subplot data
+## colored sensitivity bars
+## smaller hash line
+
+
 ###########################################################################################
+
 
 
 plot_grid(
@@ -37,26 +45,27 @@ plot_grid(
   plot_site_map_with_ecoregions(generate_shapefile_data()),
   
   # Plot showing EDGE site sensitivity underlaid with Huxman 2004 data
-  ggdraw(
-    make_sensitivity_plot(huxman_dat,
-                          get_edge_data())
-  ) +
-    # Specify inset portion
-    draw_plot(
-      make_inset_decline_plot(get_percent_decline()),
-      # Specify where the inset should be positioned, and how large it should be
-      x = 0.36,
-      y = 0.41,
-      height = 0.5,
-      width = 0.6
+  make_sensitivity_plot(huxman_dat,
+                        get_edge_data()) +
+    # Inset as an annotation
+    annotation_custom(
+      grob = ggplotGrob(make_inset_decline_plot(get_percent_decline())) ,
+      xmin = 675,
+      xmax = 2650,
+      ymin = 0.23,
+      ymax = 0.95
     ),
+
   # Specify different widths of plot grid
-  rel_widths = c(2, 3)
+  rel_widths = c(0.45, 0.55),
+  align = "h",
+  axis = "t",
+  nrow = 1
 )
 # Save plots
 ggsave(file = "figures/sites_sensitivity.pdf",
-       height = 3,
-       width = 5.5)
+       height = 3.4,
+       width = 7)
 
 
 plot_grid(# Compare percent C3 grass at CHY and SGS

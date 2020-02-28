@@ -54,7 +54,8 @@ generate_shapefile_data <- function() {
                 fortify(readOGR(shapefile_dir, 
                                 "chihuahuan_desert")))
   
-  usa_map <- map_data("state")
+  usa_map <- 
+    map_data("state")
   
   sf_data <- list(
     "sf_shortgrass" = sf_shortgrass,
@@ -111,15 +112,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
                    fill = region
                  )) +
     
-    # Add base map on which to plot
-    geom_map(
-      data = sf_data$usa_map,
-      map = sf_data$usa_map,
-      aes(map_id = region),
-      fill = NA
-    ) +
-    
-    #add size command to make country lines visible
+    # Add base plot with state lines
     geom_map(
       data = sf_data$usa_map,
       map = sf_data$usa_map,

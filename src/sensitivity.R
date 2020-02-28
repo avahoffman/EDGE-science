@@ -244,12 +244,11 @@ make_inset_decline_plot <- function(summary_dat,
   gg <- ggplot(data = summary_dat) +
     
     # Add zero line
-    geom_hline(yintercept = 0, lty = 3) +
+    geom_hline(yintercept = 0, lty = "11") +
     
     # Draw bars - multiply by -1 to get % DECLINE
     geom_bar(
-      aes(y = mean * -1, x = position),
-      fill = "black",
+      aes(y = mean * -1, x = position, fill = position),
       stat = "identity",
       position = position_stack(reverse = TRUE),
       color = "black",
@@ -268,8 +267,15 @@ make_inset_decline_plot <- function(summary_dat,
       width = 0
     ) +
     
+    # Add site colors to bars
+    scale_fill_manual(values = c(SEV_Black_color,
+                                 SEV_Blue_color,
+                                 SGS_color,
+                                 CHY_color)) +
+    
     # Add theme and adjust axes
-    theme_sigmaplot(xticks = FALSE, ticklen = -0.15) +
+    theme_sigmaplot(xticks = FALSE, 
+                    ticklen = -0.15) +
     scale_y_continuous(
       limits = c(-15, 105),
       breaks = c(0, 50, 100),
@@ -289,7 +295,8 @@ make_inset_decline_plot <- function(summary_dat,
     scale_x_discrete(labels = x_ticks_inset) +
     
     # Remove white background and border on inset
-    theme(rect = element_rect(fill = "transparent"))
+    theme(rect = element_rect(fill = "transparent"),
+          plot.background = element_rect(color = "transparent"))
   
   gg
   if (!(is.na(filename))) {

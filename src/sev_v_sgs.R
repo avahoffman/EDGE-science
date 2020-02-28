@@ -132,7 +132,7 @@ diff_data_sev_sgs <-
         # Join
         by = c("Site", "Block")
       ) %>%
-      select(-C4, -C3) %>%
+      dplyr::select(-C4,-C3) %>%
       filter(BOGR.x > 0)
     
     # Calculate the difference

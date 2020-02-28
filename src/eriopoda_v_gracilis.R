@@ -109,7 +109,7 @@ ambient_data_erio_grac <-
     # Run test and write results
     sink("output/statistical/tests.txt", append = TRUE)
     print(
-      "T test of true difference in Bouteloua eriopoda percent (SEV Black vs SEV Blue) is not equal to 0"
+      "T test of true difference in levels of Bouteloua eriopoda (percent at SEV Black vs SEV Blue) is not equal to 0"
     )
     ttest_with_var_check(SEV_blue_eriopoda,
                          SEV_black_eriopoda)
@@ -147,19 +147,19 @@ diff_data_erio_grac <-
         # Join
         by = c("Site", "Block")
       ) %>%
-      select(-C4)
+      dplyr::select(-C4)
     
     # Subset based on species
     BOER4 <-
       compare_dat %>%
       filter(Site == "SEV.black") %>%
       filter(BOER4.x > 0) %>%
-      select(-BOGR.x, -BOGR.y)
+      dplyr::select(-BOGR.x, -BOGR.y)
     BOGR <-
       compare_dat %>%
       filter(Site == "SEV.blue") %>%
       filter(BOGR.x > 0) %>%
-      select(-BOER4.x, -BOER4.y)
+      dplyr::select(-BOER4.x, -BOER4.y)
     
     # Calculate the difference
     BOGR$diff <-
