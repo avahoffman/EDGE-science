@@ -7,7 +7,6 @@ library(cowplot)
 # Useful information here: http://r-statistics.co/Outlier-Treatment-With-R.html
 ###########################################################################################
 
-
 make_outlier_plot <-
   function(d) {
     # This function will test for chi-square scores that are outside the
@@ -28,8 +27,8 @@ make_outlier_plot <-
 
 remove_outliers <-
   function(df,
-           percentile_cutoff = 0.99,
-           outlier_prop_threshold = 0.5) {
+           percentile_cutoff = 0.95,
+           outlier_prop_threshold = 0.1) {
     # Find outliers by Site, Trt, and species/category
     dat = data.frame()
     for (Site_ in distinct(df, Site)$Site) {
@@ -79,6 +78,13 @@ remove_outliers <-
     aggregated_dat <- 
       aggregated_dat %>%
       mutate(category = replace(category, category == "BOGR2", "BOGR"))
+    
+    if (exclude_SGS_2016_plot2) {
+      # there's a note that states it was grazed by cattle (BOGR, Carex, and BUDA are 0 across all iterations)
+      aggregated_dat <- 
+        aggregated_dat %>% 
+        filter(!(Site == "SGS" & Year == 2016 & Plot == 2))
+    }
     
     write.csv(aggregated_dat, 
               "data/EDGE_biomass_outliers_removed.csv",

@@ -118,6 +118,7 @@ x_ticks_inset <-
 
 # Exclude woody spp here if needed (eg., "WOODY" or "PYD")
 total_bio_exlusions <- c("PYD")
+exclude_SGS_2016_plot2 <- TRUE
 
 
 ###########################################################################################
