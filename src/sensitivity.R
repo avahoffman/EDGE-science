@@ -60,6 +60,7 @@ get_percent_decline <- function(sum_across_years = TRUE) {
   # Group to plot level by year, site, treatment
   by_plot_sensitivity <-
     dat %>%
+    filter(!(category %in% total_bio_exlusions)) %>%
     group_by(Site,
              Block,
              Plot,
@@ -76,6 +77,9 @@ get_percent_decline <- function(sum_across_years = TRUE) {
                Plot,
                Trt) %>%
       summarise(biomass = sum(biomass) / length(sensitivity_years))
+  } else {
+    full_dat <-
+      by_plot_sensitivity
   }
   
   # Join tables
@@ -277,7 +281,7 @@ make_inset_decline_plot <- function(summary_dat,
     theme_sigmaplot(xticks = FALSE, 
                     ticklen = -0.15) +
     scale_y_continuous(
-      limits = c(-15, 105),
+      limits = c(-20, 105),
       breaks = c(0, 50, 100),
       expand = c(0, 0),
       labels = c(0, 50, 100),

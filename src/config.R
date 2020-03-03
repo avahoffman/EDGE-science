@@ -49,9 +49,6 @@ shapefile_dir <-
         "data/shapefiles/",
         sep = "")
 
-bio_dat <- 
-  read.csv("data/EDGE_biomass_long_QAQC_final.csv")
-
 taxa_dat <- 
   read.csv("data/Taxa_info.csv")
 
@@ -118,6 +115,9 @@ x_ticks_inset <-
     "SEV\nBlue",
     "SGS",
     "CHY")
+
+# Exclude woody spp here if needed (eg., "WOODY" or "PYD")
+total_bio_exlusions <- c("PYD")
 
 
 ###########################################################################################

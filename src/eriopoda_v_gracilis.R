@@ -232,12 +232,13 @@ plot_spp_sev <-
         labels = c(legend_names_5)
       ) +
       scale_x_discrete(labels = x_ticks_5) +
-      # Add standard error for BOER4 - not a good workaround for this -
-      # considered bad practice to have stacked error bars. Have to add 31.5.
+      # Add standard error for BOER4
       geom_errorbar_custom(data = summary_dat %>%
                              filter(spp == "BOGR" &
                                       Site == "SEV.blue"),
-                           add = 31.5)
+                           add = summary_dat %>% 
+                             filter(Site == "SEV.blue" & spp == "BOER4") %>% 
+                             pull(mean))
     
     gg
     

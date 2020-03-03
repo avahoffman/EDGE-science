@@ -14,6 +14,7 @@ source("src/config.R")
 source("src/utils.R")
 
 # Dataset specific functions
+source("src/outlier_analysis.R")
 source("src/site_map.R")
 source("src/sensitivity.R")
 source("src/C3_v_c4.R")
@@ -28,13 +29,16 @@ source("src/gracilis_traits.R")
 library(ggplot2)
 library(cowplot)
 
-
-## Outlier analysis on plots
-## eg shitload of forbs for example
-## Kate will send subplot data
-
 ###########################################################################################
 
+raw_bio_dat <- 
+  read.csv("data/EDGE_Allsites_long.csv")
+
+bio_dat <- 
+  # read.csv("data/EDGE_biomass_long_QAQC_final.csv")
+  as.data.frame(remove_outliers(raw_bio_dat,
+                                percentile_cutoff = 0.99,
+                                outlier_prop_threshold = 0.5))
 
 
 plot_grid(
@@ -60,7 +64,7 @@ plot_grid(
   nrow = 1
 )
 # Save plots
-ggsave(file = "figures/sites_sensitivity.pdf",
+ggsave(file = "figures/sites_sensitivity_ol_rm.pdf",
        height = 3.4,
        width = 6.8)
 
@@ -71,7 +75,7 @@ plot_grid(# Compare percent C3 grass at CHY and SGS
   # Compare change in C3 and C4 grasses at CHY and SGS
   plot_c3_v_c4_diff(diff_data_c3_c4()))
 # Save plots
-ggsave(file = "figures/c3_v_c4.pdf",
+ggsave(file = "figures/c3_v_c4_ol_rm.pdf",
        height = 3,
        width = 5.5)
 
@@ -88,7 +92,7 @@ plot_grid(
   
 )
 # Save plots
-ggsave(file = "figures/eriopoda_v_gracilis.pdf",
+ggsave(file = "figures/eriopoda_v_gracilis_ol_rm.pdf",
        height = 3,
        width = 5.5)
 
@@ -124,6 +128,6 @@ plot_grid(
   
 )
 # Save plots
-ggsave(file = "figures/gracilis_genetic_diversity.pdf",
+ggsave(file = "figures/gracilis_genetic_diversity_ol_rm.pdf",
        height = 6,
        width = 5.5)

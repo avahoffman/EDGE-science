@@ -192,11 +192,12 @@ plot_spp_sev_sgs <-
                                    C4_color),
                         labels = legend_names_7) +
       scale_x_discrete(labels = x_ticks_7) +
-      # Add standard error for C3 - not a good workaround for this - 
-      # considered bad practice to have stacked error bars. Have to add 58.4.
+      # Add standard error for C3
       geom_errorbar_custom(data = summary_dat %>%
                              filter(spp == "C3"),
-                           add = 58.4)
+                           add = summary_dat %>% 
+                             filter(Site == "SGS" & spp == "BOGR") %>% 
+                             pull(mean))
     gg
     
     if (!(is.na(filename))) {
