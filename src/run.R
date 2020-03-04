@@ -35,7 +35,6 @@ raw_bio_dat <-
   read.csv("data/EDGE_Allsites_long.csv")
 
 bio_dat <- 
-  # read.csv("data/EDGE_biomass_long_QAQC_final.csv")
   as.data.frame(remove_outliers(raw_bio_dat,
                                 percentile_cutoff = 0.99,
                                 outlier_prop_threshold = 0.5))
