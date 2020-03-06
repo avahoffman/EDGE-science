@@ -9,7 +9,6 @@ library(maps)
 library(rgdal)
 library(dplyr)
 
-# TODO: Better annotation on this file
 ###########################################################################################
 
 fill_region <- function(name, dataframe) {
@@ -19,36 +18,50 @@ fill_region <- function(name, dataframe) {
 }
 
 generate_shapefile_data <- function() {
+  # Generate data for geom polygons
+  
+  # Shortgrass steppe
   sf_shortgrass <-
     fill_region(shortgrass_name,
                 fortify(readOGR(shapefile_dir,
                                 "shortgrass_prairie"))) %>%
+    # Create the break at about the CO border with WY per Lauenroth 2008.. 
+    # will be slightly off because of the projection used
     filter(lat <= 41 | 
              long >= -102)
   
+  # The portion of shortgrass steppe that should actually be mixed grass
   sf_shortgrass_chunk <-
     fill_region(shortgrass_name,
                 fortify(readOGR(shapefile_dir,
                                 "shortgrass_prairie"))) %>%
+    # Above the CO border
     filter(lat >= 41 & 
              long <= -102) %>%
+    # Change the region to mixed grass
     mutate(region = replace(region,
                             region == "Shortgrass Steppe",
                             "Northern Mixed Grass"))
+  
+  # True northern mixed grass prairie
   sf_northern <-
     fill_region(northern_name, 
                 fortify(readOGR(shapefile_dir, 
                                 "northern_steppe")))
+  # There is a hole at the Black Hills.. but including it for simplicity
   sf_northern <-
     sf_northern[sf_northern$hole == FALSE, ] # Allows Black Hills to be included
   
+  # Include a small stretch of the southern Rockies as desert grassland
   sf_desert_chunk <-
     fill_region(shortgrass_name, 
                 fortify(readOGR(shapefile_dir, 
                                 "nm_mtns"))) %>%
+    # Stop above our SEV sites
     filter(lat <= 35 & 
              long >= -107.5)
   
+  # Main portion of desert grassland
   sf_desert <-
     fill_region(desert_name, 
                 fortify(readOGR(shapefile_dir, 
@@ -72,6 +85,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
   gg <- ggplot() +
     
     # Add shapefile polygons for different ecoregions, using different data
+    # "Region" determines the color
     geom_polygon(data = sf_data$sf_shortgrass,
                  aes(
                    x = long,
@@ -112,11 +126,11 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
                    fill = region
                  )) +
     
-    # Add base plot with state lines
+    # Overlay state lines
     geom_map(
       data = sf_data$usa_map,
       map = sf_data$usa_map,
-      aes(map_id = region),
+      aes(map_id = region), 
       fill = NA,
       colour = "grey" # State outlines
     ) +
@@ -126,8 +140,8 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
     # Crop to smaller area
     coord_map(xlim = c(-112,-95), ylim = c(29, 45)) +
     
-    # Add points
-    
+    # Add points for EDGE sites
+    # May not be perfect, but want to be able to see each one
     geom_point(
       aes(x = -104.77, 
           y = 40.82), 
@@ -152,8 +166,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
       size = 1, 
       color = SEV_Black_color) +  ## Sev Black
     
-    # Add labels
-    
+    # Add labels for sites
     geom_text(
       aes(x = -104.8, 
           y = 40.3), 
@@ -178,6 +191,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
       label = "SEV Black", 
       size = 3) + ## Sev
     
+    # Add labels for ecoregions
     geom_text(
       aes(x = -105, 
           y = 30), 
