@@ -1,110 +1,86 @@
 [1] "T test of true difference in c3 percent (CHY vs SGS) is not equal to 0"
-[1] "Variance is similar between samples for the following:"
 
-	Two Sample t-test
+	Wilcoxon rank sum test
 
-data:  x and y
-t = 8.8688, df = 18, p-value = 5.477e-08
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- 23.10251 37.44573
-sample estimates:
-mean of x mean of y 
- 70.70580  40.43168 
+data:  chy and sgs
+W = 100, p-value = 1.083e-05
+alternative hypothesis: true location shift is not equal to 0
 
 [1] "T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0"
-[1] "Variance is not similar between samples for the following:"
 
-	Welch Two Sample t-test
+	Wilcoxon rank sum test
 
-data:  x and y
-t = 0.92608, df = 12.205, p-value = 0.3724
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -19.72002  48.97058
-sample estimates:
- mean of x  mean of y 
- -7.723923 -22.349205 
+data:  chy_c3 and chy_c4
+W = 58, p-value = 0.5787
+alternative hypothesis: true location shift is not equal to 0
 
 [1] "T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0"
-[1] "Variance is not similar between samples for the following:"
 
-	Welch Two Sample t-test
+	Wilcoxon rank sum test
 
-data:  x and y
-t = 1.9438, df = 12.207, p-value = 0.07533
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -4.734864 84.447212
-sample estimates:
- mean of x  mean of y 
-  7.636182 -32.219992 
+data:  sgs_c3 and sgs_c4
+W = 68, p-value = 0.1903
+alternative hypothesis: true location shift is not equal to 0
 
 [1] "T test of mean ANPP change (C3 at SGS) is not equal to 0"
 
-	One Sample t-test
+	Wilcoxon signed rank test
 
 data:  sgs_c3
-t = 0.40527, df = 9, p-value = 0.6947
-alternative hypothesis: true mean is not equal to 0
-95 percent confidence interval:
- -34.98773  50.26009
-sample estimates:
-mean of x 
- 7.636182 
+V = 33, p-value = 0.625
+alternative hypothesis: true location is not equal to 0
 
 [1] "T test of mean ANPP change (C4 at SGS) is not equal to 0"
 
-	One Sample t-test
+	Wilcoxon signed rank test
 
 data:  sgs_c4
-t = -3.9843, df = 9, p-value = 0.003185
-alternative hypothesis: true mean is not equal to 0
-95 percent confidence interval:
- -50.51355 -13.92644
-sample estimates:
-mean of x 
--32.21999 
+V = 3, p-value = 0.009766
+alternative hypothesis: true location is not equal to 0
 
 [1] "T test of true difference in levels of Bouteloua eriopoda (percent at SEV Black vs SEV Blue) is not equal to 0"
-[1] "Variance is similar between samples for the following:"
 
-	Two Sample t-test
+	Wilcoxon rank sum test
 
-data:  x and y
-t = -12.844, df = 18, p-value = 1.677e-10
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -69.5757 -50.0139
-sample estimates:
-mean of x mean of y 
- 29.92785  89.72265 
+data:  SEV_blue_eriopoda and SEV_black_eriopoda
+W = 0, p-value = 1.083e-05
+alternative hypothesis: true location shift is not equal to 0
 
 [1] "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
-[1] "Variance is not similar between samples for the following:"
 
-	Welch Two Sample t-test
+	Wilcoxon rank sum test
 
-data:  x and y
-t = 5.4594, df = 10.556, p-value = 0.000229
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
-  7.683281 18.153033
-sample estimates:
-mean of x mean of y 
--81.45725 -94.37541 
+data:  SEV_blue_gracilis and SEV_black_eriopoda
+W = 98, p-value = 4.33e-05
+alternative hypothesis: true location shift is not equal to 0
 
 [1] "T test of true difference in B. gracilis ANPP change (SGS vs SEV.blue) is not equal to 0"
-[1] "Variance is not similar between samples for the following:"
 
-	Welch Two Sample t-test
+	Wilcoxon rank sum test
 
-data:  x and y
-t = 5.7028, df = 10.518, p-value = 0.0001632
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- 28.30429 64.21080
-sample estimates:
-mean of x mean of y 
--35.19971 -81.45725 
+data:  BOGR_sgs and BOGR_sev
+W = 100, p-value = 1.083e-05
+alternative hypothesis: true location shift is not equal to 0
+
+[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
+
+Call:
+lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.0823 -1.7236 -0.2882  1.6820  7.6831 
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     6.68524    1.68591   3.965 0.000313 ***
+vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
+popSGS          2.78356    2.37297   1.173 0.248085    
+vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.186 on 38 degrees of freedom
+Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
+F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
 

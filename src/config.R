@@ -70,6 +70,10 @@ genetic_data <-
 ###########################################################################################
 ## Data outputs
 
+# Where to write stats output:
+statsfile <- 
+  "output/statistical/tests.txt"
+
 # Where to write the DAPC loadings:
 DAPC_loadings_write_name <- 
   "output/genetic/DAPC_loadings.csv"

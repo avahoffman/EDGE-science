@@ -107,12 +107,12 @@ ambient_data_erio_grac <-
       pull(pct)
     
     # Run test and write results
-    sink("output/statistical/tests.txt", append = TRUE)
+    sink(statsfile, append = TRUE)
     print(
       "T test of true difference in levels of Bouteloua eriopoda (percent at SEV Black vs SEV Blue) is not equal to 0"
     )
-    ttest_with_var_check(SEV_blue_eriopoda,
-                         SEV_black_eriopoda)
+    print(wilcox.test(SEV_blue_eriopoda,
+                         SEV_black_eriopoda))
     sink()
     
     # Summarize by site
@@ -175,12 +175,12 @@ diff_data_erio_grac <-
       BOER4 %>%
       pull(diff)
     # Run test and write results
-    sink("output/statistical/tests.txt", append = TRUE)
+    sink(statsfile, append = TRUE)
     print(
       "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
     )
-    ttest_with_var_check(SEV_blue_gracilis,
-                         SEV_black_eriopoda)
+    print(wilcox.test(SEV_blue_gracilis,
+                         SEV_black_eriopoda))
     sink()
     
     # Summarize by site

@@ -16,13 +16,21 @@ load_and_clean_trait_data <- function() {
     biomass_dat$biomass_rhizome +
     biomass_dat$flwr_mass_lifetime
   
+  # Run test and write results
+  sink(statsfile, append = TRUE)
+  
+  print("Linear model testing for site (SEV or SGS), water content, and interaction effects")
+  print(summary(lm(total ~ vwc_adj * pop, data = biomass_dat)))
+  
+  sink()
+  
   # Summarize data by population and treatment
   summary_dat <- 
     biomass_dat %>% 
     group_by(pop, trt) %>%
     summarise(mean = mean(total),
               se = sd(total) / sqrt(n()))
-  
+
   return(summary_dat)
 }
 
