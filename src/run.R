@@ -2,8 +2,6 @@
 # Generates plots and records results in the output directory.
 ###########################################################################################
 # Set working directory for the repository (should be the git repo):
-# wd <-
-#   "/Users/hoffman ava/EDGE-science/"
 wd <-
   "/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/"
 
