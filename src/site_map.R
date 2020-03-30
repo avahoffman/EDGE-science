@@ -81,7 +81,7 @@ generate_shapefile_data <- function() {
   return(sf_data)
 }
 
-plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
+plot_site_map_with_ecoregions <- function(sf_data, filename = NA, ecoregions_only = F) {
   gg <- ggplot() +
     
     # Add shapefile polygons for different ecoregions, using different data
@@ -138,11 +138,14 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
     # Remove axes
     theme_map() +
     # Crop to smaller area
-    coord_map(xlim = c(-112,-95), ylim = c(29, 45)) +
+    coord_map(xlim = c(-112,-95), ylim = c(29, 45))
     
     # Add points for EDGE sites
     # May not be perfect, but want to be able to see each one
-    geom_point(
+    if (!(ecoregions_only)){
+    gg <- 
+      gg +
+      geom_point(
       aes(x = -104.77, 
           y = 40.82), 
       size = 1, 
@@ -222,6 +225,42 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
     
     # Add custom colors
     scale_fill_manual(values = climate_colors)
+    } else {
+      gg <- 
+        gg +
+        
+        # Add labels for ecoregions
+        geom_text(
+          aes(x = -105, 
+              y = 30), 
+          label = desert_name, 
+          color = desert_label_color) + ## Desert grassland label
+        
+        geom_text(
+          aes(x = -102.5, 
+              y = 38), 
+          label = shortgrass_name, 
+          color = shortgrass_label_color) + ## Shortgrass label
+        
+        geom_text(
+          aes(x = -103, 
+              y = 44), 
+          label = northern_name, 
+          color = northern_label_color) + ## Northern grassland label
+        
+        # Add border and remove legend
+        theme(
+          panel.border = element_rect(
+            colour = "black",
+            fill = NA,
+            size = 1
+          ),
+          legend.position = "none"
+        ) +
+        
+        # Add custom colors
+        scale_fill_manual(values = climate_colors)
+    }
   
   gg
   if (!(is.na(filename))) {
@@ -231,3 +270,4 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA) {
   }
   return(gg)
 }
+
