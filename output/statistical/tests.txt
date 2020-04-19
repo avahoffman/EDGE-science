@@ -84,3 +84,91 @@ Residual standard error: 3.186 on 38 degrees of freedom
 Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
 F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
 
+[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
+
+Call:
+lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.0823 -1.7236 -0.2882  1.6820  7.6831 
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     6.68524    1.68591   3.965 0.000313 ***
+vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
+popSGS          2.78356    2.37297   1.173 0.248085    
+vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.186 on 38 degrees of freedom
+Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
+F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
+
+[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
+
+Call:
+lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.0823 -1.7236 -0.2882  1.6820  7.6831 
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     6.68524    1.68591   3.965 0.000313 ***
+vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
+popSGS          2.78356    2.37297   1.173 0.248085    
+vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.186 on 38 degrees of freedom
+Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
+F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
+
+[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
+
+Call:
+lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.0823 -1.7236 -0.2882  1.6820  7.6831 
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     6.68524    1.68591   3.965 0.000313 ***
+vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
+popSGS          2.78356    2.37297   1.173 0.248085    
+vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.186 on 38 degrees of freedom
+Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
+F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
+
+[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
+
+Call:
+lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.0823 -1.7236 -0.2882  1.6820  7.6831 
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     6.68524    1.68591   3.965 0.000313 ***
+vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
+popSGS          2.78356    2.37297   1.173 0.248085    
+vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.186 on 38 degrees of freedom
+Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
+F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
+
