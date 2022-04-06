@@ -8,13 +8,20 @@ library(dplyr)
 ###########################################################################################
 
 
-load_and_clean_trait_data <- function() {
-  # Calculate total biomass trait
-  biomass_dat$total <-
-    biomass_dat$biomass_aboveground +
-    biomass_dat$biomass_belowground +
-    biomass_dat$biomass_rhizome +
-    biomass_dat$flwr_mass_lifetime
+load_and_clean_trait_data <- function(trait = "ANPP") {
+  # Calculate total biomass trait or Above:Below trait
+  if (trait == "ANPP") {
+    biomass_dat$total <-
+      biomass_dat$biomass_aboveground +
+      biomass_dat$biomass_belowground +
+      biomass_dat$biomass_rhizome +
+      biomass_dat$flwr_mass_lifetime
+  }
+  else {
+    biomass_dat$total <-
+      (biomass_dat$biomass_aboveground + biomass_dat$flwr_mass_lifetime) /
+      (biomass_dat$biomass_belowground + biomass_dat$biomass_rhizome)
+  }
   
   # Run test and write results
   sink(statsfile, append = TRUE)
@@ -35,7 +42,9 @@ load_and_clean_trait_data <- function() {
 }
 
 
-plot_traits <- function(summary_dat, filename = NA) {
+plot_traits <- function(summary_dat, trait = "ANPP", filename = NA) {
+  if (trait == "ANPP") y_lab <- y_lab_10 else y_lab <- y_lab_10_ab
+  
   gg <- ggplot(data = summary_dat) +
     
     # Add standard error first (to fall behind the points)
@@ -79,7 +88,7 @@ plot_traits <- function(summary_dat, filename = NA) {
     # Add theme and adjust axes
     theme_sigmaplot(xticks = FALSE) +
     scale_y_continuous(sec.axis = dup_axis(labels = NULL, name = "")) +
-    ylab(y_lab_10) +
+    ylab(y_lab) +
     xlab(NULL) +
     
     # Adjust legend and colors
