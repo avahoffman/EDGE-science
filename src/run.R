@@ -128,6 +128,6 @@ plot_grid(
   
 )
 # Save plots
-ggsave(file = "figures/gracilis_genetic_diversity_ol_rm_2.pdf",
+ggsave(file = "figures/gracilis_genetic_diversity_ol_rm_with_ab.pdf",
        height = 6,
        width = 7)
