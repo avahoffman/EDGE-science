@@ -218,8 +218,8 @@ n_prin_comp <- 15
 x_lab_9 <- "LD1"
 y_lab_9 <- "LD2"
 legend_names_9 <-
-  c("NB",
-    "KNZ",
+  c("HP",
+    "MP",
     "SEV Blue",
     "SGS")
 y_lab_10 <-
