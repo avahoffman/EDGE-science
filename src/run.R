@@ -109,6 +109,9 @@ plot_grid(
   # Percent change in B. gracilis ANPP in SEV Blue and SGS
   plot_sev_sgs_diff(diff_data_sev_sgs()),
   
+  # Plot change in A:B biomass ratio by greenhouse treatment, both SEV Blue and SGS populations
+  plot_traits(load_and_clean_trait_data(trait = "a/b"), trait = "a/b"),
+  
   # Plot SEV Blue and SGS individuals on principal components based on genetic markers (SNPs)
   plot_dapc(load_and_clean_genind_data()) +
     # Break legend in to two rows so that it's not cut off
@@ -119,12 +122,12 @@ plot_grid(
   plot_traits(load_and_clean_trait_data()),
   
   # Arrange plots in 2x2 with relative size
-  rel_widths = c(3, 2),
+  rel_widths = c(3, 2, 2),
   nrow = 2,
-  ncol = 2
+  ncol = 3
   
 )
 # Save plots
-ggsave(file = "figures/gracilis_genetic_diversity_ol_rm.pdf",
+ggsave(file = "figures/gracilis_genetic_diversity_ol_rm_2.pdf",
        height = 6,
-       width = 5.5)
+       width = 7)
