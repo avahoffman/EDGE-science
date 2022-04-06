@@ -22,7 +22,7 @@ SEV_Black_color <- "#cb181d"
 
 # Type colors:
 C4_color <- "white"
-C3_color <- "#deebf7"
+C3_color <- "#c9dff2"
 eriopoda_color <- "#fb6a4a"
 gracilis_color <- "#fdae6b"
 sev_grac_color <- "#f16913"
