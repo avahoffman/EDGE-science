@@ -1,30 +1,30 @@
 [1] "T test of true difference in c3 percent (CHY vs SGS) is not equal to 0"
 
-	Wilcoxon rank sum test
+	Wilcoxon rank sum exact test
 
 data:  chy and sgs
 W = 100, p-value = 1.083e-05
 alternative hypothesis: true location shift is not equal to 0
 
-[1] "T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0"
+[1] "T test of mean ANPP change (C3 at CHY) is not equal to 0"
 
-	Wilcoxon rank sum test
+	Wilcoxon signed rank exact test
 
-data:  chy_c3 and chy_c4
-W = 58, p-value = 0.5787
-alternative hypothesis: true location shift is not equal to 0
+data:  chy_c3
+V = 21, p-value = 0.5566
+alternative hypothesis: true location is not equal to 0
 
-[1] "T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0"
+[1] "T test of mean ANPP change (C4 at CHY) is not equal to 0"
 
-	Wilcoxon rank sum test
+	Wilcoxon signed rank exact test
 
-data:  sgs_c3 and sgs_c4
-W = 68, p-value = 0.1903
-alternative hypothesis: true location shift is not equal to 0
+data:  chy_c4
+V = 4, p-value = 0.01367
+alternative hypothesis: true location is not equal to 0
 
 [1] "T test of mean ANPP change (C3 at SGS) is not equal to 0"
 
-	Wilcoxon signed rank test
+	Wilcoxon signed rank exact test
 
 data:  sgs_c3
 V = 33, p-value = 0.625
@@ -32,7 +32,7 @@ alternative hypothesis: true location is not equal to 0
 
 [1] "T test of mean ANPP change (C4 at SGS) is not equal to 0"
 
-	Wilcoxon signed rank test
+	Wilcoxon signed rank exact test
 
 data:  sgs_c4
 V = 3, p-value = 0.009766
@@ -40,7 +40,7 @@ alternative hypothesis: true location is not equal to 0
 
 [1] "T test of true difference in levels of Bouteloua eriopoda (percent at SEV Black vs SEV Blue) is not equal to 0"
 
-	Wilcoxon rank sum test
+	Wilcoxon rank sum exact test
 
 data:  SEV_blue_eriopoda and SEV_black_eriopoda
 W = 0, p-value = 1.083e-05
@@ -48,7 +48,7 @@ alternative hypothesis: true location shift is not equal to 0
 
 [1] "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
 
-	Wilcoxon rank sum test
+	Wilcoxon rank sum exact test
 
 data:  SEV_blue_gracilis and SEV_black_eriopoda
 W = 98, p-value = 4.33e-05
@@ -56,7 +56,7 @@ alternative hypothesis: true location shift is not equal to 0
 
 [1] "T test of true difference in B. gracilis ANPP change (SGS vs SEV.blue) is not equal to 0"
 
-	Wilcoxon rank sum test
+	Wilcoxon rank sum exact test
 
 data:  BOGR_sgs and BOGR_sev
 W = 100, p-value = 1.083e-05
@@ -68,87 +68,21 @@ Call:
 lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--5.0823 -1.7236 -0.2882  1.6820  7.6831 
+     Min       1Q   Median       3Q      Max 
+-0.72671 -0.32341 -0.09012  0.20019  2.52520 
 
 Coefficients:
                Estimate Std. Error t value Pr(>|t|)    
-(Intercept)     6.68524    1.68591   3.965 0.000313 ***
-vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
-popSGS          2.78356    2.37297   1.173 0.248085    
-vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
+(Intercept)     2.30889    0.31876   7.243 1.15e-08 ***
+vwc_adj        -0.01563    0.01440  -1.085    0.285    
+popSGS         -0.13174    0.44866  -0.294    0.771    
+vwc_adj:popSGS -0.02034    0.02032  -1.001    0.323    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 3.186 on 38 degrees of freedom
-Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
-F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
-
-[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
-
-Call:
-lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.0823 -1.7236 -0.2882  1.6820  7.6831 
-
-Coefficients:
-               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)     6.68524    1.68591   3.965 0.000313 ***
-vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
-popSGS          2.78356    2.37297   1.173 0.248085    
-vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 3.186 on 38 degrees of freedom
-Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
-F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
-
-[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
-
-Call:
-lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.0823 -1.7236 -0.2882  1.6820  7.6831 
-
-Coefficients:
-               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)     6.68524    1.68591   3.965 0.000313 ***
-vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
-popSGS          2.78356    2.37297   1.173 0.248085    
-vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 3.186 on 38 degrees of freedom
-Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
-F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
-
-[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
-
-Call:
-lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.0823 -1.7236 -0.2882  1.6820  7.6831 
-
-Coefficients:
-               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)     6.68524    1.68591   3.965 0.000313 ***
-vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
-popSGS          2.78356    2.37297   1.173 0.248085    
-vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 3.186 on 38 degrees of freedom
-Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
-F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
+Residual standard error: 0.6024 on 38 degrees of freedom
+Multiple R-squared:  0.2914,	Adjusted R-squared:  0.2354 
+F-statistic: 5.209 on 3 and 38 DF,  p-value: 0.004118
 
 [1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
 

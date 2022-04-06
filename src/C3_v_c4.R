@@ -178,11 +178,17 @@ diff_data_c3_c4 <-
     # Run test and write results
     sink(statsfile, append = TRUE)
     
-    print("T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0")
-    print(wilcox.test(chy_c3, chy_c4))
+    # print("T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0")
+    # print(wilcox.test(chy_c3, chy_c4))
+    # 
+    # print("T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0")
+    # print(wilcox.test(sgs_c3, sgs_c4))
     
-    print("T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0")
-    print(wilcox.test(sgs_c3, sgs_c4))
+    print("T test of mean ANPP change (C3 at CHY) is not equal to 0")
+    print(wilcox.test(chy_c3, alternative = "two.sided"))
+    
+    print("T test of mean ANPP change (C4 at CHY) is not equal to 0")
+    print(wilcox.test(chy_c4, alternative = "two.sided"))
     
     print("T test of mean ANPP change (C3 at SGS) is not equal to 0")
     print(wilcox.test(sgs_c3, alternative = "two.sided"))
