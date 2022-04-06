@@ -224,6 +224,9 @@ legend_names_9 <-
     "SGS")
 y_lab_10 <-
   expression(paste(italic("B. gracilis"),
-                   " Biomass (g)"))
+                   " biomass (g)"))
+y_lab_10_ab <-
+  expression(paste(italic("B. gracilis"),
+                   " above:below biomass ratio"))
 x_ticks_10 <- c("Dry", "Wet")
 legend_names_10 <- c("SEV Blue", "SGS")
