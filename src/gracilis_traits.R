@@ -27,7 +27,12 @@ load_and_clean_trait_data <- function(trait = "ANPP") {
   sink(statsfile, append = TRUE)
   
   print("Linear model testing for site (SEV or SGS), water content, and interaction effects")
-  print(summary(lm(total ~ vwc_adj * pop, data = biomass_dat)))
+  print(summary(lm(total ~ trt * pop, data = biomass_dat)))
+  
+  print(t.test(
+    biomass_dat %>% filter(trt == "ND", pop == "SGS") %>% pull(total),
+    biomass_dat %>% filter(trt == "ND", pop == "SEV") %>% pull(total)
+  ))
   
   sink()
   

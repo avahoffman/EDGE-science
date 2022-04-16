@@ -153,7 +153,7 @@ diff_data_sev_sgs <-
     sink(statsfile, append = TRUE)
     
     print("T test of true difference in B. gracilis ANPP change (SGS vs SEV.blue) is not equal to 0")
-    print(wilcox.test(BOGR_sgs, BOGR_sev))
+    print(t.test(BOGR_sgs, BOGR_sev))
     
     sink()
     

@@ -111,7 +111,7 @@ ambient_data_erio_grac <-
     print(
       "T test of true difference in levels of Bouteloua eriopoda (percent at SEV Black vs SEV Blue) is not equal to 0"
     )
-    print(wilcox.test(SEV_blue_eriopoda,
+    print(t.test(SEV_blue_eriopoda,
                          SEV_black_eriopoda))
     sink()
     
@@ -179,7 +179,7 @@ diff_data_erio_grac <-
     print(
       "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
     )
-    print(wilcox.test(SEV_blue_gracilis,
+    print(t.test(SEV_blue_gracilis,
                          SEV_black_eriopoda))
     sink()
     

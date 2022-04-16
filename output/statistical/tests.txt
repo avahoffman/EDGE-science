@@ -1,66 +1,106 @@
 [1] "T test of true difference in c3 percent (CHY vs SGS) is not equal to 0"
 
-	Wilcoxon rank sum exact test
+	Welch Two Sample t-test
 
 data:  chy and sgs
-W = 100, p-value = 1.083e-05
-alternative hypothesis: true location shift is not equal to 0
+t = 8.8688, df = 13.838, p-value = 4.422e-07
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 22.94473 37.60351
+sample estimates:
+mean of x mean of y 
+ 70.70580  40.43168 
 
 [1] "T test of mean ANPP change (C3 at CHY) is not equal to 0"
 
-	Wilcoxon signed rank exact test
+	One Sample t-test
 
 data:  chy_c3
-V = 21, p-value = 0.5566
-alternative hypothesis: true location is not equal to 0
+t = -0.5322, df = 9, p-value = 0.6075
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -40.55528  25.10744
+sample estimates:
+mean of x 
+-7.723923 
 
 [1] "T test of mean ANPP change (C4 at CHY) is not equal to 0"
 
-	Wilcoxon signed rank exact test
+	One Sample t-test
 
 data:  chy_c4
-V = 4, p-value = 0.01367
-alternative hypothesis: true location is not equal to 0
+t = -3.5893, df = 9, p-value = 0.005845
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -36.434898  -8.263512
+sample estimates:
+mean of x 
+ -22.3492 
 
 [1] "T test of mean ANPP change (C3 at SGS) is not equal to 0"
 
-	Wilcoxon signed rank exact test
+	One Sample t-test
 
 data:  sgs_c3
-V = 33, p-value = 0.625
-alternative hypothesis: true location is not equal to 0
+t = 0.40527, df = 9, p-value = 0.6947
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -34.98773  50.26009
+sample estimates:
+mean of x 
+ 7.636182 
 
 [1] "T test of mean ANPP change (C4 at SGS) is not equal to 0"
 
-	Wilcoxon signed rank exact test
+	One Sample t-test
 
 data:  sgs_c4
-V = 3, p-value = 0.009766
-alternative hypothesis: true location is not equal to 0
+t = -3.9843, df = 9, p-value = 0.003185
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -50.51355 -13.92644
+sample estimates:
+mean of x 
+-32.21999 
 
 [1] "T test of true difference in levels of Bouteloua eriopoda (percent at SEV Black vs SEV Blue) is not equal to 0"
 
-	Wilcoxon rank sum exact test
+	Welch Two Sample t-test
 
 data:  SEV_blue_eriopoda and SEV_black_eriopoda
-W = 0, p-value = 1.083e-05
-alternative hypothesis: true location shift is not equal to 0
+t = -12.844, df = 16.602, p-value = 4.788e-10
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -69.63508 -49.95452
+sample estimates:
+mean of x mean of y 
+ 29.92785  89.72265 
 
 [1] "T test of true difference in percent change of ANPP (SEV Black B. eriopoda vs SEV Blue B. gracilis) is not equal to 0"
 
-	Wilcoxon rank sum exact test
+	Welch Two Sample t-test
 
 data:  SEV_blue_gracilis and SEV_black_eriopoda
-W = 98, p-value = 4.33e-05
-alternative hypothesis: true location shift is not equal to 0
+t = 5.4594, df = 10.556, p-value = 0.000229
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+  7.683281 18.153033
+sample estimates:
+mean of x mean of y 
+-81.45725 -94.37541 
 
 [1] "T test of true difference in B. gracilis ANPP change (SGS vs SEV.blue) is not equal to 0"
 
-	Wilcoxon rank sum exact test
+	Welch Two Sample t-test
 
 data:  BOGR_sgs and BOGR_sev
-W = 100, p-value = 1.083e-05
-alternative hypothesis: true location shift is not equal to 0
+t = 5.7028, df = 10.518, p-value = 0.0001632
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 28.30429 64.21080
+sample estimates:
+mean of x mean of y 
+-35.19971 -81.45725 
 
 [1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
 

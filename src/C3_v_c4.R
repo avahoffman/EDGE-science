@@ -97,7 +97,7 @@ ambient_data_c3_c4 <-
     sink(statsfile, append = TRUE)
     
     print("T test of true difference in c3 percent (CHY vs SGS) is not equal to 0")
-    print(wilcox.test(chy, sgs))
+    print(t.test(chy, sgs))
     
     sink()
     
@@ -179,23 +179,23 @@ diff_data_c3_c4 <-
     sink(statsfile, append = TRUE)
     
     # print("T test of true difference in ANPP change (C3 vs C4 at CHY) is not equal to 0")
-    # print(wilcox.test(chy_c3, chy_c4))
+    # print(t.test(chy_c3, chy_c4))
     # 
     # print("T test of true difference in ANPP change (C3 vs C4 at SGS) is not equal to 0")
-    # print(wilcox.test(sgs_c3, sgs_c4))
+    # print(t.test(sgs_c3, sgs_c4))
     
     print("T test of mean ANPP change (C3 at CHY) is not equal to 0")
-    print(wilcox.test(chy_c3, alternative = "two.sided"))
+    print(t.test(chy_c3, alternative = "two.sided"))
     
     print("T test of mean ANPP change (C4 at CHY) is not equal to 0")
-    print(wilcox.test(chy_c4, alternative = "two.sided"))
+    print(t.test(chy_c4, alternative = "two.sided"))
     
     print("T test of mean ANPP change (C3 at SGS) is not equal to 0")
-    print(wilcox.test(sgs_c3, alternative = "two.sided"))
+    print(t.test(sgs_c3, alternative = "two.sided"))
     
     print("T test of mean ANPP change (C4 at SGS) is not equal to 0")
-    print(wilcox.test(sgs_c4, alternative = "two.sided"))
-    
+    print(t.test(sgs_c4, alternative = "two.sided"))
+  
     sink()
     
     summary_dat <-
