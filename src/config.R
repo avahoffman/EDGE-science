@@ -46,7 +46,7 @@ experiment_years <-
 # Directory where map shapefiles representing ecoregions should be:
 shapefile_dir <-
   paste(toString(wd),
-        "data/shapefiles/",
+        "/data/shapefiles/",
         sep = "")
 
 taxa_dat <- 
@@ -63,7 +63,7 @@ biomass_dat <-
 
 genetic_data <-
   paste(toString(wd),
-        "data/genetic/genind_all.R",
+        "/data/genetic/genind_all.R",
         sep = "")
 
 
@@ -85,7 +85,7 @@ DAPC_stat_write_name <-
 # Figure directory:
 figure_dir <-
   paste(toString(wd),
-        "figures/",
+        "/figures/",
         sep = "")
 
 ###########################################################################################
