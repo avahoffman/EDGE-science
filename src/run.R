@@ -1,9 +1,8 @@
 # Execution script for EDGE Science project pipeline.
 # Generates plots and records results in the output directory.
 ###########################################################################################
-# Set working directory for the repository (should be the git repo):
-wd <-
-  "/Users/avahoffman/Dropbox/Research/EDGE_Science/EDGE-science/"
+# Set working directory for the repository (should be the git repo w/ .Rproj):
+wd <- here::here()
 
 setwd(wd)
 
