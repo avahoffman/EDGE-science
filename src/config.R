@@ -149,6 +149,8 @@ c3_c4_years <- experiment_years
 x_ticks_3 <- c("CHY", "SGS")
 y_lab_3 <- "% of Grass ANPP"
 legend_names_3 <- c("C3 Grasses", "C4 Grasses")
+legend_names_3_with_bogr <- c(expression(~ italic("B. gracilis")), "C3", "Other C4")
+legend_names_3_with_bogr_diff <- c(expression(~ italic("B. gracilis")), "C3 Grasses")
 y_lab_4 <- "% Change in ANPP"
 
 

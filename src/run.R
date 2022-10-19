@@ -37,6 +37,7 @@ bio_dat <-
                                 outlier_prop_threshold = 0.5))
 
 
+# ---------
 plot_grid(
   # Plot ecoregion and site map
   plot_site_map_with_ecoregions(generate_shapefile_data()),
@@ -65,6 +66,7 @@ ggsave(file = "figures/sites_sensitivity_ol_rm.pdf",
        width = 6.8)
 
 
+# ---------
 plot_grid(# Compare percent C3 grass at CHY and SGS
   plot_c3_v_c4(ambient_data_c3_c4()),
   
@@ -75,7 +77,19 @@ ggsave(file = "figures/c3_v_c4_ol_rm.pdf",
        height = 3,
        width = 5.5)
 
+# Plot same figure as above but looking at Bouteloua gracilis instead
+plot_grid(# Compare percent bouteloua at CHY and SGS
+  plot_c3_v_c4(ambient_data_c3_c4(bouteloua = TRUE)),
+  
+  # Compare change in C3 and B. gracilis at CHY and SGS
+  plot_c3_v_c4_diff(diff_data_c3_c4(bouteloua = TRUE)))
+# Save plots
+ggsave(file = "figures/c3_v_BOGR_ol_rm.pdf",
+       height = 3,
+       width = 5.5)
 
+
+# ---------
 plot_grid(
   # Sevilleta Blue and Sevilleta Black composition comparison of Bouteloua species
   plot_spp_sev(ambient_data_erio_grac()) +
