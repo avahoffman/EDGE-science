@@ -86,7 +86,7 @@ plot_grid(# Compare percent bouteloua at CHY and SGS
 # Save plots
 ggsave(file = "figures/c3_v_BOGR_ol_rm.pdf",
        height = 3,
-       width = 5.5)
+       width = 6)
 
 
 # ---------
