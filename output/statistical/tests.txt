@@ -42,13 +42,13 @@ mean of x
 	One Sample t-test
 
 data:  sgs_c3
-t = 0.40527, df = 9, p-value = 0.6947
+t = 0.48996, df = 9, p-value = 0.6359
 alternative hypothesis: true mean is not equal to 0
 95 percent confidence interval:
- -34.98773  50.26009
+ -32.67142  50.73672
 sample estimates:
 mean of x 
- 7.636182 
+ 9.032653 
 
 [1] "T test of mean ANPP change (C4 at SGS) is not equal to 0"
 
@@ -62,6 +62,110 @@ alternative hypothesis: true mean is not equal to 0
 sample estimates:
 mean of x 
 -32.21999 
+
+[1] "T test of true difference in c3 percent (CHY vs SGS) is not equal to 0"
+
+	Welch Two Sample t-test
+
+data:  chy and sgs
+t = 8.8688, df = 13.838, p-value = 4.422e-07
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 22.94473 37.60351
+sample estimates:
+mean of x mean of y 
+ 70.70580  40.43168 
+
+[1] "T test of true difference in Bouteloua gracilis percent (CHY vs SGS) is not equal to 0"
+
+	Welch Two Sample t-test
+
+data:  chy and sgs
+t = -8.3216, df = 14.91, p-value = 5.514e-07
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -32.59221 -19.29507
+sample estimates:
+mean of x mean of y 
+ 28.65323  54.59687 
+
+[1] "T test of true difference in ANPP change (C3 vs BOGR at CHY) is not equal to 0"
+
+	Welch Two Sample t-test
+
+data:  chy_c3 and chy_bogr
+t = 0.85355, df = 12.42, p-value = 0.4095
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -20.91762  48.02848
+sample estimates:
+ mean of x  mean of y 
+ -7.723923 -21.279349 
+
+[1] "T test of true difference in ANPP change (C3 vs BOGR at SGS) is not equal to 0"
+
+	Welch Two Sample t-test
+
+data:  sgs_c3 and sgs_bogr
+t = 2.2102, df = 12.113, p-value = 0.04707
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+  0.673166 87.791551
+sample estimates:
+ mean of x  mean of y 
+  9.032653 -35.199705 
+
+[1] "T test of mean ANPP change (C3 at CHY) is not equal to 0"
+
+	One Sample t-test
+
+data:  chy_c3
+t = -0.5322, df = 9, p-value = 0.6075
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -40.55528  25.10744
+sample estimates:
+mean of x 
+-7.723923 
+
+[1] "T test of mean ANPP change (BOGR at CHY) is not equal to 0"
+
+	One Sample t-test
+
+data:  chy_bogr
+t = -3.3, df = 9, p-value = 0.00923
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -35.866274  -6.692424
+sample estimates:
+mean of x 
+-21.27935 
+
+[1] "T test of mean ANPP change (C3 at SGS) is not equal to 0"
+
+	One Sample t-test
+
+data:  sgs_c3
+t = 0.48996, df = 9, p-value = 0.6359
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -32.67142  50.73672
+sample estimates:
+mean of x 
+ 9.032653 
+
+[1] "T test of mean ANPP change (BOGR at SGS) is not equal to 0"
+
+	One Sample t-test
+
+data:  sgs_bogr
+t = -4.5201, df = 9, p-value = 0.001447
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -52.81594 -17.58347
+sample estimates:
+mean of x 
+-35.19971 
 
 [1] "T test of true difference in levels of Bouteloua eriopoda (percent at SEV Black vs SEV Blue) is not equal to 0"
 
@@ -105,44 +209,68 @@ mean of x mean of y
 [1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
 
 Call:
-lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
+lm(formula = total ~ trt * pop, data = biomass_dat)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--0.72671 -0.32341 -0.09012  0.20019  2.52520 
+-0.69088 -0.29073 -0.04859  0.20035  2.49428 
 
 Coefficients:
-               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)     2.30889    0.31876   7.243 1.15e-08 ***
-vwc_adj        -0.01563    0.01440  -1.085    0.285    
-popSGS         -0.13174    0.44866  -0.294    0.771    
-vwc_adj:popSGS -0.02034    0.02032  -1.001    0.323    
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)    2.1755     0.1981  10.980 2.39e-13 ***
+trtND         -0.3099     0.2577  -1.203    0.237    
+popSGS        -0.2761     0.2888  -0.956    0.345    
+trtND:popSGS  -0.4211     0.3742  -1.125    0.268    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 0.6024 on 38 degrees of freedom
-Multiple R-squared:  0.2914,	Adjusted R-squared:  0.2354 
-F-statistic: 5.209 on 3 and 38 DF,  p-value: 0.004118
+Residual standard error: 0.5944 on 38 degrees of freedom
+Multiple R-squared:  0.3101,	Adjusted R-squared:  0.2557 
+F-statistic: 5.694 on 3 and 38 DF,  p-value: 0.002541
+
+
+	Welch Two Sample t-test
+
+data:  biomass_dat %>% filter(trt == "ND", pop == "SGS") %>% pull(total) and biomass_dat %>% filter(trt == "ND", pop == "SEV") %>% pull(total)
+t = -4.9569, df = 22.892, p-value = 5.256e-05
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.9881372 -0.4061212
+sample estimates:
+mean of x mean of y 
+ 1.168398  1.865527 
 
 [1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
 
 Call:
-lm(formula = total ~ vwc_adj * pop, data = biomass_dat)
+lm(formula = total ~ trt * pop, data = biomass_dat)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--5.0823 -1.7236 -0.2882  1.6820  7.6831 
+-5.2120 -1.4958  0.0016  1.6896  7.7614 
 
 Coefficients:
-               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)     6.68524    1.68591   3.965 0.000313 ***
-vwc_adj         0.23507    0.07616   3.086 0.003771 ** 
-popSGS          2.78356    2.37297   1.173 0.248085    
-vwc_adj:popSGS -0.33366    0.10748  -3.104 0.003594 ** 
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)    8.8890     1.0690   8.315 4.42e-10 ***
+trtND          4.3297     1.3907   3.113  0.00351 ** 
+popSGS        -0.5585     1.5584  -0.358  0.72202    
+trtND:popSGS  -5.7047     2.0191  -2.825  0.00749 ** 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 3.186 on 38 degrees of freedom
-Multiple R-squared:  0.4176,	Adjusted R-squared:  0.3717 
-F-statistic: 9.084 on 3 and 38 DF,  p-value: 0.0001158
+Residual standard error: 3.207 on 38 degrees of freedom
+Multiple R-squared:   0.41,	Adjusted R-squared:  0.3634 
+F-statistic: 8.801 on 3 and 38 DF,  p-value: 0.0001473
+
+
+	Welch Two Sample t-test
+
+data:  biomass_dat %>% filter(trt == "ND", pop == "SGS") %>% pull(total) and biomass_dat %>% filter(trt == "ND", pop == "SEV") %>% pull(total)
+t = -3.8282, df = 20.804, p-value = 0.0009922
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -9.667606 -2.858896
+sample estimates:
+mean of x mean of y 
+ 6.955442 13.218692 
 
