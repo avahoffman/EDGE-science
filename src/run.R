@@ -50,15 +50,15 @@ plot_grid(
   make_inset_decline_plot(get_percent_decline()),
 
   # Specify different widths of plot grid
-  rel_widths = c(1,1.2,1.2),
+  rel_widths = c(1,0.8,0.8),
   align = "h",
-  axis = "t",
+  axis = "bt",
   nrow = 1
 )
 # Save plots
 ggsave(file = "figures/sites_sensitivity_ol_rm.pdf",
-       height = 3.4,
-       width = 6.8)
+       height = 4.5,
+       width = 9)
 
 
 # ---------
