@@ -15,6 +15,7 @@ source("src/utils.R")
 source("src/outlier_analysis.R")
 source("src/site_map.R")
 source("src/sensitivity.R")
+source("src/precipitation.R")
 source("src/C3_v_c4.R")
 source("src/eriopoda_v_gracilis.R")
 source("src/sev_v_sgs.R")
@@ -43,20 +44,13 @@ plot_grid(
   # Plot ecoregion and site map
   plot_site_map_with_ecoregions(generate_shapefile_data()),
   
-  # Plot showing EDGE site sensitivity underlaid with Huxman 2004 data
-  make_sensitivity_plot(huxman_dat,
-                        get_edge_data()) +
-    # Inset as an annotation
-    annotation_custom(
-      grob = ggplotGrob(make_inset_decline_plot(get_percent_decline())) ,
-      xmin = 675,
-      xmax = 2650,
-      ymin = 0.23,
-      ymax = 0.95
-    ),
+  plot_precip_data(get_precip_data()),
+  
+  # Plot showing EDGE site sensitivity (No longer want Huxman plot)
+  make_inset_decline_plot(get_percent_decline()),
 
   # Specify different widths of plot grid
-  rel_widths = c(0.45, 0.55),
+  rel_widths = c(1,1.2,1.2),
   align = "h",
   axis = "t",
   nrow = 1

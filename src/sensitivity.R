@@ -298,9 +298,12 @@ make_inset_decline_plot <- function(summary_dat,
     theme(legend.position = "none") +
     scale_x_discrete(labels = x_ticks_inset) +
     
+    # Add margins
+    theme(plot.margin = unit(c(0,0,0,1), "cm"))
+    
     # Remove white background and border on inset
-    theme(rect = element_rect(fill = "transparent"),
-          plot.background = element_rect(color = "transparent"))
+    #theme(rect = element_rect(fill = "transparent"),
+          #plot.background = element_rect(color = "transparent"))
   
   gg
   if (!(is.na(filename))) {

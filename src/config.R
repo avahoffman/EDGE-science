@@ -16,9 +16,9 @@ desert_color <- "#fee0d2"
 
 # Colors for points representing these sites on the map:
 CHY_color <- "#08519c"
-SGS_color <- "#41ab5d"
-SEV_Blue_color <- "#fd8d3c"
-SEV_Black_color <- "#cb181d"
+SGS_color <- "#08519c"
+SEV_Blue_color <- "#fb6a4a"
+SEV_Black_color <- "#fb6a4a"
 
 # Type colors:
 C4_color <- "white"
@@ -54,6 +54,11 @@ taxa_dat <-
 
 precip_dat <- 
   read.csv("data/precip.csv")
+
+# !Note: precip_dat_2 reflects updated and corrected data received from 
+# Ingrid Slette (October 2022)
+precip_dat_2 <- 
+  read.csv("data/EDGE_North_South_PPT_ANPP.csv")
 
 huxman_dat <- 
   read.csv("data/huxman_2004.csv")
@@ -112,7 +117,7 @@ sensitivity_sites <-
     "SEV.black")
 
 # Figure details
-#y_lab_inset <- "Percent Decline in Total ANPP"
+y_lab_inset <- "Percent decline in total ANPP"
 y_lab_inset <- NULL
 x_ticks_inset <-
   c("SEV\nBlack",
@@ -124,6 +129,8 @@ x_ticks_inset <-
 total_bio_exlusions <- c("PYD")
 exclude_SGS_2016_plot2 <- TRUE
 
+# Exclude 2013 from precip record? Scatterplot only.
+exclude_2013 <- TRUE
 
 ###########################################################################################
 ## C4 vs C3 grass coverage

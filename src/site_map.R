@@ -158,7 +158,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA, ecoregions_onl
       color = CHY_color) + ## CHY
     
     geom_point(
-      aes(x = -106.6, 
+      aes(x = -106.45, 
           y = 34.2), 
       size = 1, 
       color = SEV_Blue_color) +  ## Sev Blue
