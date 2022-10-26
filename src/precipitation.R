@@ -4,6 +4,7 @@
 # Load libraries
 library(ggplot2)
 library(dplyr)
+library(ggpubr)
 
 ###########################################################################################
 
@@ -24,18 +25,18 @@ plot_precip_data <- function(p_dat){
   # Get data for plotting
   p_dat <- get_precip_data()
   
-  ggplot() +
+  ggplot(data = p_dat,
+         aes(x = ppt, y = anpp)) +
     
     # Add points
-    geom_point(
-      data = p_dat,
-      aes(x = ppt, y = anpp, color = region)
-      ) +
+    geom_point(aes(color = region)) +
     
     # Add trendlines
     geom_smooth(
-      data = p_dat,
-      aes(x = ppt, y = anpp, group = region, color = region),
+      aes(
+        group = region,
+        color = region
+      ),
       method = "glm",
       formula = y ~ x,
       se = FALSE
@@ -46,18 +47,44 @@ plot_precip_data <- function(p_dat){
     ylab(expression(paste("ANPP (g ", m ^ {
       -2
     }, ")"))) +
-    xlab(expression(atop("Growing season precipitation", 
-                         paste("(mm y", r ^ {-1}, ")")))) +
-
-    # Add appropriate colors 
+    xlab(expression(atop(
+      "Growing season precipitation",
+      paste("(mm y", r ^ {
+        -1
+      }, ")")
+    ))) +
+    
+    # Regression formula on plot
+    stat_regline_equation(data = p_dat[(p_dat$region == "North"),],
+                          label.x = 70,
+                          label.y = 195,
+                          aes(label = ..eq.label.., color = region),
+                          size = 3) +
+    stat_regline_equation(data = p_dat[(p_dat$region == "South"),],
+                          label.x = 200,
+                          label.y = 80,
+                          aes(label = ..eq.label.., color = region),
+                          size = 3) +
+    
+    # R2 values
+    stat_regline_equation(data = p_dat[(p_dat$region == "North"),],
+                          label.x = 70,
+                          label.y = 175,
+                          aes(label = ..rr.label.., color = region),
+                          size = 3) +
+    stat_regline_equation(data = p_dat[(p_dat$region == "South"),],
+                          label.x = 200,
+                          label.y = 60,
+                          aes(label = ..rr.label.., color = region),
+                          size = 3) +
+    
+    # Add appropriate colors
     scale_color_manual(values = c(CHY_color, SEV_Black_color)) +
     
     # Facet by region
-    facet_wrap(
-      ~ region, ncol = 1
-    ) +
+    facet_wrap(~ region, ncol = 1) +
     
     # Remove legend
-    theme(legend.position = "none") 
+    theme(legend.position = "none")
   
 }
