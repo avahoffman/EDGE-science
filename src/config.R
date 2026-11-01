@@ -19,6 +19,11 @@ CHY_color <- "#08519c"
 SGS_color <- "#08519c"
 SEV_Blue_color <- "#fb6a4a"
 SEV_Black_color <- "#fb6a4a"
+# Alternative for 2026 pub
+CHY_color <- "#08519c"
+SGS_color <- "#41ab5d"
+SEV_Blue_color <- "#fd8d3c"
+SEV_Black_color <- "#cb181d"
 
 # Type colors:
 C4_color <- "white"
