@@ -60,6 +60,34 @@ ggsave(file = "figures/sites_sensitivity_ol_rm.pdf",
        height = 4.5,
        width = 9)
 
+# ---------
+## Possibly reverting to the Huxman data/plot in 2026:
+plot_grid(
+  # Plot ecoregion and site map
+  plot_site_map_with_ecoregions(generate_shapefile_data()),
+  
+  # Plot showing EDGE site sensitivity underlaid with Huxman 2004 data
+  make_sensitivity_plot(huxman_dat,
+                        get_edge_data()) +
+    # Inset as an annotation
+    annotation_custom(
+      grob = ggplotGrob(make_inset_decline_plot(get_percent_decline())) ,
+      xmin = 675,
+      xmax = 2650,
+      ymin = 0.23,
+      ymax = 0.95
+    ),
+  
+  # Specify different widths of plot grid
+  rel_widths = c(0.45, 0.55),
+  align = "h",
+  axis = "t",
+  nrow = 1
+)
+# Save plots
+ggsave(file = "figures/sites_sensitivity_ol_rm_huxman.pdf",
+       height = 3.4,
+       width = 6.8)
 
 # ---------
 plot_grid(# Compare percent C3 grass at CHY and SGS
