@@ -126,7 +126,7 @@ make_sensitivity_plot <-
       # Add panel for arid sites
       geom_rect(aes(
         xmin = 0,
-        xmax = 500,
+        xmax = 400,
         ymin = -0.2,
         ymax = 1
       ),
