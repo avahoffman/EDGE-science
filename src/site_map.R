@@ -6,7 +6,8 @@ library(mapproj)
 library(cowplot)
 library(ggthemes) # theme_map
 library(maps)
-library(rgdal)
+# 2026 change: rgdal deprecated; Replaced readOGR + fortify with read_sf + st_coordinates
+library(sf) # read_sf, st_coordinates
 library(dplyr)
 
 ###########################################################################################
@@ -22,9 +23,11 @@ generate_shapefile_data <- function() {
   
   # Shortgrass steppe
   sf_shortgrass <-
-    fill_region(shortgrass_name,
-                fortify(readOGR(shapefile_dir,
-                                "shortgrass_prairie"))) %>%
+    fill_region(
+      shortgrass_name,
+      read_sf(shapefile_dir, layer = "shortgrass_prairie") %>%
+        st_coordinates() %>% as.data.frame() %>% rename(long = X, lat = Y)
+    ) %>% 
     # Create the break at about the CO border with WY per Lauenroth 2008.. 
     # will be slightly off because of the projection used
     filter(lat <= 41 | 
@@ -32,9 +35,11 @@ generate_shapefile_data <- function() {
   
   # The portion of shortgrass steppe that should actually be mixed grass
   sf_shortgrass_chunk <-
-    fill_region(shortgrass_name,
-                fortify(readOGR(shapefile_dir,
-                                "shortgrass_prairie"))) %>%
+    fill_region(
+      shortgrass_name,
+      read_sf(shapefile_dir, layer = "shortgrass_prairie") %>%
+        st_coordinates() %>% as.data.frame() %>% rename(long = X, lat = Y)
+    ) %>% 
     # Above the CO border
     filter(lat >= 41 & 
              long <= -102) %>%
@@ -45,27 +50,34 @@ generate_shapefile_data <- function() {
   
   # True northern mixed grass prairie
   sf_northern <-
-    fill_region(northern_name, 
-                fortify(readOGR(shapefile_dir, 
-                                "northern_steppe")))
+    fill_region(
+      northern_name,
+      read_sf(shapefile_dir, layer = "northern_steppe") %>%
+        st_coordinates() %>% as.data.frame() %>% rename(long = X, lat = Y)
+    )
+  
   # There is a hole at the Black Hills.. but including it for simplicity
   sf_northern <-
-    sf_northern[sf_northern$hole == FALSE, ] # Allows Black Hills to be included
+    sf_northern[sf_northern$L1 == 1, ] # Allows Black Hills to be included
   
   # Include a small stretch of the southern Rockies as desert grassland
   sf_desert_chunk <-
-    fill_region(shortgrass_name, 
-                fortify(readOGR(shapefile_dir, 
-                                "nm_mtns"))) %>%
+    fill_region(
+      shortgrass_name,
+      read_sf(shapefile_dir, layer = "nm_mtns") %>%
+        st_coordinates() %>% as.data.frame() %>% rename(long = X, lat = Y)
+    ) %>% 
     # Stop above our SEV sites
     filter(lat <= 35 & 
              long >= -107.5)
   
   # Main portion of desert grassland
   sf_desert <-
-    fill_region(desert_name, 
-                fortify(readOGR(shapefile_dir, 
-                                "chihuahuan_desert")))
+    fill_region(
+      desert_name,
+      read_sf(shapefile_dir, layer = "chihuahuan_desert") %>%
+        st_coordinates() %>% as.data.frame() %>% rename(long = X, lat = Y)
+    )
   
   usa_map <- 
     map_data("state")
@@ -90,7 +102,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA, ecoregions_onl
                  aes(
                    x = long,
                    y = lat,
-                   group = group,
+                   group = region,
                    fill = region
                  ),) +
     
@@ -98,7 +110,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA, ecoregions_onl
                  aes(
                    x = long,
                    y = lat,
-                   group = group,
+                   group = region,
                    fill = region
                  ),) +
     
@@ -106,7 +118,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA, ecoregions_onl
                  aes(
                    x = long,
                    y = lat,
-                   group = group,
+                   group = region,
                    fill = region
                  ),) +
     
@@ -114,7 +126,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA, ecoregions_onl
                  aes(
                    x = long,
                    y = lat,
-                   group = group,
+                   group = region,
                    fill = region
                  )) +
     
@@ -122,7 +134,7 @@ plot_site_map_with_ecoregions <- function(sf_data, filename = NA, ecoregions_onl
                  aes(
                    x = long,
                    y = lat,
-                   group = group,
+                   group = region,
                    fill = region
                  )) +
     
