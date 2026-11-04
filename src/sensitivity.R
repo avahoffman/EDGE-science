@@ -49,8 +49,7 @@ get_edge_data <- function() {
   # Get average precip for plotting edge dots
   precip <-
     edge_dat %>%
-    group_by(site) %>%
-    summarise(MAP = mean(precip_mm))
+    summarise(MAP = mean(precip_mm), .by = site)
   
   # datapoints
   edge_dat <- cbind(precip, slopes)
@@ -71,22 +70,17 @@ get_percent_decline <- function(sum_across_years = TRUE) {
   by_plot_sensitivity <-
     dat %>%
     filter(!(category %in% total_bio_exlusions)) %>%
-    group_by(Site,
-             Block,
-             Plot,
-             Year,
-             Trt) %>%
-    summarise(biomass = sum(biomass))
+    summarise(biomass = sum(biomass),
+              .by = c(Site, Block, Plot, Year, Trt))
   
   # IF cumulative, sum across all years to get a more stable number
   if (sum_across_years) {
     full_dat <-
       by_plot_sensitivity %>%
-      group_by(Site,
-               Block,
-               Plot,
-               Trt) %>%
-      summarise(biomass = sum(biomass) / length(sensitivity_years))
+      summarise(
+        biomass = sum(biomass) / length(sensitivity_years),
+        .by = c(Site, Block, Plot, Trt)
+      )
   } else {
     full_dat <-
       by_plot_sensitivity
@@ -101,11 +95,8 @@ get_percent_decline <- function(sum_across_years = TRUE) {
       
       # Take the mean of drt treatments (including chr and int)
       full_dat %>%
-        group_by(Site,
-                 Block,
-                 Trt) %>%
-        summarise(biomass = mean(biomass)) %>%
-        filter(Trt == "drt"),
+        summarise(biomass = mean(biomass), .by = c(Site, Block, Trt)) %>%
+        filter(Trt == "drt"), 
       
       # Join
       by = c("Site", "Block")
@@ -118,10 +109,12 @@ get_percent_decline <- function(sum_across_years = TRUE) {
   # Summarize by site
   summary_dat <-
     compare_dat %>%
-    group_by(Site) %>%
-    summarise(mean = mean(diff),
-              se = sd(diff) / sqrt(n()),
-              type = "diff")
+    summarise(
+      mean = mean(diff),
+      se = sd(diff) / sqrt(n()),
+      type = "diff",
+      .by = Site
+    )
   
   return(summary_dat)
 }

@@ -29,23 +29,15 @@ collect_c3_c4_data <-
               TRUE) %>%
           filter(category %in%
                    c4_grasses) %>%
-          group_by(Site,
-                   Block,
-                   Plot,
-                   Year,
-                   Trt) %>%
-          summarise(c4_biomass = sum(biomass)),
+          summarise(c4_biomass = sum(biomass),
+                    .by = c(Site, Block, Plot, Year, Trt)), 
         
         # C4 grass data
         dat %>%
           filter(category %in%
                    c3_grasses) %>%
-          group_by(Site,
-                   Block,
-                   Plot,
-                   Year,
-                   Trt) %>%
-          summarise(c3_biomass = sum(biomass)),
+          summarise(c3_biomass = sum(biomass),
+                    .by = c(Site, Block, Plot, Year, Trt)),
         
         # Rejoin data
         by = c("Site",
@@ -65,12 +57,8 @@ collect_c3_c4_data <-
         full_join(
           dat %>%
             filter(category == "BOGR") %>%
-            group_by(Site,
-                     Block,
-                     Plot,
-                     Year,
-                     Trt) %>%
-            summarise(bogr_biomass = sum(biomass)),
+            summarise(bogr_biomass = sum(biomass),
+                      .by = c(Site, Block, Plot, Year, Trt)),
           
           # Rejoin data
           by = c("Site",
@@ -84,29 +72,24 @@ collect_c3_c4_data <-
     
     # IF cumulative, sum across all years to get a more stable number
     if (sum_across_years) {
-      full_dat <-
-        full_dat %>%
-        group_by(Site,
-                 Block,
-                 Plot,
-                 Trt)
-      
-      if (bouteloua) {
-        full_dat <-
-          summarise(
-            full_dat,
-            c3_biomass = sum(c3_biomass) / length(c3_c4_years),
-            c4_biomass = sum(c4_biomass) / length(c3_c4_years),
-            bogr_biomass = sum(bogr_biomass) / length(c3_c4_years)
-          )
-      } else {
-        full_dat <-
-          summarise(
-            full_dat,
-            c3_biomass = sum(c3_biomass) / length(c3_c4_years),
-            c4_biomass = sum(c4_biomass) / length(c3_c4_years)
-          )
-      }
+        if (bouteloua) {
+          full_dat <-
+            summarise(
+              full_dat,
+              c3_biomass = sum(c3_biomass) / length(c3_c4_years),
+              c4_biomass = sum(c4_biomass) / length(c3_c4_years),
+              bogr_biomass = sum(bogr_biomass) / length(c3_c4_years),
+              .by = c(Site, Block, Plot, Trt)
+            )
+        } else {
+          full_dat <-
+            summarise(
+              full_dat,
+              c3_biomass = sum(c3_biomass) / length(c3_c4_years),
+              c4_biomass = sum(c4_biomass) / length(c3_c4_years),
+              .by = c(Site, Block, Plot, Trt)
+            )
+        }
     }
     
     # Calculate percentage C3 and C4 grass
@@ -179,19 +162,19 @@ ambient_data_c3_c4 <-
     summary_dat <-
       rbind(
         full_dat %>%
-          group_by(Site) %>%
           summarise(
             mean = mean(c3_pct),
             se = sd(c3_pct) / sqrt(n()),
-            type = "c3"
+            type = "c3",
+            .by = Site
           ),
         
         full_dat %>%
-          group_by(Site) %>%
           summarise(
             mean = mean(c4_pct),
             se = sd(c3_pct) / sqrt(n()),
-            type = "c4"
+            type = "c4",
+            .by = Site
           )
       )
     
@@ -201,11 +184,11 @@ ambient_data_c3_c4 <-
           summary_dat,
           
           full_dat %>%
-            group_by(Site) %>%
             summarise(
               mean = mean(bogr_pct),
               se = sd(bogr_pct) / sqrt(n()),
-              type = "bogr"
+              type = "bogr",
+              .by = Site
             )
           
         )
@@ -222,28 +205,24 @@ diff_data_c3_c4 <-
     full_dat <- collect_c3_c4_data(bouteloua = bouteloua)
     
     # Aggregate among drt treatments by mean (e.g., including chr and int)
-    full_dat_drt <-
-      full_dat %>%
-      group_by(Site,
-               Block,
-               Trt)
-    
-    if (bouteloua) {
-      full_dat_drt <-
-        summarise(
-          full_dat_drt,
-          c3_biomass = mean(c3_biomass),
-          c4_biomass = mean(c4_biomass),
-          bogr_biomass = mean(bogr_biomass)
-        )
-    } else {
-      full_dat_drt <-
-        summarise(
-          full_dat_drt,
-          c3_biomass = mean(c3_biomass),
-          c4_biomass = mean(c4_biomass)
-        )
-    }
+      if (bouteloua) {
+        full_dat_drt <-
+          summarise(
+            full_dat,
+            c3_biomass = mean(c3_biomass),
+            c4_biomass = mean(c4_biomass),
+            bogr_biomass = mean(bogr_biomass),
+            .by = c(Site, Block, Trt)
+          )
+      } else {
+        full_dat_drt <-
+          summarise(
+            full_dat,
+            c3_biomass = mean(c3_biomass),
+            c4_biomass = mean(c4_biomass),
+            .by = c(Site, Block, Trt)
+          )
+      }
     
     full_dat_drt <- full_dat_drt %>% filter(Trt == "drt")
     
@@ -352,19 +331,19 @@ diff_data_c3_c4 <-
       rbind(
         # Summarize by site for C3
         compare_dat %>%
-          group_by(Site) %>%
           summarise(
             mean = mean(c3_diff),
             se = sd(c3_diff) / sqrt(n()),
-            type = "c3"
+            type = "c3",
+            .by = Site
           ),
         # Summarize by site for C4
         compare_dat %>%
-          group_by(Site) %>%
           summarise(
             mean = mean(c4_diff),
             se = sd(c4_diff) / sqrt(n()),
-            type = "c4"
+            type = "c4",
+            .by = Site
           )
       )
     
@@ -375,11 +354,11 @@ diff_data_c3_c4 <-
           
           # Summarize by site for C4
           compare_dat %>%
-            group_by(Site) %>%
             summarise(
               mean = mean(bogr_diff),
               se = sd(bogr_diff) / sqrt(n()),
-              type = "bogr"
+              type = "bogr",
+              .by = Site
             )
           
         ) %>%

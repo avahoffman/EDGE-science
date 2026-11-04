@@ -59,8 +59,8 @@ collect_sev_sgs_data <-
     if (sum_across_years) {
       full_dat <-
         full_dat %>%
-        group_by(Site, Block, Plot, Trt, category) %>%
-        summarise(biomass = sum(biomass) / length(sev_sgs_years))
+        summarise(biomass = sum(biomass) / length(sev_sgs_years),
+                  .by = c(Site, Block, Plot, Trt, category))
     }
     
     # Calculate total biomass for groups in question
@@ -68,8 +68,8 @@ collect_sev_sgs_data <-
       full_join(
         # Calculate total biomass
         full_dat %>%
-          group_by(Site, Block, Plot, Trt) %>%
-          summarise(total_biomass = sum(biomass)),
+          summarise(total_biomass = sum(biomass),
+                    .by = c(Site, Block, Plot, Trt)),
         
         # Convert species level to wide format
         dcast(full_dat, Site + Block + Plot + Trt ~ category,
@@ -103,9 +103,9 @@ ambient_data_sev_sgs <-
     # Summarize by site
     summary_dat <-
       long_dat %>%
-      group_by(Site, spp) %>%
       summarise(mean = mean(pct),
-                se = sd(pct) / sqrt(n()))
+                se = sd(pct) / sqrt(n()),
+                .by = c(Site, spp))
     
     return(summary_dat)
   }
@@ -122,10 +122,10 @@ diff_data_sev_sgs <-
         
         # Aggregate among drt treatments by mean (e.g., including chr and int)
         full_dat %>%
-          group_by(Site, Block, Trt) %>%
           summarise(
             total_biomass = mean(total_biomass),
-            BOGR = mean(BOGR)
+            BOGR = mean(BOGR),
+            .by = c(Site, Block, Trt)
           ) %>%
           filter(Trt == "drt"),
         
@@ -160,10 +160,10 @@ diff_data_sev_sgs <-
     # Summarize by site
     summary_dat <-
       compare_dat %>%
-      group_by(Site) %>%
       summarise(mean = mean(diff),
                 se = sd(diff) / sqrt(n()),
-                type = "bogr")
+                type = "bogr",
+                .by = Site)
     
     return(summary_dat)
   }

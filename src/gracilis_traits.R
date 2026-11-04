@@ -46,10 +46,10 @@ load_and_clean_trait_data <- function(trait = "ANPP") {
   
   # Summarize data by population and treatment
   summary_dat <- 
-    biomass_dat %>% 
-    group_by(pop, trt) %>%
+    biomass_dat %>%
     summarise(mean = mean(total),
-              se = sd(total) / sqrt(n()))
+              se = sd(total) / sqrt(n()),
+              .by = c(pop, trt))
 
   return(summary_dat)
 }
@@ -82,6 +82,7 @@ plot_traits <- function(summary_dat, trait = "ANPP", filename = NA) {
         group = pop,
         color = pop
       ),
+      fun = "mean",
       geom = "line",
       position = position_dodge(0.1)
     ) +

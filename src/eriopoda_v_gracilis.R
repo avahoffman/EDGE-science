@@ -48,20 +48,19 @@ collect_sev_data <-
     if (sum_across_years) {
       full_dat <-
         c4_dat %>%
-        group_by(Site, Block, Plot, Trt, category) %>%
-        summarise(biomass = sum(biomass) /
-                    length(eri_grac_years))
+        summarise(
+          biomass = sum(biomass) /
+            length(eri_grac_years),
+          .by = c(Site, Block, Plot, Trt, category)
+        )
     }
     
     full_dat <-
       full_join(
         # Calculate total biomass
         full_dat %>%
-          group_by(Site,
-                   Block,
-                   Plot,
-                   Trt) %>%
-          summarise(total_biomass = sum(biomass)),
+          summarise(total_biomass = sum(biomass),
+                    .by = c(Site, Block, Plot, Trt)),
         
         # Convert species level to wide format
         dcast(full_dat, Site + Block + Plot + Trt ~ category,
@@ -118,9 +117,9 @@ ambient_data_erio_grac <-
     # Summarize by site
     summary_dat <-
       long_dat %>%
-      group_by(Site, spp) %>%
       summarise(mean = mean(pct),
-                se = sd(pct) / sqrt(n()))
+                se = sd(pct) / sqrt(n()),
+                .by = c(Site, spp))
     
     return(summary_dat)
   }
@@ -136,11 +135,11 @@ diff_data_erio_grac <-
         
         # Aggregate among drt treatments by mean (e.g., including chr and int)
         full_dat %>%
-          group_by(Site, Block, Trt) %>%
           summarise(
             total_biomass = mean(total_biomass),
             BOGR = mean(BOGR),
-            BOER4 = mean(BOER4)
+            BOER4 = mean(BOER4),
+            .by = c(Site, Block, Trt)
           ) %>%
           filter(Trt == "drt"),
         
@@ -189,19 +188,19 @@ diff_data_erio_grac <-
       rbind(
         # Summarize by site for BOGR
         BOGR %>%
-          group_by(Site) %>%
           summarise(
             mean = mean(diff),
             se = sd(diff) / sqrt(n()),
-            type = "bogr"
+            type = "bogr",
+            .by = Site
           ),
         # Repeat for BOER
         BOER4 %>%
-          group_by(Site) %>%
           summarise(
             mean = mean(diff),
             se = sd(diff) / sqrt(n()),
-            type = "boer"
+            type = "boer",
+            .by = Site
           )
       )
     

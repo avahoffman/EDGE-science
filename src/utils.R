@@ -65,7 +65,6 @@ theme_sigmaplot <-
       theme(
         panel.background = element_blank(),
         panel.border = element_rect(size = 1, fill = NA),
-        legend.key = element_rect(fill = NA),
         axis.ticks.length.y = unit(ticklen, "cm"),
         axis.ticks.length.y.right = unit(ticklen, "cm"),
         axis.ticks.length.x = unit(ticklen, "cm"),
@@ -90,6 +89,8 @@ theme_sigmaplot <-
             unit = "pt"
           )
         ),
+        legend.key = element_rect(colour = NA, fill = NA),
+        legend.box.background = element_blank()
       )
     if (!xticks) {
       sigmaplot <- sigmaplot +
@@ -102,7 +103,7 @@ theme_sigmaplot <-
 geom_bar_custom <-
   function(data, fill_name) {
     obj <- geom_bar(
-      aes(fill = data[[fill_name]],
+      aes(fill = .data[[fill_name]],
           y = mean,
           x = Site),
       stat = "identity",
@@ -120,7 +121,7 @@ geom_point_custom <-
            fill_name = "type",
            dodge = 0) {
     obj <- geom_point(
-      aes(fill = data[[fill_name]],
+      aes(fill = .data[[fill_name]],
           y = mean,
           x = Site),
       color = "black",

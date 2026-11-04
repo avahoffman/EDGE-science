@@ -92,13 +92,8 @@ remove_outliers <-
     # Take the average among subplots to get the plot (not summing, that happens only for total biomass/plot)
     aggregated_dat <-
       dat %>%
-      group_by(Site,
-               Block,
-               Plot,
-               Year,
-               Trt,
-               category) %>%
-      summarise(biomass = mean(biomass))
+      summarise(biomass = mean(biomass),
+                .by = c(Site, Block, Plot, Year, Trt, category))
     
     # Replace BOGR2 with BOGR for continuity
     aggregated_dat <-
