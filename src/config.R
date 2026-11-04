@@ -57,13 +57,13 @@ shapefile_dir <-
 taxa_dat <- 
   read.csv("data/Taxa_info.csv")
 
+# !Note: below reflects updated and corrected data received from 
+# Ingrid Slette (October 2022); old data is the "data/precip.csv" file
+precip_dat <- 
+  read.csv("data/EDGE_North_South_PPT_ANPP.csv")
+# Currently using old data
 precip_dat <- 
   read.csv("data/precip.csv")
-
-# !Note: precip_dat_2 reflects updated and corrected data received from 
-# Ingrid Slette (October 2022)
-precip_dat_2 <- 
-  read.csv("data/EDGE_North_South_PPT_ANPP.csv")
 
 huxman_dat <- 
   read.csv("data/huxman_2004.csv")

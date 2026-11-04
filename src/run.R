@@ -36,7 +36,7 @@ raw_bio_dat <-
 bio_dat <- 
   as.data.frame(remove_outliers(raw_bio_dat,
                                 percentile_cutoff = 0.99,
-                                outlier_prop_threshold = 0.5))
+                                outlier_prop_threshold = 0.15))
 
 
 # ---------
@@ -146,7 +146,7 @@ plot_grid(
   plot_sev_sgs_diff(diff_data_sev_sgs()),
   
   # Plot change in A:B biomass ratio by greenhouse treatment, both SEV Blue and SGS populations
-  plot_traits(load_and_clean_trait_data(trait = "a/b"), trait = "a/b"),
+  #plot_traits(load_and_clean_trait_data(trait = "a/b"), trait = "a/b"),
   
   # Plot SEV Blue and SGS individuals on principal components based on genetic markers (SNPs)
   plot_dapc(load_and_clean_genind_data()) +
@@ -158,12 +158,18 @@ plot_grid(
   plot_traits(load_and_clean_trait_data()),
   
   # Arrange plots in 2x2 with relative size
-  rel_widths = c(3, 2, 2),
+  rel_widths = c(3, 2),
   nrow = 2,
-  ncol = 3
+  ncol = 2
   
 )
 # Save plots
 ggsave(file = "figures/gracilis_genetic_diversity_ol_rm_with_ab.pdf",
        height = 6,
        width = 7)
+
+# ---------
+# Run test and write results
+sink("output/sessioninfo.txt", append = FALSE)
+devtools::session_info()
+sink()

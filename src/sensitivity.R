@@ -23,6 +23,16 @@ get_edge_data <- function() {
   # Get anpp vs precip slope per site, and mean precip per site
   edge_dat <- drop_na(precip_dat)
   
+  # Clean the data if necessary for consistency with updated ppt data
+  if("Blue" %in% pull(distinct(edge_dat, site))) {
+   edge_dat <- 
+     edge_dat %>%
+     rename(anpp_gm.2 = anpp, precip_mm = ppt) %>%
+     mutate(site = case_when(
+       site == "Blue" ~ "SBL", site == "Black" ~ "SBK", .default = site
+     ))
+  }
+  
   # Gather slopes
   CHY_est <- get_slope(edge_dat, "CHY")
   SBK_est <- get_slope(edge_dat, "SBK")

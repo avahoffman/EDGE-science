@@ -206,41 +206,7 @@ sample estimates:
 mean of x mean of y 
 -35.19971 -81.45725 
 
-[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
-
-Call:
-lm(formula = total ~ trt * pop, data = biomass_dat)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--0.69088 -0.29073 -0.04859  0.20035  2.49428 
-
-Coefficients:
-             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)    2.1755     0.1981  10.980 2.39e-13 ***
-trtND         -0.3099     0.2577  -1.203    0.237    
-popSGS        -0.2761     0.2888  -0.956    0.345    
-trtND:popSGS  -0.4211     0.3742  -1.125    0.268    
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 0.5944 on 38 degrees of freedom
-Multiple R-squared:  0.3101,	Adjusted R-squared:  0.2557 
-F-statistic: 5.694 on 3 and 38 DF,  p-value: 0.002541
-
-
-	Welch Two Sample t-test
-
-data:  biomass_dat %>% filter(trt == "ND", pop == "SGS") %>% pull(total) and biomass_dat %>% filter(trt == "ND", pop == "SEV") %>% pull(total)
-t = -4.9569, df = 22.892, p-value = 5.256e-05
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -0.9881372 -0.4061212
-sample estimates:
-mean of x mean of y 
- 1.168398  1.865527 
-
-[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects"
+[1] "Linear model testing for site (SEV or SGS), water content, and interaction effects on Total Biomass"
 
 Call:
 lm(formula = total ~ trt * pop, data = biomass_dat)
@@ -262,6 +228,7 @@ Residual standard error: 3.207 on 38 degrees of freedom
 Multiple R-squared:   0.41,	Adjusted R-squared:  0.3634 
 F-statistic: 8.801 on 3 and 38 DF,  p-value: 0.0001473
 
+[1] "T test of true difference in total B. gracilis total biomass (SGS vs SEV.blue) under non-drought conditions is not equal to 0"
 
 	Welch Two Sample t-test
 
