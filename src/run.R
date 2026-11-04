@@ -169,7 +169,7 @@ ggsave(file = "figures/gracilis_genetic_diversity_ol_rm.pdf",
        width = 7)
 
 # ---------
-# Run test and write results
+# Get package and env information for reproducibility
 sink("output/sessioninfo.txt", append = FALSE)
 devtools::session_info()
 sink()
