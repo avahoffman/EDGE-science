@@ -15,10 +15,10 @@ northern_color <- "#deebf7"
 desert_color <- "#fee0d2"
 
 # Colors for points representing these sites on the map:
-CHY_color <- "#08519c"
-SGS_color <- "#08519c"
-SEV_Blue_color <- "#fb6a4a"
-SEV_Black_color <- "#fb6a4a"
+# CHY_color <- "#08519c"
+# SGS_color <- "#08519c"
+# SEV_Blue_color <- "#fb6a4a"
+# SEV_Black_color <- "#fb6a4a"
 # Alternative for 2026 pub
 CHY_color <- "#08519c"
 SGS_color <- "#41ab5d"

@@ -217,6 +217,8 @@ ambient_data_c3_c4 <-
 
 diff_data_c3_c4 <-
   function(bouteloua = FALSE) {
+    # bouteloua argument, if set to TRUE, only looks at bouteloua gracilis, instead of all C4 grasses. 
+    # Results are pretty similar either way
     full_dat <- collect_c3_c4_data(bouteloua = bouteloua)
     
     # Aggregate among drt treatments by mean (e.g., including chr and int)

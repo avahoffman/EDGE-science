@@ -26,8 +26,16 @@ load_and_clean_trait_data <- function(trait = "ANPP") {
   # Run test and write results
   sink(statsfile, append = TRUE)
   
-  print("Linear model testing for site (SEV or SGS), water content, and interaction effects")
-  print(summary(lm(total ~ trt * pop, data = biomass_dat)))
+  if (trait == "ANPP") {
+    print("Linear model testing for site (SEV or SGS), water content, and interaction effects on Total Biomass")
+    print(summary(lm(total ~ trt * pop, data = biomass_dat)))
+    print("T test of true difference in total B. gracilis total biomass (SGS vs SEV.blue) under non-drought conditions is not equal to 0")
+  }
+  else {
+    print("Linear model testing for site (SEV or SGS), water content, and interaction effects on Aboveground:Belowground biomass ratio")
+    print(summary(lm(total ~ trt * pop, data = biomass_dat)))
+    print("T test of true difference in total B. gracilis A:B ratio (SGS vs SEV.blue) under non-drought conditions is not equal to 0")
+  }
   
   print(t.test(
     biomass_dat %>% filter(trt == "ND", pop == "SGS") %>% pull(total),
